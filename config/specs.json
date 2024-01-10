@@ -1,0 +1,16 @@
+[
+    {
+        "name": "car",
+        "mags": [
+            {"size": 20, "audio":  "car_0"},
+            {"size": 22, "audio":  "car_1"},
+            {"size": 24, "audio":  "car_2"},
+            {"size": 27, "audio":  "car_3"}
+        ],
+        "mods": {},
+        "time_points": [],
+        "x": [],
+        "y": [],
+        "ping_points": [640, 896, 1088]
+    }
+]

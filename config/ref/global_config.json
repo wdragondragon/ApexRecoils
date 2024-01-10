@@ -1,0 +1,22 @@
+{
+    "desktop_width": 2560,
+    "desktop_height": 1440,
+    "screen_width": 2560,
+    "screen_height": 1440,
+    "refresh_buttons": [
+        "1",
+        "2",
+        "E"
+    ],
+    "mouse_mover": "win32api",
+    "mouse_mover_params": {
+        "win32api": {},
+        "km_box": {
+            "VID/PID": "66882021"
+        },
+        "wu_ya": {
+            "VID/PID": "26121701"
+        }
+    },
+    "log_model": "window"
+}
