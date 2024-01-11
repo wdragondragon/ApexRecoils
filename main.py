@@ -52,4 +52,6 @@ if __name__ == '__main__':
     recoils_listener_thread = threading.Thread(target=recoils_listener.start)
     recoils_listener_thread.start()
 
+    logger.set_recoils_config(recoils_config)
+
     sys.exit(app.exec_())

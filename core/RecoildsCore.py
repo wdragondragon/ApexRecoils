@@ -17,9 +17,16 @@ class RecoilsConfig:
 
     def __init__(self, logger: Logger):
         self.logger = logger
+        self.specs_data = None
+        self.load()
+
+    def load(self):
+        """
+            加载压枪数据
+        """
         config_file_path = 'config\\specs.json'
         if op.exists(config_file_path):
-            with open(config_file_path) as file:
+            with open(config_file_path, encoding='utf8') as file:
                 self.specs_data = json.load(file)
                 self.logger.print_log("加载配置文件: {}".format(config_file_path))
         else:
@@ -59,7 +66,7 @@ class RecoilsListener:
             开始监听
         """
         start_time = None
-        i = 0
+        num = 0
         sleep_time = 0.001
         while True:
             current_gun = self.select_gun.current_gun
@@ -72,27 +79,26 @@ class RecoilsListener:
                         start_time = time.time()
                     time_points = spec['time_points']
                     point = (time.time() - start_time) * 1000
-                    index = next(
-                        (i for i, time_point in enumerate(time_points) if
-                         time_point >= point),
-                        None)
-                    if index is not None and i < index:
+                    index = len(time_points) - 1 if point > time_points[-1] else next(
+                        (i - 1 for i, time_point in enumerate(time_points) if time_point > point),
+                        -1)
+                    if index is not None and index >= 0 and num <= index:
                         # 获取对应下标的x和y
                         x_values = spec['x']
                         y_values = spec['y']
-                        if len(x_values) >= index + 1:
-                            x_value = x_values[index]
-                            y_value = y_values[index]
+                        if len(x_values) >= num + 1:
+                            x_value = x_values[num]
+                            y_value = y_values[num]
                             self.logger.print_log(
-                                f'执行时间：[{point}]<[{time_points[index]}],正在压第{str(index)}枪，鼠标移动轨迹为({x_value},{y_value})')
+                                f'执行时间：[{time_points[num]}]<[{point}],正在压第{str(num + 1)}枪，剩余{str(len(time_points) - (num + 1))}枪，鼠标移动轨迹为({x_value},{y_value})')
                             self.intent_manager.set_intention(x_value, y_value)
                         else:
                             self.logger.print_log(
-                                f'缺失轨迹：第[{point}，时间为{time_points[index]}])')
-                        i = index
+                                f'缺失第[{num + 1}个轨迹，时间为{time_points[num]}])')
+                        num += 1
                 else:
                     self.logger.print_log(f"未找到[{current_gun}的压枪数据]")
             else:
                 start_time = None
-                i = 0
+                num = 0
             time.sleep(sleep_time)

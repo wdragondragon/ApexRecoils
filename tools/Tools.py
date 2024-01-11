@@ -1,5 +1,7 @@
 import ctypes
 import os
+import queue
+import threading
 import time
 from io import BytesIO
 from shutil import copyfile
@@ -114,3 +116,34 @@ class Tools:
             """
             # 获取最后一次进队的元素但不出队
             return self.queue[-1] if self.queue else None
+
+    class GetBlockQueue:
+        """
+            阻塞队列
+        """
+
+        def __init__(self, name, maxsize=1):
+            self.name = name
+            self.lock = threading.Lock()
+            self.queue = queue.Queue(maxsize=maxsize)
+
+        def get(self):
+            o = self.queue.get()
+            return o
+
+        def put(self, data):
+            with self.lock:
+                while True:
+                    try:
+                        self.queue.put(data, block=False)
+                        break
+                    except queue.Full:
+                        try:
+                            self.queue.get_nowait()
+                        except queue.Empty:
+                            pass
+
+        def clear(self):
+            with self.lock:
+                while not self.queue.empty():
+                    self.queue.get()
