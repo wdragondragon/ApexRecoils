@@ -111,6 +111,9 @@ class LogWindow(QMainWindow, Logger):
 
 
 class PrintLogThread(QThread):
+    """
+        使用信号槽来多线程更新ui
+    """
     log_signal = pyqtSignal(str)
 
     def __init__(self, log_queue: Tools.GetBlockQueue):
