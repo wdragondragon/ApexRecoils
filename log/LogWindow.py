@@ -1,9 +1,9 @@
 import os
-import threading
 import time
 import traceback
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
+# from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QMainWindow, QTextEdit, QVBoxLayout, QWidget, QApplication, QPushButton
 
 from log.Logger import Logger
@@ -31,8 +31,13 @@ class LogWindow(QMainWindow, Logger):
             self.recoils_config = None
             self.log_queue = Tools.GetBlockQueue(name='log_queue', maxsize=1000)
             self.init_ui()
+            # 实例化对象
+            self.print_log_thread = PrintLogThread(self.log_queue)
+            # 信号连接到界面显示槽函数
+            self.print_log_thread.log_signal.connect(self.real_print)
+            # 多线程开始
+            self.print_log_thread.start()
             self.setWindowFlags(Qt.WindowStaysOnTopHint)
-            threading.Thread(target=self.consume_log).start()
         self.show()
 
     def set_config(self, config):
@@ -95,20 +100,6 @@ class LogWindow(QMainWindow, Logger):
         QApplication.quit()
         os._exit(0)
 
-    def consume_log(self):
-        """
-            避免多线程影响ui，在一个线程中启动队列消费打印
-        """
-        self.real_print("打印日志线程启动")
-        while True:
-            try:
-                log = self.log_queue.get()
-                self.real_print(log)
-            except Exception as e:
-                print(e)
-                traceback.print_exc()
-                time.sleep(0.1)
-
     def real_print(self, log):
         """
             真实打印函数
@@ -117,3 +108,25 @@ class LogWindow(QMainWindow, Logger):
         self.log_text.append(log)
         self.log_text.moveCursor(self.log_text.textCursor().End)
         super().print_log(text=log)
+
+
+class PrintLogThread(QThread):
+    log_signal = pyqtSignal(str)
+
+    def __init__(self, log_queue: Tools.GetBlockQueue):
+        super().__init__()
+        self.log_queue = log_queue
+
+    def run(self):
+        """
+            避免多线程影响ui，在一个线程中启动队列消费打印
+        """
+        self.log_signal.emit("打印日志线程启动")
+        while True:
+            try:
+                log = self.log_queue.get()
+                self.log_signal.emit(log)
+            except Exception as e:
+                print(e)
+                traceback.print_exc()
+                time.sleep(0.1)
