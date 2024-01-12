@@ -11,7 +11,7 @@ class KmBoxMover(MouseMover):
         # dll地址
         super().__init__(mouse_mover_param)
         self.logger = logger
-        vid_pid = super().mouse_mover_param["VID/PID"]
+        vid_pid = mouse_mover_param["VID/PID"]
         self.km_box_A = ctypes.cdll.LoadLibrary(r"kmbox_dll_64bit.dll")
         self.km_box_A.KM_init.argtypes = [ctypes.c_ushort, ctypes.c_ushort]
         self.km_box_A.KM_init.restype = ctypes.c_ushort
