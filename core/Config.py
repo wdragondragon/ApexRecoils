@@ -46,6 +46,7 @@ class Config:
         self.mouse_mover_params = None
         self.select_gun_bbox = None
         self.image_path = None
+        self.shake_gun_toggle = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -105,6 +106,7 @@ class Config:
             }
         })
         self.log_model = self.get_config(self.config_data, "log_model", "window")
+        self.shake_gun_toggle = self.get_config(self.config_data, "shake_gun_toggle", True)
 
     def get_config(self, read_config, pattern=None, default=None):
         """

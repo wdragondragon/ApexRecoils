@@ -8,6 +8,7 @@ from core.Config import Config
 from core.KeyAndMouseListener import MouseListener, KeyListener
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
+from core.ShakeGun import ShakeGun
 from log.LogWindow import LogWindow
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
@@ -53,5 +54,9 @@ if __name__ == '__main__':
     recoils_listener_thread.start()
 
     logger.set_recoils_config(recoils_config)
+
+    if config.shake_gun_toggle:
+        shake_gun: ShakeGun = ShakeGun(logger=logger, mouse_listener=apex_mouse_listener, mouse_mover=mouse_mover,
+                                       select_gun=select_gun)
 
     sys.exit(app.exec_())

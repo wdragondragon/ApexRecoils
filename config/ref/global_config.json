@@ -18,5 +18,6 @@
             "VID/PID": "26121701"
         }
     },
-    "log_model": "window"
+    "log_model": "window",
+    "shake_gun_toggle": "true"
 }
