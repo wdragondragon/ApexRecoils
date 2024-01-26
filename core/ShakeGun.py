@@ -4,6 +4,7 @@ import time
 
 from pynput.mouse import Button
 
+from core.Config import Config
 from core.KeyAndMouseListener import KMCallBack, MouseListener
 from core.SelectGun import SelectGun
 from log.Logger import Logger
@@ -16,6 +17,7 @@ class ShakeGun:
     """
 
     def __init__(self, logger: Logger,
+                 config: Config,
                  mouse_listener: MouseListener,
                  mouse_mover: MouseMover,
                  select_gun: SelectGun):
@@ -23,6 +25,7 @@ class ShakeGun:
         self.mouse_listener = mouse_listener
         self.mouse_mover = mouse_mover
         self.select_gun = select_gun
+        self.config = config
         self.in_shake = False
         self.LMD = 3.0
         self.pushDown = 1
@@ -36,9 +39,14 @@ class ShakeGun:
         self.declineTime = 0
         self.holdShakeTime = 0
         self.lastFreshCasLockTime = time.time()
-        KMCallBack.connect(KMCallBack("m", 'left', self.shake_gun_threading))
-        KMCallBack.connect(KMCallBack("m", 'right', self.shake_gun_threading))
-        KMCallBack.connect(KMCallBack("k", 'caps_lock', self.shake_gun_threading))
+        self.shake_gun_toggle_button = self.config.shake_gun_toggle_button
+        self.shake_gun_trigger_button = self.config.shake_gun_trigger_button
+
+        KMCallBack.connect(KMCallBack("k", self.shake_gun_trigger_button, self.shake_gun_threading))
+
+        for button_list in self.shake_gun_toggle_button:
+            for button in button_list:
+                KMCallBack.connect(KMCallBack("m", button, self.shake_gun_threading))
 
     def shake_gun_threading(self, pressed, toggled):
         if self.in_shake:
@@ -49,19 +57,35 @@ class ShakeGun:
     def shake_gun(self):
         if self.in_shake:
             return
-        if self.mouse_listener.is_press(Button.left) and self.mouse_listener.is_press(
-                Button.right) and self.mouse_mover.is_caps_locked():
+        if self.mouse_mover.is_caps_locked() and self.is_press():
             self.in_shake = True
             self.logger.print_log("开始抖枪")
         else:
             return
         self.clear_time()
-        while self.mouse_listener.is_press(Button.left) and self.mouse_listener.is_press(
-                Button.right) and self.mouse_mover.is_caps_locked() and self.in_shake:
+        while self.mouse_mover.is_caps_locked() and self.in_shake and self.is_press():
             self.rock_shake()
             self.mouse_relative_by_hold_shake_time()
         self.in_shake = False
         self.logger.print_log("结束抖枪")
+
+    def is_press(self):
+        # 遍历外层数组，判断与的关系
+        and_result = True
+        for and_group in self.shake_gun_toggle_button:
+            # 遍历内层数组，判断或的关系
+            or_result = False
+            for or_button in and_group:
+                is_button_press = self.mouse_listener.is_press(or_button)
+                # 如果有一个按钮被按下，则内层结果为 True
+                or_result = or_result or is_button_press
+                if or_result:
+                    break
+            and_result = and_result and or_result
+            if not and_result:
+                break
+        # 如果所有外层结果都为 False，则整体结果为 False
+        return and_result
 
     def rock_shake(self):
         horizontal = self.shake_range

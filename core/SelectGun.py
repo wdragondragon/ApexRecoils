@@ -21,6 +21,7 @@ class SelectGun:
         self.select_gun_sign = False
         self.current_gun = None
         self.refresh_buttons = refresh_buttons
+        self.call_back = []
         for refresh_button in self.refresh_buttons:
             KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun, False))
 
@@ -53,4 +54,9 @@ class SelectGun:
             return
         self.current_gun = gun_temp
         self.logger.print_log("枪械: {}, 最大相似度: {}".format(self.current_gun, score_temp))
+        for func in self.call_back:
+            func(self.current_gun)
         self.select_gun_sign = False
+
+    def connect(self, func):
+        self.call_back.append(func)

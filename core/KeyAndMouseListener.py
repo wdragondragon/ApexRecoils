@@ -95,7 +95,7 @@ class MouseListener:
         :return:
         """
         if pressed:
-            self.on_mouse_key_map[button] = Tools.current_milli_time()
+            self.on_mouse_key_map[button.name] = Tools.current_milli_time()
             if button.name in self.toggle_mouse_key_map:
                 self.toggle_mouse_key_map.remove(button.name)
             else:
@@ -104,9 +104,9 @@ class MouseListener:
                 if cb.key_type == 'm' and cb.key == button.name and cb.is_press:
                     cb.call_back(pressed, cb.key in self.toggle_mouse_key_map)
         elif not pressed:
-            if button not in self.on_mouse_key_map:
+            if button.name not in self.on_mouse_key_map:
                 return
-            self.on_mouse_key_map.pop(button)
+            self.on_mouse_key_map.pop(button.name)
             for cb in KMCallBack.toggle_call_back:
                 if cb.key_type == 'm' and cb.key == button.name and not cb.is_press:
                     cb.call_back(pressed, cb.key in self.toggle_mouse_key_map)

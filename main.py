@@ -56,7 +56,8 @@ if __name__ == '__main__':
     logger.set_recoils_config(recoils_config)
 
     if config.shake_gun_toggle:
-        shake_gun: ShakeGun = ShakeGun(logger=logger, mouse_listener=apex_mouse_listener, mouse_mover=mouse_mover,
+        shake_gun: ShakeGun = ShakeGun(logger=logger, config=config, mouse_listener=apex_mouse_listener,
+                                       mouse_mover=mouse_mover,
                                        select_gun=select_gun)
 
     sys.exit(app.exec_())

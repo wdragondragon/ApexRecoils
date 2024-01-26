@@ -107,6 +107,9 @@ class Config:
         })
         self.log_model = self.get_config(self.config_data, "log_model", "window")
         self.shake_gun_toggle = self.get_config(self.config_data, "shake_gun_toggle", True)
+        self.shake_gun_toggle_button = self.get_config(self.config_data, "shake_gun_toggle_button",
+                                                       [["left"], ["right"]])
+        self.shake_gun_trigger_button = self.get_config(self.config_data, "shake_gun_trigger_button", "caps_lock")
 
     def get_config(self, read_config, pattern=None, default=None):
         """
