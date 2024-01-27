@@ -49,3 +49,7 @@ class KmBoxNetMover(MouseMover):
             销毁
         """
         self.listener.stop()
+
+    def click_key(self, value):
+        kmNet.keydown(value)
+        kmNet.keyup(value)

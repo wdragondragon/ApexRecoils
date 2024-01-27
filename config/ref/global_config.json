@@ -3,7 +3,10 @@
     "desktop_height": 1440,
     "screen_width": 2560,
     "screen_height": 1440,
-    "refresh_buttons": [],
+    "refresh_buttons": [
+        "1",
+        "2"
+    ],
     "mouse_mover": "km_box_net",
     "mouse_mover_params": {
         "win32api": {},
@@ -20,7 +23,7 @@
         }
     },
     "log_model": "window",
-    "shake_gun_toggle": "true",
+    "shake_gun_toggle": "false",
     "shake_gun_toggle_button": [
         [
             "right"
@@ -31,56 +34,8 @@
         ]
     ],
     "shake_gun_trigger_button": "caps_lock",
-    "rea_snow_dict": {
-        "re-45": {
-            "1": "<"
-        },
-        "R-301": {
-            "1": "f1",
-            "2": "f2",
-            "3": "f3"
-        },
-        "平行步枪": {
-            "1": "f4",
-            "2": "f5",
-            "3": "f6"
-        },
-        "car": {
-            "1": "7",
-            "2": "8"
-        },
-        "电能": {
-            "1": "9",
-            "2": "0"
-        },
-        "转换者": {
-            "1": "y",
-            "2": "u"
-        },
-        "哈沃克": {
-            "1": "f7",
-            "2": "f8",
-            "3": "f9"
-        },
-        "专注": {
-            "1": "i",
-            "2": "o"
-        },
-        "lstart": {
-            "2": "p"
-        },
-        "复仇女神": {
-            "0": "f10"
-        },
-        "R99": {
-            "0": "5"
-        },
-        "猎兽": {
-            "1": "f11",
-            "2": "f12"
-        },
-        "喷火": {
-            "0": "right"
-        }
-    }
+    "has_turbocharger": [
+        "专注",
+        "哈沃克"
+    ]
 }

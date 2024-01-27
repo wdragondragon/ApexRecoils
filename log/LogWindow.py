@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 import traceback
@@ -105,7 +106,8 @@ class LogWindow(QMainWindow, Logger):
             真实打印函数
         :param log:
         """
-        self.log_text.append(log)
+
+        self.log_text.append(datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]  ") + log)
         self.log_text.moveCursor(self.log_text.textCursor().End)
         super().print_log(text=log)
 

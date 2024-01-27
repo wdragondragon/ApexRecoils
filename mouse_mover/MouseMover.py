@@ -77,3 +77,11 @@ class MouseMover:
         caps_lock_state = key_state & 1
 
         return caps_lock_state == 1
+
+    def click_key(self, value):
+        """
+
+        :param value:
+        :return:
+        """
+        pass

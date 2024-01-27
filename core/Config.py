@@ -16,6 +16,13 @@ screenshot_resolution = {
     (2048, 1152): (1927, 1172, 2089, 1208)
 }
 
+scope_screenshot_resolution = {
+    (2560, 1440): [(2034, 1338, 2059, 1363), (2069, 1338, 2094, 1363), (2106, 1338, 2131, 1363)]
+}
+hop_up_screenshot_resolution = {
+    (2560, 1440): [(2142, 1338, 2167, 1363), (2180, 1338, 2205, 1363)]
+}
+
 
 class Config:
     """
@@ -45,8 +52,15 @@ class Config:
         self.game_solution = None
         self.mouse_mover_params = None
         self.select_gun_bbox = None
+        self.select_scope_bbox = None
+        self.select_hop_up_bbox = None
         self.image_path = None
+        self.scope_path = None
+        self.hop_up_path = None
         self.shake_gun_toggle = None
+        self.shake_gun_toggle_button = None
+        self.shake_gun_trigger_button = None
+        self.has_turbocharger = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -89,9 +103,13 @@ class Config:
         if self.game_solution in screenshot_resolution:
             self.select_gun_bbox = screenshot_resolution[
                 self.game_solution]  # 选择枪械的区域
+            self.select_scope_bbox = scope_screenshot_resolution[self.game_solution]
+            self.select_hop_up_bbox = hop_up_screenshot_resolution[self.game_solution]
         else:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
         self.image_path = 'images/' + '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
+        self.scope_path = 'images/scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
+        self.hop_up_path = 'images/hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
 
         self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E'])
 
@@ -110,6 +128,7 @@ class Config:
         self.shake_gun_toggle_button = self.get_config(self.config_data, "shake_gun_toggle_button",
                                                        [["left"], ["right"]])
         self.shake_gun_trigger_button = self.get_config(self.config_data, "shake_gun_trigger_button", "caps_lock")
+        self.has_turbocharger = self.get_config(self.config_data, "has_turbocharger", [])
 
     def get_config(self, read_config, pattern=None, default=None):
         """
