@@ -39,7 +39,8 @@ if __name__ == '__main__':
 
     mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                      mouse_model=config.mouse_mover,
-                                                     mouse_mover_params=config.mouse_mover_params)
+                                                     mouse_mover_params=config.mouse_mover_params,
+                                                     mouse_listener=apex_mouse_listener)
     intent_manager = IntentManager(logger=logger, mouse_mover=mouse_mover)
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()

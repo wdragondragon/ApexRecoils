@@ -29,12 +29,13 @@ class ShakeGun:
         self.in_shake = False
         self.LMD = 3.0
         self.pushDown = 1
-        self.shakeNum = 1
+        self.shakeNum = 3
         self.ADS = 1.0
         self.Level = 5
         self.Decline = 5
         self.frequency = 4
-        self.shake_range = (6 // (self.LMD * self.ADS)) + self.Level - 2
+        # self.shake_range = (6 // (self.LMD * self.ADS)) + self.Level - 2
+        self.shake_range = 30
         self.declineRange = (self.Decline + 2) * self.LMD
         self.declineTime = 0
         self.holdShakeTime = 0
@@ -89,7 +90,7 @@ class ShakeGun:
 
     def rock_shake(self):
         horizontal = self.shake_range
-        vertical = self.shake_range
+        vertical = self.shake_range - 10
         for _ in range(self.shakeNum):
             self.mouse_mover.move_rp(int(-horizontal), int(-vertical))
             self.better_sleep(self.frequency)

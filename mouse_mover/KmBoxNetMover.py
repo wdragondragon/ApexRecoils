@@ -1,4 +1,4 @@
-import ctypes
+import kmNet
 
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
@@ -8,20 +8,13 @@ class KmBoxNetMover(MouseMover):
 
     def __init__(self, logger: Logger, mouse_mover_param):
         # 初始化
-        # dll地址
         super().__init__(mouse_mover_param)
         self.logger = logger
-        vid_pid = mouse_mover_param["VID/PID"]
-        self.km_box_A = ctypes.cdll.LoadLibrary(r"kmbox_dll_64bit.dll")
-        self.km_box_A.KM_init.argtypes = [ctypes.c_ushort, ctypes.c_ushort]
-        self.km_box_A.KM_init.restype = ctypes.c_ushort
-        self.km_box_A.KM_move.argtypes = [ctypes.c_short, ctypes.c_short]
-        self.km_box_A.KM_move.restype = ctypes.c_int
-        vid = int(vid_pid[:4], 16)
-        pid = int(vid_pid[4:], 16)
-        # 连接km_box_VER a
-        ts = self.km_box_A.KM_init(ctypes.c_ushort(vid), ctypes.c_ushort(pid))
-        self.logger.print_log("初始化:{}".format(ts))
+        ip = mouse_mover_param["ip"]
+        port = mouse_mover_param["port"]
+        uuid = mouse_mover_param["uuid"]
+        kmNet.init(ip, port, uuid)  # 连接盒子
+        self.listener = None
 
     def left_click(self):
         # 左键
@@ -33,10 +26,11 @@ class KmBoxNetMover(MouseMover):
             鼠标左键控制 0松开 1按下
         """
         # 左键
-        self.km_box_A.KM_left(ctypes.c_char(vk_key))
+        kmNet.left(1)
+        kmNet.left(0)
 
-    def move_rp(self, short_x: int, short_y: int):
-        self.move(short_x, short_y)
+    def move_rp(self, short_x: int, short_y: int, re_cut_size=0):
+        kmNet.move(short_x, short_y)
 
     def move(self, short_x: int, short_y: int):
         """
@@ -47,4 +41,11 @@ class KmBoxNetMover(MouseMover):
                 -1：发送失败\n
                 0：发送成功\n
         """
-        self.km_box_A.KM_move(short_x, short_y)
+
+        kmNet.move_auto(short_x, short_y, int(max(5, short_x / 10, short_y / 10)))
+
+    def destroy(self):
+        """
+            销毁
+        """
+        self.listener.stop()
