@@ -1,41 +1,44 @@
 {
-    "desktop_width": 2560,
-    "desktop_height": 1440,
-    "screen_width": 2560,
-    "screen_height": 1440,
-    "refresh_buttons": [
-        "1",
-        "2"
-    ],
-    "mouse_mover": "km_box_net",
-    "mouse_mover_params": {
-        "win32api": {},
-        "km_box": {
-            "VID/PID": "66882021"
-        },
-        "wu_ya": {
-            "VID/PID": "26121701"
-        },
-        "km_box_net": {
-            "ip": "192.168.2.188",
-            "port": "35368",
-            "uuid": "8A6E5C53"
-        }
+  "desktop_width": 2560,
+  "desktop_height": 1440,
+  "screen_width": 2560,
+  "screen_height": 1440,
+  "refresh_buttons": [
+    "1",
+    "2"
+  ],
+  "mouse_mover": "km_box_net",
+  "mouse_mover_params": {
+    "win32api": {},
+    "km_box": {
+      "VID/PID": "66882021"
     },
-    "log_model": "window",
-    "shake_gun_toggle": "false",
-    "shake_gun_toggle_button": [
-        [
-            "right"
-        ],
-        [
-            "left",
-            "x2"
-        ]
+    "wu_ya": {
+      "VID/PID": "26121701"
+    },
+    "km_box_net": {
+      "ip": "192.168.2.188",
+      "port": "35368",
+      "uuid": "8A6E5C53"
+    }
+  },
+  "log_model": "window",
+  "shake_gun_toggle": "false",
+  "shake_gun_toggle_button": [
+    [
+      "right"
     ],
-    "shake_gun_trigger_button": "caps_lock",
-    "has_turbocharger": [
-        "专注",
-        "哈沃克"
+    [
+      "left",
+      "x2"
     ]
+  ],
+  "shake_gun_trigger_button": "caps_lock",
+  "net_comparator": true,
+  "has_turbocharger": [
+    "专注",
+    "哈沃克"
+  ],
+  "net_images_path": "https://gitee.com/wdragondragon/apex_images/raw/master/",
+  "local_images_path": "images/"
 }

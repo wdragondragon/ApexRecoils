@@ -1,4 +1,3 @@
-import binascii
 import json
 import os.path as op
 

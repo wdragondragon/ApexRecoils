@@ -61,6 +61,9 @@ class Config:
         self.shake_gun_toggle_button = None
         self.shake_gun_trigger_button = None
         self.has_turbocharger = None
+        self.net_comparator = None
+        self.net_images_path = None
+        self.local_images_path = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -107,9 +110,17 @@ class Config:
             self.select_hop_up_bbox = hop_up_screenshot_resolution[self.game_solution]
         else:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
-        self.image_path = 'images/' + '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
-        self.scope_path = 'images/scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
-        self.hop_up_path = 'images/hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
+
+        self.net_comparator = self.get_config(self.config_data, 'net_comparator', True)
+        self.net_images_path = self.get_config(self.config_data, 'net_images_path',
+                                               "https://gitee.com/wdragondragon/apex_images/raw/master/")
+        self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
+
+        image_base_path = self.net_images_path if self.net_comparator else self.local_images_path
+
+        self.image_path = image_base_path + '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
+        self.scope_path = image_base_path + 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
+        self.hop_up_path = image_base_path + 'hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
 
         self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E'])
 
@@ -128,7 +139,10 @@ class Config:
         self.shake_gun_toggle_button = self.get_config(self.config_data, "shake_gun_toggle_button",
                                                        [["left"], ["right"]])
         self.shake_gun_trigger_button = self.get_config(self.config_data, "shake_gun_trigger_button", "caps_lock")
-        self.has_turbocharger = self.get_config(self.config_data, "has_turbocharger", [])
+        self.has_turbocharger = self.get_config(self.config_data, "has_turbocharger", [
+            "专注",
+            "哈沃克"
+        ])
 
     def get_config(self, read_config, pattern=None, default=None):
         """
