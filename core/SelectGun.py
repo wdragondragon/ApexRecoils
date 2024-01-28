@@ -1,19 +1,11 @@
-import os
 import threading
 import time
 import traceback
-from io import BytesIO
 
-import cv2
-import numpy as np
 from PIL import ImageGrab
-from skimage.metrics import structural_similarity
 
-from core.ImageComparator import ImageComparator
 from core.KeyAndMouseListener import KMCallBack
 from log.Logger import Logger
-from net.socket.NetImageComparator import NetImageComparator
-from net.socket.SocketImageComparator import SocketImageComparator
 
 
 class SelectGun:
@@ -22,7 +14,7 @@ class SelectGun:
     """
 
     def __init__(self, logger: Logger, bbox, image_path, scope_bbox, scope_path, hop_up_bbox, hop_up_path,
-                 refresh_buttons, has_turbocharger, comparator_mode):
+                 refresh_buttons, has_turbocharger, image_comparator):
         super().__init__()
         self.logger = logger
         self.on_key_map = dict()
@@ -30,7 +22,7 @@ class SelectGun:
         self.image_path = image_path
         self.scope_bbox = scope_bbox
         self.scope_path = scope_path
-        self.select_gun_sign = False
+        self.select_gun_sign = True
         self.current_gun = None
         self.current_scope = None
         self.current_hot_pop = None
@@ -40,13 +32,7 @@ class SelectGun:
         self.hop_up_path = hop_up_path
         self.call_back = []
         self.fail_time = 0
-
-        if comparator_mode == 0:
-            self.image_comparator = LocalImageComparator(logger)
-        elif comparator_mode == 1:
-            self.image_comparator = NetImageComparator(logger)
-        elif comparator_mode == 2:
-            self.image_comparator = SocketImageComparator(logger)
+        self.image_comparator = image_comparator
         for refresh_button in self.refresh_buttons:
             KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun_threading, False))
 
@@ -158,53 +144,17 @@ class SelectGun:
     def connect(self, func):
         self.call_back.append(func)
 
-
-class LocalImageComparator(ImageComparator):
-    """
-        本地图片对比
-    """
-
-    def __init__(self, logger: Logger):
-        self.image_cache = {}
-        self.logger = logger
-
-    def compare_image(self, img, path_image):
-        """
-            图片对比
-        :param img:
-        :param path_image:
-        :return:
-        """
-        buffer = BytesIO()
-        img.save(buffer, format="PNG")
-        buffer.seek(0)
-        image_a = cv2.imdecode(np.frombuffer(buffer.getvalue(), dtype=np.uint8), cv2.IMREAD_COLOR)
-        buffer.close()
-        image_b = cv2.imdecode(np.fromfile(path_image, dtype=np.uint8), cv2.IMREAD_COLOR)
-        gray_a = cv2.cvtColor(image_a, cv2.COLOR_BGR2GRAY)
-        gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)
-        (score, diff) = structural_similarity(gray_a, gray_b, full=True)
-        return score
-
-    def compare_with_path(self, path, images, lock_score, discard_score):
-        """
-            截图范围与文件路径内的所有图片对比
-        :param path:
-        :param images:
-        :param lock_score:
-        :param discard_score:
-        :return:
-        """
-        select_name = ''
-        score_temp = 0.00000000000000000000
-        for img in images:
-            for fileName in [file for file in os.listdir(path) if file.endswith('.png') or file.endswith(".jpg")]:
-                score = self.compare_image(img, path + fileName)
-                if score > score_temp:
-                    score_temp = score
-                    select_name = fileName.split('.')[0]
-                if score_temp > lock_score:
-                    break
-        if score_temp < discard_score:
-            select_name = None
-        return select_name, score_temp
+    def test(self):
+        self.logger.print_log("自动识别初始化中，请稍后……")
+        self.image_comparator.compare_with_path(self.image_path,
+                                                self.get_images_from_bbox([self.bbox]), 0.9, 0.7)
+        self.image_comparator.compare_with_path(self.scope_path,
+                                                self.get_images_from_bbox(
+                                                    self.scope_bbox), 0.9,
+                                                0.4)
+        self.image_comparator.compare_with_path(self.hop_up_path,
+                                                self.get_images_from_bbox(
+                                                    self.hop_up_bbox),
+                                                0.9, 0.6)
+        self.logger.print_log("自动识别初始化完毕")
+        self.select_gun_sign = False

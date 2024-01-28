@@ -31,8 +31,10 @@ class ReaSnowSelectGun:
             gun_scope_dict = gun_scope_dict[hot_pop]
 
         first_char = select_scope[0]
-
-        scope_data = gun_scope_dict[first_char]
+        if first_char in gun_scope_dict:
+            scope_data = gun_scope_dict[first_char]
+        else:
+            scope_data = None
 
         if scope_data is not None:
             if "0" in gun_scope_dict:

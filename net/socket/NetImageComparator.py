@@ -6,7 +6,7 @@ import numpy as np
 import requests
 from skimage.metrics import structural_similarity
 
-from core.ImageComparator import ImageComparator
+from core.image_comparator.ImageComparator import ImageComparator
 from log.Logger import Logger
 
 net_file_cache = {}

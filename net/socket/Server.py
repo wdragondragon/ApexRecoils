@@ -2,7 +2,7 @@ import pickle
 import socket
 import traceback
 
-from core.SelectGun import LocalImageComparator
+from core.image_comparator.LocalImageComparator import LocalImageComparator
 from log.Logger import Logger
 from net.socket import SocketUtil
 from net.socket.NetImageComparator import NetImageComparator
@@ -13,8 +13,9 @@ class Server:
         识别服务端
     """
 
-    def __init__(self, logger: Logger, net_comparator):
+    def __init__(self, logger: Logger, server_address, net_comparator):
         self.logger = logger
+        self.server_address = server_address
         if net_comparator:
             self.image_comparator = NetImageComparator(logger)
         else:
@@ -31,8 +32,7 @@ class Server:
         # 创建一个TCP/IP套接字
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # 绑定服务器地址和端口
-        server_address = ("127.0.0.1", 12345)
-        self.server_socket.bind(server_address)
+        self.server_socket.bind(self.server_address)
         # 监听客户端连接
         self.server_socket.listen(1)
 

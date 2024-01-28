@@ -9,11 +9,9 @@ class Client:
         识别客户端
     """
 
-    def __init__(self, host, port):
-        self.host = host
-        self.port = port
+    def __init__(self, socket_address):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client_socket.connect((self.host, self.port))
+        self.client_socket.connect(socket_address)
 
     def compare_with_path(self, path, images, lock_score, discard_score):
         """
