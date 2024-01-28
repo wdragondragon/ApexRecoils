@@ -61,7 +61,7 @@ class Config:
         self.shake_gun_toggle_button = None
         self.shake_gun_trigger_button = None
         self.has_turbocharger = None
-        self.net_comparator = None
+        self.comparator_mode = None
         self.net_images_path = None
         self.local_images_path = None
 
@@ -111,12 +111,12 @@ class Config:
         else:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
 
-        self.net_comparator = self.get_config(self.config_data, 'net_comparator', True)
+        self.comparator_mode = self.get_config(self.config_data, 'comparator_mode', 0)
         self.net_images_path = self.get_config(self.config_data, 'net_images_path',
                                                "https://gitee.com/wdragondragon/apex_images/raw/master/")
         self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
 
-        image_base_path = self.net_images_path if self.net_comparator else self.local_images_path
+        image_base_path = self.local_images_path if self.comparator_mode == 0 else self.net_images_path
 
         self.image_path = image_base_path + '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
         self.scope_path = image_base_path + 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径

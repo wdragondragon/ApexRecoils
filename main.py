@@ -33,7 +33,7 @@ if __name__ == '__main__':
                            has_turbocharger=config.has_turbocharger,
                            hop_up_bbox=config.select_hop_up_bbox,
                            hop_up_path=config.hop_up_path,
-                           net_comparator=config.net_comparator)
+                           comparator_mode=config.comparator_mode)
 
     mouse_listener = pynput.mouse.Listener(on_click=apex_mouse_listener.on_click)
     keyboard_listener = pynput.keyboard.Listener(on_press=apex_key_listener.on_press,

@@ -4,7 +4,6 @@ from io import BytesIO
 import cv2
 import numpy as np
 import requests
-from PIL import ImageGrab
 from skimage.metrics import structural_similarity
 
 from core.ImageComparator import ImageComparator
@@ -46,6 +45,11 @@ class NetImageComparator(ImageComparator):
         self.logger = logger
 
     def download_image(self, url):
+        """
+
+        :param url:
+        :return:
+        """
         # 如果图像已经在缓存中，直接返回缓存的图像
         if url in self.image_cache:
             return BytesIO(self.image_cache[url])
@@ -99,19 +103,18 @@ class NetImageComparator(ImageComparator):
             self.logger.print_log(f"对比图片错误：{path_image}")
             return 0
 
-    def compare_with_path(self, path, bbox_list, lock_score, discard_score):
+    def compare_with_path(self, path, images, lock_score, discard_score):
         """
             截图范围与文件路径内的所有图片对比
         :param path:
-        :param bbox_list:
+        :param images:
         :param lock_score:
         :param discard_score:
         :return:
         """
         select_name = ''
         score_temp = 0.00000000000000000000
-        for scope_bbox_item in bbox_list:
-            img = ImageGrab.grab(bbox=scope_bbox_item)
+        for img in images:
             for fileName in read_file_from_url(path + "list.txt"):
                 score = self.compare_image(img, path + fileName)
                 if score > score_temp:

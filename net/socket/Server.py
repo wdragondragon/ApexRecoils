@@ -1,19 +1,33 @@
+import pickle
 import socket
 import traceback
-import numpy as np
+
+from core.SelectGun import LocalImageComparator
 from log.Logger import Logger
 from net.socket import SocketUtil
+from net.socket.NetImageComparator import NetImageComparator
 
 
 class Server:
-    def __init__(self, logger: Logger):
+    """
+        识别服务端
+    """
+
+    def __init__(self, logger: Logger, net_comparator):
         self.logger = logger
+        if net_comparator:
+            self.image_comparator = NetImageComparator(logger)
+        else:
+            self.image_comparator = LocalImageComparator(logger)
         self.server_socket = None
         self.buffer_size = 4096
         self.open()
         self.listen()
 
     def open(self):
+        """
+            打开服务端
+        """
         # 创建一个TCP/IP套接字
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # 绑定服务器地址和端口
@@ -23,14 +37,21 @@ class Server:
         self.server_socket.listen(1)
 
     def listen(self):
+        """
+            监听
+        """
         while True:
             self.logger.print_log('等待客户端连接...')
             # 等待客户端连接
             client_socket, client_address = self.server_socket.accept()
             self.logger.print_log('客户端已连接:{}'.format(client_address))
             try:
-                img_data = SocketUtil.recv(client_socket, buffer_size=self.buffer_size)
-                img0 = np.frombuffer(img_data, dtype='uint8')
+                while True:
+                    data = SocketUtil.recv(client_socket)
+                    data = pickle.loads(data)
+                    result = self.image_comparator.compare_with_path(*data)
+                    result_data = pickle.dumps(result)
+                    SocketUtil.send(client_socket, result_data)
             except Exception as e:
                 print(e)
                 traceback.print_exc()
