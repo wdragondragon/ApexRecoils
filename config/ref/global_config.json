@@ -38,8 +38,8 @@
     "专注",
     "哈沃克"
   ],
-  "comparator_mode": 2,
-  "read_image_mode": 0,
+  "comparator_mode": "distributed",
+  "read_image_mode": "net",
   "key_trigger_mode": "distributed",
   "toggle_key": [
   ]

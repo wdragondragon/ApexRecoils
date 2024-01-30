@@ -115,14 +115,14 @@ class Config:
         else:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
 
-        self.comparator_mode = self.get_config(self.config_data, 'comparator_mode', 0)
-        self.read_image_mode = self.get_config(self.config_data, 'read_image_mode', 0)
+        self.comparator_mode = self.get_config(self.config_data, 'comparator_mode', "local")
+        self.read_image_mode = self.get_config(self.config_data, 'read_image_mode', "local")
         self.key_trigger_mode = self.get_config(self.config_data, 'key_trigger_mode', "local")
         # self.net_images_path = self.get_config(self.config_data, 'net_images_path',
         #                                        "https://gitee.com/wdragondragon/apex_images/raw/master/")
         # self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
 
-        self.image_base_path = "images/" if self.read_image_mode == 0 else "https://gitee.com/wdragondragon/apex_images/raw/master/"
+        self.image_base_path = "images/" if self.read_image_mode == "local" else "https://gitee.com/wdragondragon/apex_images/raw/master/"
 
         self.image_path = '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
         self.scope_path = 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
