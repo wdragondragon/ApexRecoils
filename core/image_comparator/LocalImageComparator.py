@@ -25,11 +25,17 @@ class LocalImageComparator(ImageComparator):
         :param path_image:
         :return:
         """
+        # if path_image in self.image_cache:
+        #     image_data = self.image_cache[path_image]
+        # else:
         buffer = BytesIO()
         img.save(buffer, format="PNG")
         buffer.seek(0)
-        image_a = cv2.imdecode(np.frombuffer(buffer.getvalue(), dtype=np.uint8), cv2.IMREAD_COLOR)
+        image_data = buffer.getvalue()
         buffer.close()
+        # self.image_cache[path_image] = image_data
+        image_a = cv2.imdecode(np.frombuffer(image_data, dtype=np.uint8), cv2.IMREAD_COLOR)
+
         image_b = cv2.imdecode(np.fromfile(path_image, dtype=np.uint8), cv2.IMREAD_COLOR)
         gray_a = cv2.cvtColor(image_a, cv2.COLOR_BGR2GRAY)
         gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)

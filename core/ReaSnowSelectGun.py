@@ -35,10 +35,9 @@ class ReaSnowSelectGun:
             scope_data = gun_scope_dict[first_char]
         else:
             scope_data = None
-
+        if "0" in gun_scope_dict:
+            scope_data = gun_scope_dict["0"]
+            self.logger.print_log(f"枪械[{select_gun}使用通用数据]")
         if scope_data is not None:
-            if "0" in gun_scope_dict:
-                scope_data = gun_scope_dict["0"]
-                self.logger.print_log(f"枪械[{select_gun}使用通用数据]")
             self.logger.print_log(f"按下键位[{scope_data}]切换数据")
             self.mouse_mover.click_key(int(scope_data, 16))

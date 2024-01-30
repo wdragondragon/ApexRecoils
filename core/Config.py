@@ -64,6 +64,8 @@ class Config:
         self.comparator_mode = None
         self.net_images_path = None
         self.local_images_path = None
+        self.read_image_mode = None
+        self.toggle_key = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -112,11 +114,12 @@ class Config:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
 
         self.comparator_mode = self.get_config(self.config_data, 'comparator_mode', 0)
+        self.read_image_mode = self.get_config(self.config_data, 'read_image_mode', 0)
         self.net_images_path = self.get_config(self.config_data, 'net_images_path',
                                                "https://gitee.com/wdragondragon/apex_images/raw/master/")
         self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
 
-        image_base_path = self.local_images_path if self.comparator_mode == 0 else self.net_images_path
+        image_base_path = self.local_images_path if self.read_image_mode == 0 else self.net_images_path
 
         self.image_path = image_base_path + '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
         self.scope_path = image_base_path + 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
@@ -143,6 +146,7 @@ class Config:
             "专注",
             "哈沃克"
         ])
+        self.toggle_key = self.get_config(self.config_data, "toggle_key", [])
 
     def get_config(self, read_config, pattern=None, default=None):
         """

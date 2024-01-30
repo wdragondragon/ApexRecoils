@@ -15,6 +15,7 @@ class KmBoxNetMover(MouseMover):
         uuid = mouse_mover_param["uuid"]
         kmNet.init(ip, port, uuid)  # 连接盒子
         self.listener = None
+        self.toggle_key_listener = None
 
     def left_click(self):
         # 左键
@@ -49,6 +50,7 @@ class KmBoxNetMover(MouseMover):
             销毁
         """
         self.listener.stop()
+        self.toggle_key_listener.destory()
 
     def click_key(self, value):
         kmNet.keydown(value)

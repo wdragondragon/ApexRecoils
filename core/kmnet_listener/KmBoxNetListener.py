@@ -14,7 +14,10 @@ class KmBoxNetListener:
         self.listener_sign = False
         self.down_key_map = []
         self.down_mouse_map = []
+        self.connect_func = []
         kmNet.monitor(10000)
+        # kmNet.unmask_all()
+        # kmNet.mask_keyboard(0x06)
 
     def km_box_net_start(self):
         self.listener_sign = True
@@ -64,8 +67,14 @@ class KmBoxNetListener:
                 if "x2" in self.down_mouse_map:
                     self.down_mouse_map.remove("x2")
                     self.mouse_listener.on_click(*self.km_box_net_mover.get_position(), Button.x2, False)
+            for func in self.connect_func:
+                func()
             time.sleep(0.01)
         print("km box net 监听结束")
 
     def stop(self):
         self.listener_sign = False
+        self.connect_func.clear()
+
+    def connect(self, func):
+        self.connect_func.append(func)

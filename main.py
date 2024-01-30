@@ -12,15 +12,16 @@ from core.SelectGun import SelectGun
 from core.ShakeGun import ShakeGun
 from core.image_comparator import ImageComparatorFactory
 from log.LogWindow import LogWindow
+from log.Logger import Logger
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
 from mouse_mover.MouseMover import MouseMover
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    logger = LogWindow()
+    logger = Logger()
     config = Config(logger)
-    logger.set_config(config)
+    # logger.set_config(config)
 
     apex_mouse_listener = MouseListener(logger=logger)
     apex_key_listener = KeyListener(logger=logger)
@@ -51,7 +52,8 @@ if __name__ == '__main__':
     mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                      mouse_model=config.mouse_mover,
                                                      mouse_mover_params=config.mouse_mover_params,
-                                                     mouse_listener=apex_mouse_listener)
+                                                     mouse_listener=apex_mouse_listener,
+                                                     toggle_key=config.toggle_key)
     intent_manager = IntentManager(logger=logger, mouse_mover=mouse_mover)
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
@@ -65,7 +67,7 @@ if __name__ == '__main__':
     recoils_listener_thread = threading.Thread(target=recoils_listener.start)
     recoils_listener_thread.start()
 
-    logger.set_recoils_config(recoils_config)
+    # logger.set_recoils_config(recoils_config)
 
     # if config.shake_gun_toggle:
     #     shake_gun: ShakeGun = ShakeGun(logger=logger, config=config, mouse_listener=apex_mouse_listener,

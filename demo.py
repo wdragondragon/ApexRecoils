@@ -2,8 +2,9 @@ import kmNet
 import time
 
 kmNet.init('192.168.2.188', '35368', '8A6E5C53')  # 连接盒子
-kmNet.keydown(int("0x35", 16))
-kmNet.keyup(0x35)
+kmNet.keydown(int("0x2D", 16))
+kmNet.keyup(0x2D)
+# kmNet.unmask_all()
 """
 -   0x2D    0x56
 +   0x2E    0x57
