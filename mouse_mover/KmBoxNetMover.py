@@ -1,4 +1,4 @@
-import kmNet
+
 
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
@@ -7,13 +7,15 @@ from mouse_mover.MouseMover import MouseMover
 class KmBoxNetMover(MouseMover):
 
     def __init__(self, logger: Logger, mouse_mover_param):
+        import kmNet
+        self.kmNet = kmNet
         # 初始化
         super().__init__(mouse_mover_param)
         self.logger = logger
         ip = mouse_mover_param["ip"]
         port = mouse_mover_param["port"]
         uuid = mouse_mover_param["uuid"]
-        kmNet.init(ip, port, uuid)  # 连接盒子
+        self.kmNet.init(ip, port, uuid)  # 连接盒子
         self.listener = None
         self.toggle_key_listener = None
 
@@ -27,11 +29,11 @@ class KmBoxNetMover(MouseMover):
             鼠标左键控制 0松开 1按下
         """
         # 左键
-        kmNet.left(1)
-        kmNet.left(0)
+        self.kmNet.left(1)
+        self.kmNet.left(0)
 
     def move_rp(self, short_x: int, short_y: int, re_cut_size=0):
-        kmNet.move(short_x, short_y)
+        self.kmNet.move(short_x, short_y)
 
     def move(self, short_x: int, short_y: int):
         """
@@ -43,7 +45,7 @@ class KmBoxNetMover(MouseMover):
                 0：发送成功\n
         """
 
-        kmNet.move_auto(short_x, short_y, int(max(5, short_x / 10, short_y / 10)))
+        self.kmNet.move_auto(short_x, short_y, int(max(5, short_x / 10, short_y / 10)))
 
     def destroy(self):
         """
@@ -53,5 +55,5 @@ class KmBoxNetMover(MouseMover):
         self.toggle_key_listener.destory()
 
     def click_key(self, value):
-        kmNet.keydown(value)
-        kmNet.keyup(value)
+        self.kmNet.keydown(value)
+        self.kmNet.keyup(value)
