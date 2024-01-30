@@ -75,9 +75,10 @@ if __name__ == '__main__':
     #     shake_gun: ShakeGun = ShakeGun(logger=logger, config=config, mouse_listener=apex_mouse_listener,
     #                                    mouse_mover=mouse_mover,
     #                                    select_gun=select_gun)
+
     if config.key_trigger_mode == "distributed":
         rea_snow_select_gun = ReaSnowSelectGunSocket(logger=logger, select_gun=select_gun)
-    else:
+    elif config.key_trigger_mode != "None":
         rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
         select_gun.connect(rea_snow_select_gun.trigger_button)
 
