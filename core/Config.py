@@ -110,10 +110,14 @@ class Config:
         if self.game_solution in screenshot_resolution:
             self.select_gun_bbox = screenshot_resolution[
                 self.game_solution]  # 选择枪械的区域
-            self.select_scope_bbox = scope_screenshot_resolution[self.game_solution]
-            self.select_hop_up_bbox = hop_up_screenshot_resolution[self.game_solution]
         else:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
+
+        if self.game_solution in scope_screenshot_resolution:
+            self.select_scope_bbox = scope_screenshot_resolution[self.game_solution]
+
+        if self.game_solution in hop_up_screenshot_resolution:
+            self.select_hop_up_bbox = hop_up_screenshot_resolution[self.game_solution]
 
         self.comparator_mode = self.get_config(self.config_data, 'comparator_mode', "local")
         self.read_image_mode = self.get_config(self.config_data, 'read_image_mode', "local")
