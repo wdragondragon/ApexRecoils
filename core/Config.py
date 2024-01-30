@@ -62,10 +62,12 @@ class Config:
         self.shake_gun_trigger_button = None
         self.has_turbocharger = None
         self.comparator_mode = None
-        self.net_images_path = None
-        self.local_images_path = None
+        # self.net_images_path = None
+        # self.local_images_path = None
         self.read_image_mode = None
         self.toggle_key = None
+        self.image_base_path = None
+        self.key_trigger_mode = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -115,15 +117,16 @@ class Config:
 
         self.comparator_mode = self.get_config(self.config_data, 'comparator_mode', 0)
         self.read_image_mode = self.get_config(self.config_data, 'read_image_mode', 0)
-        self.net_images_path = self.get_config(self.config_data, 'net_images_path',
-                                               "https://gitee.com/wdragondragon/apex_images/raw/master/")
-        self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
+        self.key_trigger_mode = self.get_config(self.config_data, 'key_trigger_mode', "local")
+        # self.net_images_path = self.get_config(self.config_data, 'net_images_path',
+        #                                        "https://gitee.com/wdragondragon/apex_images/raw/master/")
+        # self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
 
-        image_base_path = self.local_images_path if self.read_image_mode == 0 else self.net_images_path
+        self.image_base_path = "images/" if self.read_image_mode == 0 else "https://gitee.com/wdragondragon/apex_images/raw/master/"
 
-        self.image_path = image_base_path + '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
-        self.scope_path = image_base_path + 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
-        self.hop_up_path = image_base_path + 'hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
+        self.image_path = '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
+        self.scope_path = 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
+        self.hop_up_path = 'hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
 
         self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E'])
 

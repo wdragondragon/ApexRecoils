@@ -34,14 +34,13 @@
     ]
   ],
   "shake_gun_trigger_button": "caps_lock",
-  "comparator_mode": 2,
   "has_turbocharger": [
     "专注",
     "哈沃克"
   ],
-  "net_images_path": "https://gitee.com/wdragondragon/apex_images/raw/master/",
-  "local_images_path": "images/",
+  "comparator_mode": 2,
   "read_image_mode": 0,
+  "key_trigger_mode": "distributed",
   "toggle_key": [
   ]
 }

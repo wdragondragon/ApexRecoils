@@ -7,11 +7,11 @@ from mouse_mover.MouseMover import MouseMover
 
 
 class ReaSnowSelectGun:
-    def __init__(self, logger: Logger, select_gun: SelectGun, mouse_mover: MouseMover):
+    def __init__(self, logger: Logger, mouse_mover: MouseMover):
         self.logger = logger
         self.config_path = ".\\config\\ReaSnowGun.json"
         self.mouse_mover = mouse_mover
-        select_gun.connect(self.trigger_button)
+
         if op.exists(self.config_path):
             with open(self.config_path, encoding='utf-8') as global_file:
                 self.key_dict = json.load(global_file)

@@ -1,11 +1,11 @@
 import pickle
 import socket
+import threading
 import traceback
 
-from core.image_comparator.LocalImageComparator import LocalImageComparator
+from core.ReaSnowSelectGun import ReaSnowSelectGun
 from log.Logger import Logger
 from net.socket import SocketUtil
-from net.socket.NetImageComparator import NetImageComparator
 
 
 class Server:
@@ -13,17 +13,15 @@ class Server:
         识别服务端
     """
 
-    def __init__(self, logger: Logger, server_address, net_comparator):
+    def __init__(self, logger: Logger, server_address, image_comparator, select_gun: ReaSnowSelectGun):
         self.logger = logger
         self.server_address = server_address
-        if net_comparator:
-            self.image_comparator = NetImageComparator(logger)
-        else:
-            self.image_comparator = LocalImageComparator(logger)
+        self.image_comparator = image_comparator
+        self.select_gun = select_gun
         self.server_socket = None
         self.buffer_size = 4096
         self.open()
-        self.listen()
+        self.wait_client()
 
     def open(self):
         """
@@ -36,7 +34,7 @@ class Server:
         # 监听客户端连接
         self.server_socket.listen(1)
 
-    def listen(self):
+    def wait_client(self):
         """
             监听
         """
@@ -45,20 +43,58 @@ class Server:
             # 等待客户端连接
             client_socket, client_address = self.server_socket.accept()
             self.logger.print_log('客户端已连接:{}'.format(client_address))
-            try:
-                while True:
-                    data = SocketUtil.recv(client_socket)
-                    data = pickle.loads(data)
+            data = SocketUtil.recv(client_socket)
+            data = pickle.loads(data)
+            self.logger.print_log("客户端类型：{}".format(data))
+            threading.Thread(target=self.listener, args=(client_socket, data)).start()
+            # try:
+            #     while True:
+            #         data = SocketUtil.recv(client_socket)
+            #         data = pickle.loads(data)
+            #         data_type = data["type"]
+            #         data = data["data"]
+            #         if data_type == "compare_with_path":
+            #             result = self.image_comparator.compare_with_path(*data)
+            #             result_data = pickle.dumps(result)
+            #             SocketUtil.send(client_socket, result_data)
+            #         elif data_type == "move":
+            #             result = self.image_comparator.compare_with_path(*data)
+            #             result_data = pickle.dumps(result)
+            #             SocketUtil.send(client_socket, result_data)
+            # except Exception as e:
+            #     print(e)
+            #     traceback.print_exc()
+            # finally:
+            #     # 关闭连接
+            #     try:
+            #         client_socket.close()
+            #     except Exception as e:
+            #         print(e)
+            #         traceback.print_exc()
+
+    def listener(self, client_socket, data_type):
+        """
+
+        :param data_type:
+        :param client_socket:
+        """
+        try:
+            while True:
+                data = SocketUtil.recv(client_socket)
+                data = pickle.loads(data)
+                if data_type == "compare_with_path":
                     result = self.image_comparator.compare_with_path(*data)
                     result_data = pickle.dumps(result)
                     SocketUtil.send(client_socket, result_data)
+                elif data_type == "key_trigger":
+                    self.select_gun.trigger_button(*data)
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+        finally:
+            # 关闭连接
+            try:
+                client_socket.close()
             except Exception as e:
                 print(e)
                 traceback.print_exc()
-            finally:
-                # 关闭连接
-                try:
-                    client_socket.close()
-                except Exception as e:
-                    print(e)
-                    traceback.print_exc()

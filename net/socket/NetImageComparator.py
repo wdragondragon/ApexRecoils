@@ -39,10 +39,11 @@ def read_file_from_url(url):
 
 
 class NetImageComparator(ImageComparator):
-    def __init__(self, logger: Logger):
+    def __init__(self, logger: Logger, base_path):
         # 用于缓存已下载图像的字典
         self.image_cache = {}
         self.logger = logger
+        self.base_path = base_path
 
     def download_image(self, url):
         """
@@ -112,6 +113,7 @@ class NetImageComparator(ImageComparator):
         :param discard_score:
         :return:
         """
+        path = self.base_path + path
         select_name = ''
         score_temp = 0.00000000000000000000
         for img in images:

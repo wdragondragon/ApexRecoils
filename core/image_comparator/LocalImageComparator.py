@@ -14,9 +14,10 @@ class LocalImageComparator(ImageComparator):
         本地图片对比
     """
 
-    def __init__(self, logger: Logger):
+    def __init__(self, logger: Logger, base_path):
         self.image_cache = {}
         self.logger = logger
+        self.base_path = base_path
 
     def compare_image(self, img, path_image):
         """
@@ -51,6 +52,7 @@ class LocalImageComparator(ImageComparator):
         :param discard_score:
         :return:
         """
+        path = self.base_path + path
         select_name = ''
         score_temp = 0.00000000000000000000
         for img in images:

@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QApplication
 from core.Config import Config
 from core.KeyAndMouseListener import MouseListener, KeyListener
 from core.ReaSnowSelectGun import ReaSnowSelectGun
+from core.ReaSnowSelectGunSocket import ReaSnowSelectGunSocket
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
 from core.ShakeGun import ShakeGun
@@ -27,7 +28,8 @@ if __name__ == '__main__':
     apex_key_listener = KeyListener(logger=logger)
 
     image_comparator = ImageComparatorFactory.get_image_comparator(logger=logger,
-                                                                   comparator_mode=config.comparator_mode)
+                                                                   comparator_mode=config.comparator_mode,
+                                                                   base_path=config.image_base_path)
 
     select_gun = SelectGun(logger=logger,
                            bbox=config.select_gun_bbox,
@@ -73,7 +75,11 @@ if __name__ == '__main__':
     #     shake_gun: ShakeGun = ShakeGun(logger=logger, config=config, mouse_listener=apex_mouse_listener,
     #                                    mouse_mover=mouse_mover,
     #                                    select_gun=select_gun)
-    rea_snow_select_gun = ReaSnowSelectGun(logger=logger, select_gun=select_gun, mouse_mover=mouse_mover)
+    if config.key_trigger_mode == "distributed":
+        rea_snow_select_gun = ReaSnowSelectGunSocket(logger=logger, select_gun=select_gun)
+    else:
+        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
+        select_gun.connect(rea_snow_select_gun.trigger_button)
 
     threading.Thread(target=select_gun.test).start()
     sys.exit(app.exec_())

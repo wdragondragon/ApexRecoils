@@ -8,7 +8,7 @@ class SocketImageComparator(ImageComparator):
         # 用于缓存已下载图像的字典
         self.image_cache = {}
         self.logger = logger
-        self.client = Client(socket_address)
+        self.client = Client(socket_address, "compare_with_path")
 
     def compare_with_path(self, path, images, lock_score, discard_score):
         """
