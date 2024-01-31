@@ -7,21 +7,22 @@ from PyQt5.QtWidgets import QApplication
 from core.Config import Config
 from core.KeyAndMouseListener import MouseListener, KeyListener
 from core.ReaSnowSelectGun import ReaSnowSelectGun
-from core.ReaSnowSelectGunSocket import ReaSnowSelectGunSocket
+from net.socket.ReaSnowSelectGunSocket import ReaSnowSelectGunSocket
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
-from core.ShakeGun import ShakeGun
 from core.image_comparator import ImageComparatorFactory
-from log.LogWindow import LogWindow
 from log.Logger import Logger
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
 from mouse_mover.MouseMover import MouseMover
+from verification import Check
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    Check.check("apex_recoils")
     logger = Logger()
-    config = Config(logger)
+    config = Config(logger=logger, default_ref_config_name="client")
     # logger.set_config(config)
 
     apex_mouse_listener = MouseListener(logger=logger)
@@ -52,10 +53,8 @@ if __name__ == '__main__':
     keyboard_listener_thread.start()
 
     mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
-                                                     mouse_model=config.mouse_mover,
-                                                     mouse_mover_params=config.mouse_mover_params,
                                                      mouse_listener=apex_mouse_listener,
-                                                     toggle_key=config.toggle_key)
+                                                     config=config)
     intent_manager = IntentManager(logger=logger, mouse_mover=mouse_mover)
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
@@ -76,11 +75,11 @@ if __name__ == '__main__':
     #                                    mouse_mover=mouse_mover,
     #                                    select_gun=select_gun)
 
-    if config.key_trigger_mode == "distributed":
-        rea_snow_select_gun = ReaSnowSelectGunSocket(logger=logger, select_gun=select_gun)
-    elif config.key_trigger_mode != "None":
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
-        select_gun.connect(rea_snow_select_gun.trigger_button)
+    # if config.key_trigger_mode == "distributed":
+    #     rea_snow_select_gun = ReaSnowSelectGunSocket(logger=logger, select_gun=select_gun)
+    # elif config.key_trigger_mode != "None":
+    rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
+    select_gun.connect(rea_snow_select_gun.trigger_button)
 
     threading.Thread(target=select_gun.test).start()
     sys.exit(app.exec_())

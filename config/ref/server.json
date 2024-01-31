@@ -1,0 +1,23 @@
+{
+  "server_mouse_mover": "km_box_net",
+  "mouse_mover_params": {
+    "win32api": {},
+    "km_box": {
+      "VID/PID": "66882021"
+    },
+    "wu_ya": {
+      "VID/PID": "26121701"
+    },
+    "km_box_net": {
+      "ip": "192.168.2.188",
+      "port": "35368",
+      "uuid": "8A6E5C53"
+    },
+    "distributed": {
+      "ip": "127.0.0.1",
+      "port": 12345
+    }
+  },
+  "log_model": "window",
+  "read_image_mode": "net"
+}

@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['server_main.py'],
+    ['server.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -28,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='server_main',
+    name='server',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -41,4 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='./images/server.png'
 )

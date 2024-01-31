@@ -5,6 +5,7 @@ import traceback
 
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from log.Logger import Logger
+from mouse_mover.MouseMover import MouseMover
 from net.socket import SocketUtil
 
 
@@ -13,10 +14,12 @@ class Server:
         识别服务端
     """
 
-    def __init__(self, logger: Logger, server_address, image_comparator, select_gun: ReaSnowSelectGun):
+    def __init__(self, logger: Logger, server_address, image_comparator, select_gun: ReaSnowSelectGun,
+                 mouse_mover: MouseMover):
         self.logger = logger
         self.server_address = server_address
         self.image_comparator = image_comparator
+        self.mouse_mover = mouse_mover
         self.select_gun = select_gun
         self.server_socket = None
         self.buffer_size = 4096
@@ -88,6 +91,11 @@ class Server:
                     SocketUtil.send(client_socket, result_data)
                 elif data_type == "key_trigger":
                     self.select_gun.trigger_button(*data)
+                elif data_type == "mouse_mover":
+                    func_name, param = data
+                    self.logger.print_log(f"mouse_mover:{func_name}({param})) ")
+                    f = getattr(self.mouse_mover, func_name)
+                    f(*param)
         except Exception as e:
             print(e)
             traceback.print_exc()

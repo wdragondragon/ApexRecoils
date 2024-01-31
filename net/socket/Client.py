@@ -44,3 +44,14 @@ class Client:
         data = (select_gun, select_scope, hot_pop)
         data = pickle.dumps(data)
         SocketUtil.send(self.client_socket, data)
+
+    def mouse_mover(self, func_name, param):
+        """
+
+        :param func_name:
+        :param param:
+        :return:
+        """
+        data = (func_name, param)
+        data = pickle.dumps(data)
+        SocketUtil.send(self.client_socket, data)
