@@ -7,9 +7,13 @@ from mouse_mover.KmBoxMover import KmBoxMover
 from mouse_mover.KmBoxNetMover import KmBoxNetMover
 from mouse_mover.Win32ApiMover import Win32ApiMover
 from mouse_mover.WuYaMover import WuYaMover
+from net.socket.SocketMouseMover import SocketMouseMover
 
 
-def get_mover(logger: Logger, mouse_model, mouse_mover_params, mouse_listener=None, toggle_key=None):
+def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, parent_mover=None):
+    if mouse_model is None:
+        mouse_model = config.mouse_mover
+    mouse_mover_params = config.mouse_mover_params
     mouse_mover_param = mouse_mover_params[mouse_model]
     if mouse_mover_param is None:
         logger.print_log(f"鼠标模式:[{mouse_model}]不可用")
@@ -26,6 +30,15 @@ def get_mover(logger: Logger, mouse_model, mouse_mover_params, mouse_listener=No
         if mouse_listener is not None:
             current_mover.listener = KmBoxNetListener(current_mover, mouse_listener)
             threading.Thread(target=current_mover.listener.km_box_net_start).start()
-        if toggle_key is not None:
-            current_mover.toggle_key_listener = ToggleKeyListener(current_mover.listener, toggle_key)
+            if parent_mover is None:
+                parent_mover = current_mover
+            current_mover.toggle_key_listener = ToggleKeyListener(logger, current_mover.listener, config.toggle_key,
+                                                                  config.delayed_activation_key_list,
+                                                                  config.zen_toggle_key, parent_mover)
+        return current_mover
+    elif mouse_model == "distributed":
+        current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)
+        server_mover = get_mover(logger=logger, mouse_listener=mouse_listener, config=config,
+                                 mouse_model=config.server_mouse_mover, parent_mover=current_mover)
+        current_mover.server_mouse_mover = server_mover
         return current_mover
