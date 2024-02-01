@@ -1,6 +1,6 @@
 {
   "mouse_mover": "win32api",
-  "server_mouse_mover": "km_box_net",
+  "server_mouse_mover": "fei_yi_lai",
   "mouse_mover_params": {
     "win32api": {},
     "km_box": {
@@ -8,6 +8,9 @@
     },
     "wu_ya": {
       "VID/PID": "26121701"
+    },
+    "fei_yi_lai": {
+      "VID/PID": "C2160102"
     },
     "km_box_net": {
       "ip": "192.168.2.188",

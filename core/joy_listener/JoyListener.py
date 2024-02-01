@@ -1,4 +1,5 @@
 import threading
+import traceback
 
 import pygame
 from PyQt5.QtWidgets import QMessageBox
@@ -52,7 +53,10 @@ class JoyListener:
                 if event.type == pygame.JOYAXISMOTION:
                     self.axis[event.axis] = event.value
                     for func in self.axis_list:
-                        func(event.axis, event.value)
+                        try:
+                            func(event.axis, event.value)
+                        except:
+                            traceback.print_exc()
             clock.tick(20)
         self.axis.clear()
         pygame.joystick.quit()

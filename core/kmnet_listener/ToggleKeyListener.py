@@ -3,6 +3,7 @@ import time
 from core.kmnet_listener.KmBoxNetListener import KmBoxNetListener
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
+from tools.Tools import Tools
 
 
 class ToggleKeyListener:
@@ -11,7 +12,7 @@ class ToggleKeyListener:
     """
 
     def __init__(self, logger: Logger, km_box_net_listener: KmBoxNetListener, delayed_activation_key_list,
-                 zen_toggle_key, mouse_c1_to_key,
+                 zen_toggle_key,
                  mouse_mover: MouseMover, c1_mouse_mover: MouseMover):
         import kmNet
         self.kmNet = kmNet
@@ -22,7 +23,8 @@ class ToggleKeyListener:
         # 自定义按住延迟转换
         self.zen_toggle_key = zen_toggle_key
         self.delayed_activation_key_status_map = {}
-        self.delayed_activation_key_list = [(int(key, 16), value) for key, value in delayed_activation_key_list.items()]
+        self.delayed_activation_key_list = [(Tools.convert_to_decimal(key), value) for key, value in
+                                            delayed_activation_key_list.items()]
         km_box_net_listener.connect(self.delayed_activation)
 
     def delayed_activation(self):
@@ -39,7 +41,7 @@ class ToggleKeyListener:
                     delayed_activation_key_status.handle = True
                     self.logger.print_log(f"持续按下{key},{key_time}ms，转换器开关按下：[{self.zen_toggle_key}]")
                     # 转换器切换键
-                    self.mouse_mover.click_key(int(self.zen_toggle_key, 16))
+                    self.mouse_mover.click_key(Tools.convert_to_decimal(self.zen_toggle_key))
             else:
                 if key in self.delayed_activation_key_status_map:
                     self.delayed_activation_key_status_map.pop(key)

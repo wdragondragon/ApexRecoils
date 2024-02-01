@@ -3,6 +3,7 @@ import threading
 from core.kmnet_listener.KmBoxNetListener import KmBoxNetListener
 from core.kmnet_listener.ToggleKeyListener import ToggleKeyListener
 from log.Logger import Logger
+from mouse_mover.FeiMover import FeiMover
 from mouse_mover.KmBoxMover import KmBoxMover
 from mouse_mover.KmBoxNetMover import KmBoxNetMover
 from mouse_mover.Win32ApiMover import Win32ApiMover
@@ -25,6 +26,8 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
         return KmBoxMover(logger, mouse_mover_param)
     elif mouse_model == "wu_ya":
         return WuYaMover(logger, mouse_mover_param)
+    elif mouse_model == "fei_yi_lai":
+        return FeiMover(logger, mouse_mover_param)
     elif mouse_model == "km_box_net":
         current_mover = KmBoxNetMover(logger, mouse_mover_param)
         if mouse_listener is not None:
@@ -36,8 +39,7 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
                                                                   km_box_net_listener=current_mover.listener,
                                                                   delayed_activation_key_list=config.delayed_activation_key_list,
                                                                   zen_toggle_key=config.zen_toggle_key,
-                                                                  mouse_mover=parent_mover, c1_mouse_mover=c1_mover,
-                                                                  mouse_c1_to_key=config.mouse_c1_to_key)
+                                                                  mouse_mover=parent_mover, c1_mouse_mover=c1_mover)
         return current_mover
     elif mouse_model == "distributed":
         current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)

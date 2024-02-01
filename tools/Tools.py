@@ -71,6 +71,22 @@ class Tools:
                 print("源文件不存在")
 
     @staticmethod
+    def convert_to_decimal(input_str):
+        try:
+            # 尝试将输入字符串解析为16进制数字
+            decimal_value = int(input_str, 16)
+        except ValueError:
+            try:
+                # 如果解析失败，则尝试将输入字符串解析为10进制数字
+                decimal_value = int(input_str, 10)
+            except ValueError:
+                # 如果两者都失败，返回一个适当的错误或默认值
+                print("无法解析输入字符串为数字")
+                return None
+
+        return decimal_value
+
+    @staticmethod
     def is_apex_windows():
         """
             是否处于apex窗口中
