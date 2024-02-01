@@ -47,23 +47,8 @@
   "comparator_mode": "distributed",
   "read_image_mode": "net",
   "key_trigger_mode": "distributed",
-  "toggle_key": [
-  ],
   "delayed_activation_key_list": {
     "0x09": 650
   },
-  "zen_toggle_key": "0x1D",
-  "mouse_c1_to_key": [],
-  "joy_to_key_map": {
-    "axis": {
-      "5": {
-        "key_type": "mouse",
-        "key": "left"
-      },
-      "4": {
-        "key_type": "mouse",
-        "key": "right"
-      }
-    }
-  }
+  "zen_toggle_key": "0x1D"
 }

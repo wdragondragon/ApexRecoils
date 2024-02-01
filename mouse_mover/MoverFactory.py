@@ -34,7 +34,6 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
                 parent_mover = current_mover
             current_mover.toggle_key_listener = ToggleKeyListener(logger=logger,
                                                                   km_box_net_listener=current_mover.listener,
-                                                                  toggle_key=config.toggle_key,
                                                                   delayed_activation_key_list=config.delayed_activation_key_list,
                                                                   zen_toggle_key=config.zen_toggle_key,
                                                                   mouse_mover=parent_mover, c1_mouse_mover=c1_mover,

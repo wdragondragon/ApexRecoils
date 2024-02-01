@@ -24,6 +24,10 @@ apex自动识别枪械压枪宏，暂时只完成了脚手架。数据开发中�
     - [ ] 专注
 - [x] 支持抖枪，大小写开关
 - [x] 自动识别支持ReaSnow s1转换器按键（需要串联km_box net，使用km_box_net的键鼠模式下生效）
+    - 实现jtk
+        - [x] axis转鼠标
+    - [x] 自定义时长长按切换切换模式（弥补s1的长按无法自定义时长的短板）
+    - [x] 自动识别的分布式（截图在client，识别与发送键盘指令在server）
 
 ### 使用说明
 
@@ -106,7 +110,6 @@ pint_points是待定属性。
 对接s1时的整体架构：
 
 ![自动识别整体架构.jpg](readme/自动识别整体架构.jpg)
-
 
 注意配置文件[ReaSnowGun.json](config%2FReaSnowGun.json)。
 

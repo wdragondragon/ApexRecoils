@@ -67,7 +67,6 @@ class Config:
         # self.net_images_path = None
         # self.local_images_path = None
         self.read_image_mode = None
-        self.toggle_key = None
         self.image_base_path = None
         self.key_trigger_mode = None
 
@@ -162,7 +161,6 @@ class Config:
             "专注",
             "哈沃克"
         ])
-        self.toggle_key = self.get_config(self.config_data, "toggle_key", [])
         self.delayed_activation_key_list = self.get_config(self.config_data, "delayed_activation_key_list", {})
         self.zen_toggle_key = self.get_config(self.config_data, "zen_toggle_key", "")
         self.mouse_c1_to_key = self.get_config(self.config_data, "mouse_c1_to_key", [])
