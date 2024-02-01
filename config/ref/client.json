@@ -7,7 +7,8 @@
     "1",
     "2"
   ],
-  "mouse_mover": "distributed",
+  "mouse_mover": "win32api",
+  "rea_snow_mouse_mover": "distributed",
   "server_mouse_mover": "km_box_net",
   "mouse_mover_params": {
     "win32api": {},
@@ -51,5 +52,18 @@
   "delayed_activation_key_list": {
     "0x09": 650
   },
-  "zen_toggle_key": "0x1D"
+  "zen_toggle_key": "0x1D",
+  "mouse_c1_to_key": [],
+  "joy_to_key_map": {
+    "axis": {
+      "5": {
+        "key_type": "mouse",
+        "key": "left"
+      },
+      "4": {
+        "key_type": "mouse",
+        "key": "right"
+      }
+    }
+  }
 }

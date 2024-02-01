@@ -48,6 +48,7 @@ class Config:
         self.game_height = None
         self.refresh_buttons = []
         self.mouse_mover = None
+        self.rea_snow_mouse_mover = None
         self.server_mouse_mover = None
         self.log_model = None
         self.game_solution = None
@@ -72,6 +73,8 @@ class Config:
 
         self.delayed_activation_key_list = None
         self.zen_toggle_key = None
+        self.mouse_c1_to_key = None
+        self.joy_to_key_map = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -139,7 +142,8 @@ class Config:
         self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E'])
 
         self.mouse_mover = self.get_config(self.config_data, "mouse_mover", "win32api")
-        self.server_mouse_mover = self.get_config(self.config_data, "server_mouse_mover", "win32api")
+        self.rea_snow_mouse_mover = self.get_config(self.config_data, "rea_snow_mouse_mover", "distributed")
+        self.server_mouse_mover = self.get_config(self.config_data, "server_mouse_mover", "km_box_net")
         self.mouse_mover_params = self.get_config(self.config_data, "mouse_mover_params", {
             "win32api": {},
             "km_box": {
@@ -161,6 +165,8 @@ class Config:
         self.toggle_key = self.get_config(self.config_data, "toggle_key", [])
         self.delayed_activation_key_list = self.get_config(self.config_data, "delayed_activation_key_list", {})
         self.zen_toggle_key = self.get_config(self.config_data, "zen_toggle_key", "")
+        self.mouse_c1_to_key = self.get_config(self.config_data, "mouse_c1_to_key", [])
+        self.joy_to_key_map = self.get_config(self.config_data, "joy_to_key_map", {})
 
     def get_config(self, read_config, pattern=None, default=None):
         """

@@ -7,6 +7,10 @@ from mouse_mover.MouseMover import MouseMover
 
 
 class ReaSnowSelectGun:
+    """
+        转换器自动识别按键宏触发
+    """
+
     def __init__(self, logger: Logger, mouse_mover: MouseMover):
         self.logger = logger
         self.config_path = ".\\config\\ReaSnowGun.json"
@@ -17,8 +21,15 @@ class ReaSnowSelectGun:
                 self.key_dict = json.load(global_file)
 
     def trigger_button(self, select_gun, select_scope, hot_pop):
+        """
 
+        :param select_gun:
+        :param select_scope:
+        :param hot_pop:
+        :return:
+        """
         if select_gun is None or select_scope is None:
+            self.mouse_mover.click_key(0x35)
             return
 
         gun_scope_dict = self.key_dict.get(select_gun)

@@ -40,6 +40,47 @@ class MouseMover:
         """
         pass
 
+    def mouse_click(self, key, press):
+        """
+            点击鼠标
+        :param key:
+        :param press:
+        """
+        if key == "left":
+            if press:
+                self.left_down()
+            else:
+                self.left_up()
+        elif key == "right":
+            if press:
+                self.right_down()
+            else:
+                self.right_up()
+
+    def left_down(self):
+        """
+            左键按下
+        """
+        pass
+
+    def left_up(self):
+        """
+            左键弹起
+        """
+        pass
+
+    def right_down(self):
+        """
+            右键按下
+        """
+        pass
+
+    def right_up(self):
+        """
+            右键弹起
+        """
+        pass
+
     def get_position(self):
         """
             获取鼠标位置

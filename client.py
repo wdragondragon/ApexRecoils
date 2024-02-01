@@ -5,12 +5,13 @@ import pynput
 from PyQt5.QtWidgets import QApplication
 
 from core.Config import Config
+from core.joy_listener.JoyListener import JoyListener
 from core.KeyAndMouseListener import MouseListener, KeyListener
 from core.ReaSnowSelectGun import ReaSnowSelectGun
-from net.socket.ReaSnowSelectGunSocket import ReaSnowSelectGunSocket
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
 from core.image_comparator import ImageComparatorFactory
+from core.joy_listener.JoyToKey import JoyToKey
 from log.Logger import Logger
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
@@ -59,6 +60,7 @@ if __name__ == '__main__':
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
 
+    # 压枪
     recoils_config = RecoilsConfig(logger=logger)
     recoils_listener = RecoilsListener(logger=logger,
                                        recoils_config=recoils_config,
@@ -75,11 +77,24 @@ if __name__ == '__main__':
     #                                    mouse_mover=mouse_mover,
     #                                    select_gun=select_gun)
 
-    # if config.key_trigger_mode == "distributed":
-    #     rea_snow_select_gun = ReaSnowSelectGunSocket(logger=logger, select_gun=select_gun)
-    # elif config.key_trigger_mode != "None":
-    rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
+    # 判断c1透传
+    if config.rea_snow_mouse_mover == config.mouse_mover:
+        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
+    else:
+        rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
+                                                                  mouse_listener=apex_mouse_listener,
+                                                                  config=config,
+                                                                  mouse_model=config.rea_snow_mouse_mover,
+                                                                  c1_mover=mouse_mover)
+        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover)
     select_gun.connect(rea_snow_select_gun.trigger_button)
 
+    # jtk启动
+    jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=mouse_mover)
+    joy_listener = JoyListener(logger=logger)
+    joy_listener.connect_axis(jtk.axis_to_key)
+    joy_listener.start(None)
+
+    # 自动识别启动
     threading.Thread(target=select_gun.test).start()
     sys.exit(app.exec_())

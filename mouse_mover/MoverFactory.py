@@ -10,7 +10,7 @@ from mouse_mover.WuYaMover import WuYaMover
 from net.socket.SocketMouseMover import SocketMouseMover
 
 
-def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, parent_mover=None):
+def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, parent_mover=None, c1_mover=None):
     if mouse_model is None:
         mouse_model = config.mouse_mover
     mouse_mover_params = config.mouse_mover_params
@@ -32,13 +32,17 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
             threading.Thread(target=current_mover.listener.km_box_net_start).start()
             if parent_mover is None:
                 parent_mover = current_mover
-            current_mover.toggle_key_listener = ToggleKeyListener(logger, current_mover.listener, config.toggle_key,
-                                                                  config.delayed_activation_key_list,
-                                                                  config.zen_toggle_key, parent_mover)
+            current_mover.toggle_key_listener = ToggleKeyListener(logger=logger,
+                                                                  km_box_net_listener=current_mover.listener,
+                                                                  toggle_key=config.toggle_key,
+                                                                  delayed_activation_key_list=config.delayed_activation_key_list,
+                                                                  zen_toggle_key=config.zen_toggle_key,
+                                                                  mouse_mover=parent_mover, c1_mouse_mover=c1_mover,
+                                                                  mouse_c1_to_key=config.mouse_c1_to_key)
         return current_mover
     elif mouse_model == "distributed":
         current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)
         server_mover = get_mover(logger=logger, mouse_listener=mouse_listener, config=config,
-                                 mouse_model=config.server_mouse_mover, parent_mover=current_mover)
+                                 mouse_model=config.server_mouse_mover, parent_mover=current_mover, c1_mover=c1_mover)
         current_mover.server_mouse_mover = server_mover
         return current_mover
