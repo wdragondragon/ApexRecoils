@@ -1,5 +1,3 @@
-
-
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
 
@@ -56,4 +54,10 @@ class KmBoxNetMover(MouseMover):
 
     def click_key(self, value):
         self.kmNet.keydown(value)
+        self.kmNet.keyup(value)
+
+    def key_down(self, value):
+        self.kmNet.keydown(value)
+
+    def key_up(self, value):
         self.kmNet.keyup(value)

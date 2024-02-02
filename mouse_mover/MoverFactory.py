@@ -1,5 +1,6 @@
 import threading
 
+from core.joy_listener.JoyListener import JoyListener
 from core.kmnet_listener.KmBoxNetListener import KmBoxNetListener
 from core.kmnet_listener.ToggleKeyListener import ToggleKeyListener
 from log.Logger import Logger
@@ -39,7 +40,11 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
                                                                   km_box_net_listener=current_mover.listener,
                                                                   delayed_activation_key_list=config.delayed_activation_key_list,
                                                                   zen_toggle_key=config.zen_toggle_key,
-                                                                  mouse_mover=parent_mover, c1_mouse_mover=c1_mover)
+                                                                  mouse_mover=parent_mover, c1_mouse_mover=c1_mover,
+                                                                  toggle_hold_key=config.toggle_hold_key)
+            # joy_listener = JoyListener(logger=logger)
+            # joy_listener.connect_button(current_mover.toggle_key_listener.controller_toggle_hold_change)
+            # joy_listener.start(None)
         return current_mover
     elif mouse_model == "distributed":
         current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)

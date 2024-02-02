@@ -1,4 +1,5 @@
 import time
+import traceback
 
 from pynput.mouse import Button
 
@@ -73,7 +74,10 @@ class KmBoxNetListener:
                 func(self.down_mouse_map)
 
             for func in self.connect_func:
-                func()
+                try:
+                    func()
+                except:
+                    traceback.print_exc()
             time.sleep(0.01)
         print("km box net 监听结束")
 

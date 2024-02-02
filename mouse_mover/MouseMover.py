@@ -126,3 +126,15 @@ class MouseMover:
         :return:
         """
         pass
+
+    def key_down(self, value):
+        """
+            按下按键
+        """
+        pass
+
+    def key_up(self, value):
+        """
+            松开按键
+        """
+        pass

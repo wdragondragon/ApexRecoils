@@ -21,6 +21,12 @@ class SocketMouseMover(MouseMover):
     def left_click(self):
         self.client.mouse_mover("left_click", ())
 
+    def key_down(self, value):
+        self.client.mouse_mover("key_down", (value,))
+
+    def key_up(self, value):
+        self.client.mouse_mover("key_up", (value,))
+
     def get_position(self):
         return super().get_position()
 

@@ -51,7 +51,21 @@
   "read_image_mode": "net",
   "key_trigger_mode": "distributed",
   "delayed_activation_key_list": {
-    "0x09": 650
+    "0x09": {
+      "delay": 650,
+      "up_deactivation": false
+    },
+    "0x0A": {
+      "delay": 100,
+      "up_deactivation": true
+    }
   },
-  "zen_toggle_key": "0x1D"
+  "zen_toggle_key": "0x1D",
+  "toggle_hold_key": {
+    "0x06": [
+      "0xE0",
+      "0x2C",
+      "b0"
+    ]
+  }
 }

@@ -81,7 +81,7 @@ class Tools:
                 decimal_value = int(input_str, 10)
             except ValueError:
                 # 如果两者都失败，返回一个适当的错误或默认值
-                print("无法解析输入字符串为数字")
+                # print("无法解析输入字符串为数字")
                 return None
 
         return decimal_value

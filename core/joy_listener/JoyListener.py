@@ -17,6 +17,7 @@ class JoyListener:
         self.logger = logger
         self.run_sign = False
         self.axis_list = []
+        self.call_back_list = []
         self.joy_listener = True
 
     def start(self, main_windows):
@@ -57,6 +58,12 @@ class JoyListener:
                             func(event.axis, event.value)
                         except:
                             traceback.print_exc()
+                elif event.type == pygame.JOYBUTTONDOWN:
+                    for func in self.call_back_list:
+                        try:
+                            func('b' + str(event.button))
+                        except:
+                            traceback.print_exc()
             clock.tick(20)
         self.axis.clear()
         pygame.joystick.quit()
@@ -80,6 +87,13 @@ class JoyListener:
         :param func:
         """
         self.axis_list.append(func)
+
+    def connect_button(self, func):
+        """
+            连接回调方法
+        :param func:
+        """
+        self.call_back_list.append(func)
 
     def stop(self):
         """
