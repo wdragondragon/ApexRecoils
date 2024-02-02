@@ -23,6 +23,7 @@ class ReaSnowSelectGun:
             self.no_macro_key = self.key_dict["close_key"]
         else:
             self.no_macro_key = "0x35"
+        self.no_macro_key = Tools.convert_to_decimal(self.no_macro_key)
 
     def trigger_button(self, select_gun, select_scope, hot_pop):
         """
