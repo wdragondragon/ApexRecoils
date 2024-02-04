@@ -1,7 +1,6 @@
 import json
 import os.path as op
 
-from core.SelectGun import SelectGun
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
 from tools.Tools import Tools

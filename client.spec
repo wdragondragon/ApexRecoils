@@ -43,13 +43,13 @@ exe = EXE(
     entitlements_file=None,
     icon='./images/client.png'
 )
-coll = COLLECT(
-    exe,
-    a.binaries,
-    a.zipfiles,
-    a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='client'
-)
+#coll = COLLECT(
+#    exe,
+#    a.binaries,
+#    a.zipfiles,
+#    a.datas,
+#    strip=False,
+#    upx=True,
+#    upx_exclude=[],
+#    name='client'
+#)
