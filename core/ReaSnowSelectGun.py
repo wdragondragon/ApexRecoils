@@ -34,6 +34,7 @@ class ReaSnowSelectGun:
         :return:
         """
         if select_gun is None or select_scope is None:
+            self.logger.print_log(f"未识别到枪械，关闭宏")
             self.mouse_mover.click_key(self.no_macro_key)
             return
 

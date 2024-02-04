@@ -136,7 +136,7 @@ class Config:
         #                                        "https://gitee.com/wdragondragon/apex_images/raw/master/")
         # self.local_images_path = self.get_config(self.config_data, 'local_images_path', "images/")
 
-        self.image_base_path = "images/" if self.read_image_mode == "local" else "https://gitee.com/wdragondragon/apex_images/raw/master/"
+        self.image_base_path = "images/" if self.read_image_mode == "local" else "https://apex-1304893688.cos.ap-guangzhou.myqcloud.com/images/"
 
         self.image_path = '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
         self.scope_path = 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径

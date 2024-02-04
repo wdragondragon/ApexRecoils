@@ -103,6 +103,8 @@ class SelectGun:
         if gun_temp is None:
             self.logger.print_log("未找到枪械")
             self.current_gun = None
+            self.current_scope = None
+            self.current_hot_pop = None
             return False
 
         scope_temp, score_scope_temp = self.image_comparator.compare_with_path(self.scope_path,
