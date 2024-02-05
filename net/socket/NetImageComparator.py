@@ -1,6 +1,5 @@
-import random
+import concurrent.futures
 import re
-import time
 import traceback
 from io import BytesIO
 
@@ -128,6 +127,24 @@ class NetImageComparator(ImageComparator):
         self.logger = logger
         self.base_path = base_path
 
+    def read_file_from_url_and_download(self, base_path, file_name):
+        """
+            从文件中读取并下载图片
+        """
+        images_path = read_file_from_url(base_path + file_name)
+        if images_path is None:
+            return None
+
+        # 使用线程池
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            # 提交每个下载任务给线程池
+            futures = [executor.submit(self.download_image, base_path + image_path) for image_path in images_path]
+
+            # 等待所有任务完成
+            concurrent.futures.wait(futures)
+
+        return images_path
+
     def download_image(self, url):
         """
 
@@ -137,7 +154,7 @@ class NetImageComparator(ImageComparator):
         # 如果图像已经在缓存中，直接返回缓存的图像
         url = url.strip()
         if url in self.image_cache:
-            return BytesIO(self.image_cache[url])
+            return
         self.logger.print_log(f"正在下载图片：{url}")
         # 发送GET请求获取图片的二进制数据
         # 发送GET请求获取文件内容
@@ -150,18 +167,24 @@ class NetImageComparator(ImageComparator):
             image_bytes = response.content
             # 将图像添加到缓存
             self.image_cache[url] = image_bytes
-
-            image_bytes = BytesIO(image_bytes)
-            return image_bytes
         else:
             # 如果请求失败，打印错误信息
             self.logger.print_log(f"Failed to download image: {url}. Status code: {response.status_code}")
-            return None
+
+    def get_image_from_cache(self, url):
+        """
+            缓存获取图片
+        """
+        # 如果图像已经在缓存中，直接返回缓存的图像
+        url = url.strip()
+        if url not in self.image_cache:
+            self.download_image(url)
+        return BytesIO(self.image_cache[url])
 
     def compare_image(self, img, path_image):
         # 下载图片到内存
         try:
-            downloaded_image = self.download_image(path_image)
+            downloaded_image = self.get_image_from_cache(path_image)
 
             if downloaded_image:
                 downloaded_image.seek(0)
@@ -202,7 +225,7 @@ class NetImageComparator(ImageComparator):
         select_name = ''
         score_temp = 0.00000000000000000000
         for img in images:
-            for fileName in read_file_from_url(path + "list.txt"):
+            for fileName in self.read_file_from_url_and_download(path, "list.txt"):
                 score = self.compare_image(img, path + fileName)
                 if score > score_temp:
                     score_temp = score
