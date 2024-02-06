@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     image_comparator = ImageComparatorFactory.get_image_comparator(logger=logger,
                                                                    comparator_mode=config.comparator_mode,
-                                                                   base_path=config.image_base_path)
+                                                                   config=config)
 
     select_gun = SelectGun(logger=logger,
                            bbox=config.select_gun_bbox,

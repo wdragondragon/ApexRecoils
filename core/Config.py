@@ -78,6 +78,7 @@ class Config:
         self.joy_to_key_map = None
         self.toggle_key = None
         self.toggle_hold_key = None
+        self.distributed_param = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -169,8 +170,13 @@ class Config:
         self.zen_toggle_key = self.get_config(self.config_data, "zen_toggle_key", "")
         self.mouse_c1_to_key = self.get_config(self.config_data, "mouse_c1_to_key", [])
         self.joy_to_key_map = self.get_config(self.config_data, "joy_to_key_map", {})
+
         # self.toggle_hold_key = self.get_config(self.config_data, "toggle_hold_key", {})
         self.toggle_hold_key = {}
+        self.distributed_param = self.get_config(self.config_data, "distributed_param", {
+            "ip": "127.0.0.1",
+            "port": 12345
+        })
 
     def get_config(self, read_config, pattern=None, default=None):
         """
