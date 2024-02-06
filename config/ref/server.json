@@ -24,6 +24,11 @@
   },
   "log_model": "window",
   "read_image_mode": "net",
+  "distributed_param": {
+    "ip": "192.168.10.84",
+    "port": 12345
+  },
+  "screen_taker": "distributed",
   "mouse_c1_to_key": [],
   "joy_to_key_map": {
     "axis": {
