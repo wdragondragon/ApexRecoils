@@ -4,6 +4,7 @@ import threading
 import traceback
 
 from core.ReaSnowSelectGun import ReaSnowSelectGun
+from core.screentaker.ScreenTaker import ScreenTaker
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
 from net.socket import SocketUtil
@@ -15,16 +16,16 @@ class Server:
     """
 
     def __init__(self, logger: Logger, server_address, image_comparator, select_gun: ReaSnowSelectGun,
-                 mouse_mover: MouseMover):
+                 mouse_mover: MouseMover, screen_taker: ScreenTaker):
         self.logger = logger
         self.server_address = server_address
         self.image_comparator = image_comparator
         self.mouse_mover = mouse_mover
         self.select_gun = select_gun
+        self.screen_taker = screen_taker
         self.server_socket = None
         self.buffer_size = 4096
         self.open()
-
 
     def open(self):
         """
@@ -96,6 +97,10 @@ class Server:
                     self.logger.print_log(f"mouse_mover:{func_name}({param})) ")
                     f = getattr(self.mouse_mover, func_name)
                     f(*param)
+                elif data_type == "screen_taker":
+                    images = self.screen_taker.get_images_from_bbox(data)
+                    result_data = pickle.dumps(images)
+                    SocketUtil.send(client_socket, result_data)
         except Exception as e:
             print(e)
             traceback.print_exc()

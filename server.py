@@ -8,6 +8,7 @@ from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.image_comparator.LocalImageComparator import LocalImageComparator
 from core.joy_listener.JoyListener import JoyListener
 from core.joy_listener.JoyToKey import JoyToKey
+from core.screentaker.LocalScreenTaker import LocalScreenTaker
 from log.Logger import Logger
 from mouse_mover import MoverFactory
 from mouse_mover.MouseMover import MouseMover
@@ -46,6 +47,6 @@ if __name__ == '__main__':
     system_tray_app = SystemTrayApp(logger, "server")
     server = Server(logger=logger, server_address=(config.distributed_param["ip"], config.distributed_param["port"]),
                     image_comparator=image_comparator,
-                    select_gun=rea_snow_select_gun, mouse_mover=mouse_mover)
+                    select_gun=rea_snow_select_gun, mouse_mover=mouse_mover, screen_taker=LocalScreenTaker(logger))
     threading.Thread(target=server.wait_client).start()
     sys.exit(app.exec_())
