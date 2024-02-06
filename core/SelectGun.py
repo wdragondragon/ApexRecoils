@@ -148,6 +148,7 @@ class SelectGun:
 
     def test(self):
         self.logger.print_log("自动识别初始化中，请稍后……")
+        start = time.time()
         self.image_comparator.compare_with_path(self.image_path,
                                                 self.get_images_from_bbox([self.bbox]), 0.9, 0.7)
         self.image_comparator.compare_with_path(self.scope_path,
@@ -158,5 +159,5 @@ class SelectGun:
                                                 self.get_images_from_bbox(
                                                     self.hop_up_bbox),
                                                 0.9, 0.6)
-        self.logger.print_log("自动识别初始化完毕")
+        self.logger.print_log(f"自动识别初始化完毕，耗时[{int((time.time() - start) * 1000)}]")
         self.select_gun_sign = False

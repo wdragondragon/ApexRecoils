@@ -8,7 +8,7 @@ a = Analysis(
     ['client.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('msdk.dll','.'),('kmbox_dll_64bit.dll','.'),('wy_hkm.dll','.'),('ProcessHider.exe','.'),('images/client.png','images/')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

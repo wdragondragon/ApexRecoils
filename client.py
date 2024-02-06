@@ -15,6 +15,7 @@ from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
 from mouse_mover.MouseMover import MouseMover
 from verification import Check
+from windows.SystemTrayApp import SystemTrayApp
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -92,7 +93,7 @@ if __name__ == '__main__':
     # joy_listener = JoyListener(logger=logger)
     # joy_listener.connect_axis(jtk.axis_to_key)
     # joy_listener.start(None)
-
+    system_tray_app = SystemTrayApp(logger, "client")
     # 自动识别启动
     threading.Thread(target=select_gun.test).start()
     sys.exit(app.exec_())

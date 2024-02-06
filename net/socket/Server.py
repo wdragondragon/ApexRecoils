@@ -24,7 +24,7 @@ class Server:
         self.server_socket = None
         self.buffer_size = 4096
         self.open()
-        self.wait_client()
+
 
     def open(self):
         """

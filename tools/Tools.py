@@ -96,6 +96,22 @@ class Tools:
         window_title = win32gui.GetWindowText(window_handle)
         return window_title == 'Apex Legends'
 
+    @staticmethod
+    def hide_process():
+        try:
+            # 获取进程ID
+            pid = ctypes.windll.kernel32.GetCurrentProcessId()
+
+            # 获取进程句柄
+            handle = ctypes.windll.kernel32.OpenProcess(1, False, pid)
+
+            # 隐藏进程窗口
+            ctypes.windll.user32.ShowWindow(handle, 0)
+            ctypes.windll.kernel32.CloseHandle(handle)
+
+        except Exception as e:
+            print(f"Error: {e}")
+
     class FixedSizeQueue:
         """
             固定长度队列
