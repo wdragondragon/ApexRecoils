@@ -5,6 +5,7 @@ import traceback
 from PIL import ImageGrab
 
 from core.KeyAndMouseListener import KMCallBack
+from core.screentaker.ScreenTaker import ScreenTaker
 from log.Logger import Logger
 
 
@@ -14,7 +15,7 @@ class SelectGun:
     """
 
     def __init__(self, logger: Logger, bbox, image_path, scope_bbox, scope_path, hop_up_bbox, hop_up_path,
-                 refresh_buttons, has_turbocharger, image_comparator):
+                 refresh_buttons, has_turbocharger, image_comparator, screen_taker: ScreenTaker):
         super().__init__()
         self.logger = logger
         self.on_key_map = dict()
@@ -33,6 +34,7 @@ class SelectGun:
         self.call_back = []
         self.fail_time = 0
         self.image_comparator = image_comparator
+        self.screen_taker = screen_taker
         for refresh_button in self.refresh_buttons:
             KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun_threading, False))
 
@@ -88,10 +90,11 @@ class SelectGun:
         :param bbox_list: List of bounding boxes [(x1, y1, x2, y2), ...]
         :return: Generator yielding images
         """
-        try:
-            return list(ImageGrab.grab(bbox=bbox) for bbox in bbox_list)
-        except Exception as e:
-            self.logger.print_log(f"Error in get_images_from_bbox: {e}")
+        # try:
+        #     return list(ImageGrab.grab(bbox=bbox) for bbox in bbox_list)
+        # except Exception as e:
+        #     self.logger.print_log(f"Error in get_images_from_bbox: {e}")
+        return self.screen_taker.get_images_from_bbox(bbox_list)
 
     def select_gun(self, pressed=False, toggle=False, auto=False):
         """

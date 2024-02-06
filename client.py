@@ -10,6 +10,7 @@ from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
 from core.image_comparator import ImageComparatorFactory
+from core.screentaker import ScreenTakerFactory
 from log.Logger import Logger
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
@@ -32,6 +33,8 @@ if __name__ == '__main__':
                                                                    comparator_mode=config.comparator_mode,
                                                                    config=config)
 
+    screen_taker = ScreenTakerFactory.get_screen_taker(logger, config)
+
     select_gun = SelectGun(logger=logger,
                            bbox=config.select_gun_bbox,
                            image_path=config.image_path,
@@ -41,7 +44,8 @@ if __name__ == '__main__':
                            has_turbocharger=config.has_turbocharger,
                            hop_up_bbox=config.select_hop_up_bbox,
                            hop_up_path=config.hop_up_path,
-                           image_comparator=image_comparator)
+                           image_comparator=image_comparator,
+                           screen_taker=screen_taker)
 
     mouse_listener = pynput.mouse.Listener(on_click=apex_mouse_listener.on_click)
     keyboard_listener = pynput.keyboard.Listener(on_press=apex_key_listener.on_press,

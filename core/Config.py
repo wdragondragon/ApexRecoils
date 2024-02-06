@@ -79,6 +79,7 @@ class Config:
         self.toggle_key = None
         self.toggle_hold_key = None
         self.distributed_param = None
+        self.screen_taker = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -177,6 +178,7 @@ class Config:
             "ip": "127.0.0.1",
             "port": 12345
         })
+        self.screen_taker = self.get_config(self.config_data, "screen_taker", "local")
 
     def get_config(self, read_config, pattern=None, default=None):
         """

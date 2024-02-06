@@ -55,3 +55,14 @@ class Client:
         data = (func_name, param)
         data = pickle.dumps(data)
         SocketUtil.send(self.client_socket, data)
+
+    def get_images_from_bbox(self, bbox_list):
+        """
+            从服务获取截图，反向架构
+        """
+        data = bbox_list
+        data = pickle.dumps(data)
+        SocketUtil.send(self.client_socket, data)
+        result_data = SocketUtil.recv(self.client_socket)
+        result = pickle.loads(result_data)
+        return result

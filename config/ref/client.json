@@ -4,8 +4,8 @@
     "2"
   ],
   "mouse_mover": "win32api",
-  "rea_snow_mouse_mover": "distributed",
-  "server_mouse_mover": "km_box_net",
+  "rea_snow_mouse_mover": "km_box_net",
+  "server_mouse_mover": "win32api",
   "mouse_mover_params": {
     "win32api": {},
     "km_box": {
@@ -43,7 +43,8 @@
     "专注",
     "哈沃克"
   ],
-  "comparator_mode": "distributed",
+  "comparator_mode": "local",
+  "screen_taker": "distributed",
   "read_image_mode": "net",
   "distributed_param": {
     "ip": "127.0.0.1",
