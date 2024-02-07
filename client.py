@@ -20,7 +20,6 @@ from windows.SystemTrayApp import SystemTrayApp
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-
     Check.check("apex_recoils")
     logger = Logger()
     config = Config(logger=logger, default_ref_config_name="client")
@@ -33,7 +32,7 @@ if __name__ == '__main__':
                                                                    comparator_mode=config.comparator_mode,
                                                                    config=config)
 
-    screen_taker = ScreenTakerFactory.get_screen_taker(logger, config)
+    screen_taker = ScreenTakerFactory.get_screen_taker(logger, config.screen_taker, config.distributed_param)
 
     select_gun = SelectGun(logger=logger,
                            bbox=config.select_gun_bbox,
