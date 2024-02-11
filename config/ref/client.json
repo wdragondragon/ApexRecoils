@@ -48,27 +48,26 @@
   "key_trigger_mode": "distributed",
   "delayed_activation_key_list": {
     "0x09": {
+      "type": "delayed_activation",
       "delay": 650,
       "up_deactivation": false,
       "click_key": "0x1D"
     },
     "0x0A": {
+      "type": "delayed_activation",
       "delay": 100,
       "up_deactivation": true,
       "click_key": "0x23"
     },
     "0x2B": {
-      "delay": 1,
+      "type": "toggle",
+      "delay": 0,
       "up_deactivation": false,
       "click_key": "0x1D"
     },
     "0x29": {
-      "delay": 1,
-      "up_deactivation": false,
-      "click_key": "0x1D"
-    },
-    "0x10": {
-      "delay": 1,
+      "type": "toggle",
+      "delay": 0,
       "up_deactivation": false,
       "click_key": "0x1D"
     }

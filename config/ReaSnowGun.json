@@ -89,5 +89,6 @@
     "3": "0x4B",
     "4": "0x4E"
   },
-  "close_key": "0x35"
+  "close_key": "0x35",
+  "no_found_click_close_key": false
 }
