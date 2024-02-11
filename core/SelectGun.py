@@ -7,6 +7,7 @@ from PIL import ImageGrab
 from core.KeyAndMouseListener import KMCallBack
 from core.screentaker.ScreenTaker import ScreenTaker
 from log.Logger import Logger
+from tools.Tools import Tools
 
 
 class SelectGun:
@@ -15,7 +16,7 @@ class SelectGun:
     """
 
     def __init__(self, logger: Logger, bbox, image_path, scope_bbox, scope_path, hop_up_bbox, hop_up_path,
-                 refresh_buttons, has_turbocharger, image_comparator, screen_taker: ScreenTaker):
+                 refresh_buttons, has_turbocharger, image_comparator, screen_taker: ScreenTaker, game_windows_status):
         super().__init__()
         self.logger = logger
         self.on_key_map = dict()
@@ -35,6 +36,7 @@ class SelectGun:
         self.fail_time = 0
         self.image_comparator = image_comparator
         self.screen_taker = screen_taker
+        self.game_windows_status = game_windows_status
         for refresh_button in self.refresh_buttons:
             KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun_threading, False))
 
@@ -46,10 +48,15 @@ class SelectGun:
         """
         while True:
             try:
-                if self.select_gun_with_sign(auto=True):
-                    self.fail_time = 0
+                if self.game_windows_status.get_game_windows_status():
+                    self.logger.print_log("定时识别开始")
+                    if self.select_gun_with_sign(auto=True):
+                        self.fail_time = 0
+                    else:
+                        self.fail_time += 1
+                    self.logger.print_log(f"下一轮定时识别在[{1 + self.fail_time / 5}]秒后")
                 else:
-                    self.fail_time += 1
+                    self.fail_time = 0
             except Exception as e:
                 traceback.print_exc()
                 pass

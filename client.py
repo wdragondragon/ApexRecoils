@@ -5,6 +5,7 @@ import pynput
 from PyQt5.QtWidgets import QApplication
 
 from core.Config import Config
+from core.GameWindowsStatus import GameWindowsStatus
 from core.KeyAndMouseListener import MouseListener, KeyListener
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
@@ -28,6 +29,8 @@ if __name__ == '__main__':
     apex_mouse_listener = MouseListener(logger=logger)
     apex_key_listener = KeyListener(logger=logger)
 
+    game_windows_status = GameWindowsStatus(logger=logger)
+
     image_comparator = ImageComparatorFactory.get_image_comparator(logger=logger,
                                                                    comparator_mode=config.comparator_mode,
                                                                    config=config)
@@ -44,7 +47,7 @@ if __name__ == '__main__':
                            hop_up_bbox=config.select_hop_up_bbox,
                            hop_up_path=config.hop_up_path,
                            image_comparator=image_comparator,
-                           screen_taker=screen_taker)
+                           screen_taker=screen_taker, game_windows_status=game_windows_status)
 
     mouse_listener = pynput.mouse.Listener(on_click=apex_mouse_listener.on_click)
     keyboard_listener = pynput.keyboard.Listener(on_press=apex_key_listener.on_press,

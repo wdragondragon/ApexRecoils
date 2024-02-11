@@ -4,6 +4,7 @@ import threading
 from PyQt5.QtWidgets import QApplication
 
 from core.Config import Config
+from core.GameWindowsStatus import GameWindowsStatus
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.image_comparator.LocalImageComparator import LocalImageComparator
 from core.joy_listener.JoyListener import JoyListener
@@ -26,6 +27,8 @@ if __name__ == '__main__':
     Check.check("apex_recoils")
     logger = Logger()
     config = Config(logger=logger, default_ref_config_name="server")
+    game_windows_status = GameWindowsStatus(logger=logger)
+
     if config.read_image_mode == "local":
         image_comparator = LocalImageComparator(logger, config.image_base_path)
     else:
@@ -40,7 +43,8 @@ if __name__ == '__main__':
                                                         config=config,
                                                         mouse_model=config.mouse_mover)
     # jtk启动
-    jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mouse_mover)
+    jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mouse_mover,
+                   game_windows_status=game_windows_status)
     joy_listener = JoyListener(logger=logger)
     joy_listener.connect_axis(jtk.axis_to_key)
     joy_listener.start(None)
