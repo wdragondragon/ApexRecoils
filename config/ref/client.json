@@ -48,27 +48,39 @@
   "key_trigger_mode": "distributed",
   "delayed_activation_key_list": {
     "0x09": {
-      "type": "delayed_activation",
-      "delay": 650,
-      "up_deactivation": false,
-      "click_key": "0x1D"
+      "down_deactivation": false,
+      "up_deactivation": true,
+      "click_keys": [
+        {
+          "delay": 650,
+          "click_key": "0x1D"
+        },
+        {
+          "delay": 850,
+          "click_key": "0x23"
+        },
+        {
+          "delay": 2000,
+          "click_key": null
+        }
+      ]
     },
     "0x0A": {
-      "type": "delayed_activation",
       "delay": 100,
+      "down_deactivation": true,
       "up_deactivation": true,
       "click_key": "0x23"
     },
     "0x2B": {
-      "type": "toggle",
       "delay": 0,
-      "up_deactivation": false,
+      "down_deactivation": false,
+      "up_deactivation": true,
       "click_key": "0x1D"
     },
     "0x29": {
-      "type": "toggle",
       "delay": 0,
-      "up_deactivation": false,
+      "down_deactivation": false,
+      "up_deactivation": true,
       "click_key": "0x1D"
     }
   },
