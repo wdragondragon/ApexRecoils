@@ -37,7 +37,8 @@ if __name__ == '__main__':
     mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                      config=config,
                                                      mouse_model=config.server_mouse_mover)
-    rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
+    rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
+                                           config_name=config.rea_snow_gun_config_name)
 
     c1_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                         config=config,

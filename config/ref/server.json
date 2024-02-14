@@ -1,7 +1,6 @@
 {
   "mouse_mover": "win32api",
-  "server_mouse_mover": "km_box_net",
-  "mouse_mover_params": {
+  "server_mouse_mover": "km_box_net",z
     "win32api": {},
     "km_box": {
       "VID/PID": "66882021"
@@ -36,5 +35,6 @@
         "key": "right"
       }
     }
-  }
+  },
+  "rea_snow_gun_config_name": "5aas20v2"
 }

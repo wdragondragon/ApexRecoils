@@ -10,7 +10,7 @@
     "win32api": {},
     "km_box": {
       "VID/PID": "66882021"
-    },
+    },z
     "wu_ya": {
       "VID/PID": "26121701"
     },
@@ -56,11 +56,7 @@
           "click_key": "0x1D"
         },
         {
-          "delay": 850,
-          "click_key": "0x23"
-        },
-        {
-          "delay": 2000,
+          "delay": 1000,
           "click_key": null
         }
       ]
@@ -90,5 +86,6 @@
       "0x2C",
       "b0"
     ]
-  }
+  },
+  "rea_snow_gun_config_name": "5aas20v2"
 }

@@ -84,14 +84,16 @@ if __name__ == '__main__':
 
     # 判断c1透传
     if config.rea_snow_mouse_mover == config.mouse_mover:
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover)
+        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
+                                               config_name=config.rea_snow_gun_config_name)
     else:
         rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                                   mouse_listener=apex_mouse_listener,
                                                                   config=config,
                                                                   mouse_model=config.rea_snow_mouse_mover,
                                                                   c1_mover=mouse_mover)
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover)
+        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
+                                               config_name=config.rea_snow_gun_config_name)
     select_gun.connect(rea_snow_select_gun.trigger_button)
 
     # jtk启动，挪到server运行

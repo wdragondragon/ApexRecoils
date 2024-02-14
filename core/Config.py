@@ -18,11 +18,13 @@ screenshot_resolution = {
 
 scope_screenshot_resolution = {
     (2560, 1440): [(2034, 1338, 2059, 1363), (2069, 1338, 2094, 1363), (2106, 1338, 2131, 1363)],
-    (1920, 1080): [(1522, 1002, 1542, 1022), (1551, 1002, 1571, 1022), (1579, 1002, 1599, 1022)]
+    (1920, 1080): [(1522, 1002, 1542, 1022), (1551, 1002, 1571, 1022), (1579, 1002, 1599, 1022)],
+    (2048, 1152): [(1880, 1213, 1901, 1234), (1910, 1213, 1931, 1234), (1940, 1213, 1961, 1234)]
 }
 hop_up_screenshot_resolution = {
     (2560, 1440): [(2142, 1338, 2167, 1363), (2180, 1338, 2205, 1363)],
-    (1920, 1080): [(1607, 1002, 1627, 1022), (1635, 1002, 1655, 1022)]
+    (1920, 1080): [(1607, 1002, 1627, 1022), (1635, 1002, 1655, 1022)],
+    (2048, 1152): [(1970, 1213, 1991, 1234), (2000, 1213, 2021, 1234)]
 }
 
 
@@ -80,6 +82,7 @@ class Config:
         self.toggle_hold_key = None
         self.distributed_param = None
         self.screen_taker = None
+        self.rea_snow_gun_config_name = None
 
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -179,6 +182,7 @@ class Config:
             "port": 12345
         })
         self.screen_taker = self.get_config(self.config_data, "screen_taker", "local")
+        self.rea_snow_gun_config_name = self.get_config(self.config_data, "rea_snow_gun_config_name", "ReaSnowGun")
 
     def get_config(self, read_config, pattern=None, default=None):
         """

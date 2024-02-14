@@ -11,9 +11,9 @@ class ReaSnowSelectGun:
         转换器自动识别按键宏触发
     """
 
-    def __init__(self, logger: Logger, mouse_mover: MouseMover):
+    def __init__(self, logger: Logger, mouse_mover: MouseMover, config_name='ReaSnowGun'):
         self.logger = logger
-        self.config_path = ".\\config\\ReaSnowGun.json"
+        self.config_path = f".\\config\\{config_name}.json"
         self.mouse_mover = mouse_mover
         if op.exists(self.config_path):
             with open(self.config_path, encoding='utf-8') as global_file:
