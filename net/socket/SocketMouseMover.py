@@ -45,3 +45,6 @@ class SocketMouseMover(MouseMover):
         """
         self.listener.stop()
         self.toggle_key_listener.destory()
+
+    def toggle_caps_lock(self, lock_status):
+        self.client.mouse_mover("toggle_caps_lock", (lock_status,))

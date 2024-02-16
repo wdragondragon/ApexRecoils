@@ -106,17 +106,34 @@ class ToggleKeyListener:
             hold_status = self.kmNet.isdown_keyboard(key) == 1
 
             if hold_status:
-                if key not in self.delayed_activation_key_status_map:
-                    self.delayed_activation_key_status_map[key] = DelayedActivationKey()
+                if click_keys is None:
+                    if key not in self.delayed_activation_key_status_map:
+                        self.delayed_activation_key_status_map[key] = DelayedActivationKey()
 
-                delayed_activation_key_status = self.delayed_activation_key_status_map[key]
-                if down_deactivation:
-                    if (int((time.time() - delayed_activation_key_status.hold_time) * 1000) >= key_time
-                            and not delayed_activation_key_status.handle):
-                        delayed_activation_key_status.handle = True
-                        self.logger.print_log(f"持续按下{key},{key_time}ms，转换器开关按下：[{click_key}]")
-                        # 转换器切换键
-                        self.mouse_mover.click_key(Tools.convert_to_decimal(click_key))
+                    delayed_activation_key_status = self.delayed_activation_key_status_map[key]
+                    if down_deactivation:
+                        if (int((time.time() - delayed_activation_key_status.hold_time) * 1000) >= key_time
+                                and not delayed_activation_key_status.handle):
+                            delayed_activation_key_status.handle = True
+                            self.logger.print_log(f"持续按下{key},{key_time}ms，转换器开关按下：[{click_key}]")
+                            # 转换器切换键
+                            self.mouse_mover.click_key(Tools.convert_to_decimal(click_key))
+                else:
+                    if down_deactivation:
+                        for click_key_item in click_keys:
+                            key_time = click_key_item["delay"]
+                            click_key = click_key_item["click_key"]
+                            if key not in self.delayed_activation_key_status_map:
+                                self.delayed_activation_key_status_map[key] = DelayedActivationKey()
+
+                            delayed_activation_key_status = self.delayed_activation_key_status_map[key]
+                            if (int((time.time() - delayed_activation_key_status.hold_time) * 1000) >= key_time
+                                    and not delayed_activation_key_status.in_handle_list(key_time)):
+                                delayed_activation_key_status.list_handle(key_time)
+                                self.logger.print_log(f"持续按下{key},{key_time}ms，转换器开关按下：[{click_key}]")
+                                # 转换器切换键
+                                self.mouse_mover.click_key(Tools.convert_to_decimal(click_key))
+
             else:
                 if key in self.delayed_activation_key_status_map:
                     if up_deactivation:
@@ -155,6 +172,13 @@ class DelayedActivationKey:
     def __init__(self):
         self.hold_time = time.time()
         self.handle = False
+        self.handle_list = dict()
+
+    def in_handle_list(self, delay):
+        return delay in self.handle_list and self.handle_list[delay]
+
+    def list_handle(self, delay):
+        self.handle_list[delay] = True
 
 
 class ToggleKey:

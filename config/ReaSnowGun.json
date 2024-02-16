@@ -3,7 +3,8 @@
     "0": "0x2D"
   },
   "G7": {
-    "0": "0x2D"
+    "0": "0x2D",
+    "caps": false
   },
   "re-45": {
     "1": "0x24",
@@ -74,8 +75,7 @@
     "2": "0x43"
   },
   "猎兽": {
-    "1": "0x1C",
-    "2": "0x18"
+    "0": "0x1C"
   },
   "喷火": {
     "1": "0x4F",
@@ -90,5 +90,5 @@
     "4": "0x4E"
   },
   "close_key": "0x35",
-  "no_found_click_close_key": false
+  "no_found_click_close_key": true
 }

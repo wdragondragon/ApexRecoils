@@ -42,6 +42,7 @@ class ReaSnowSelectGun:
             self.logger.print_log(f"未识别到枪械{'，关闭宏' if self.no_found_click_close_key else ''}")
             if self.no_found_click_close_key:
                 self.mouse_mover.click_key(self.no_macro_key)
+                self.mouse_mover.toggle_caps_lock(False)
             return
 
         gun_scope_dict = self.key_dict.get(select_gun)
@@ -49,7 +50,11 @@ class ReaSnowSelectGun:
             self.logger.print_log(f"枪械[{select_gun}]没有数据{'，关闭宏' if self.no_found_click_close_key else ''}")
             if self.no_found_click_close_key:
                 self.mouse_mover.click_key(self.no_macro_key)
+                self.mouse_mover.toggle_caps_lock(False)
             return
+        caps_lock = True
+        if "caps" in gun_scope_dict:
+            caps_lock = gun_scope_dict["caps"]
 
         if hot_pop is not None and hot_pop in gun_scope_dict:
             gun_scope_dict = gun_scope_dict[hot_pop]
@@ -65,3 +70,4 @@ class ReaSnowSelectGun:
         if scope_data is not None:
             self.logger.print_log(f"枪械[{select_gun}]按下键位[{scope_data}]切换数据")
             self.mouse_mover.click_key(Tools.convert_to_decimal(scope_data))
+            self.mouse_mover.toggle_caps_lock(caps_lock)
