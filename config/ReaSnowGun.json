@@ -89,6 +89,10 @@
     "3": "0x4B",
     "4": "0x4E"
   },
+  "波塞克": {
+    "0": "0x4A",
+    "caps": false
+  },
   "close_key": "0x35",
   "no_found_click_close_key": true
 }
