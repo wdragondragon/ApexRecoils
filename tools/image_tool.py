@@ -22,6 +22,7 @@ print_screen_key = config.get("conf", "print_screen_key")
 # img = ImageGrab.grab(bbox=(100, 500, xw, yh)) 表示从x轴坐标100开始，y轴500开始
 
 keyboard = Controller()
+i = 1
 
 
 def on_press(key):
@@ -32,10 +33,13 @@ def on_press(key):
 # 释放按钮，按esc按键会退出监听
 def on_release(key):
     # print('{0} 被释放'.format(key))
+    global i
+
     if not hasattr(key, 'name') and (key.char == print_screen_key):
         img = ImageGrab.grab(bbox=bbox)  # 也可以不传参数，默认截取整个屏幕
-        img.save(path)  # 保存到E盘目录
+        img.save(path + str(i) + ".png")  # 保存到E盘目录
         print('截图保存成功')
+        i += 1
 
 
 # 创建监听
