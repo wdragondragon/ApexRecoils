@@ -37,6 +37,7 @@ class SelectGun:
         self.image_comparator = image_comparator
         self.screen_taker = screen_taker
         self.game_windows_status = game_windows_status
+        self.select_gun_cache = {}
         for refresh_button in self.refresh_buttons:
             KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun_threading, False))
 
@@ -50,7 +51,7 @@ class SelectGun:
             try:
                 if self.game_windows_status.get_game_windows_status():
                     self.logger.print_log("定时识别开始")
-                    if self.select_gun_with_sign(auto=True):
+                    if self.select_gun_with_sign(None, None, auto=True):
                         self.fail_time = 0
                     else:
                         self.fail_time += 1
@@ -62,18 +63,20 @@ class SelectGun:
                 pass
             time.sleep(1 + self.fail_time / 5)
 
-    def select_gun_threading(self, pressed=False, toggle=False):
+    def select_gun_threading(self, key_type, key, pressed=False, toggle=False):
         """
 
         :param pressed:
         :param toggle:
+        :param key_type:
+        :param key:
         :return:
         """
         if self.select_gun_sign:
             return
-        threading.Thread(target=self.select_gun_with_sign, args=(pressed, toggle, False)).start()
+        threading.Thread(target=self.select_gun_with_sign, args=(key_type, key, pressed, toggle, False)).start()
 
-    def select_gun_with_sign(self, pressed=False, toggle=False, auto=False):
+    def select_gun_with_sign(self, key_type, key, pressed=False, toggle=False, auto=False):
         """
 
         :param pressed:
@@ -85,7 +88,7 @@ class SelectGun:
             return
         self.select_gun_sign = True
         start = time.time()
-        result = self.select_gun(pressed, toggle, auto)
+        result = self.select_gun(key_type, key, pressed, toggle, auto)
         self.logger.print_log(f"该次识别耗时：{int((time.time() - start) * 1000)}ms")
         self.select_gun_sign = False
         return result
@@ -103,11 +106,14 @@ class SelectGun:
         #     self.logger.print_log(f"Error in get_images_from_bbox: {e}")
         return self.screen_taker.get_images_from_bbox(bbox_list)
 
-    def select_gun(self, pressed=False, toggle=False, auto=False):
+    def select_gun(self, key_type, key, pressed=False, toggle=False, auto=False):
         """
             使用图片对比，逐一识别枪械，相似度最高设置为current_gun
         :return:
         """
+        # cache_key = key_type + ":" + key
+        # if cache_key not in self.select_gun_cache:
+        #
         gun_temp, score_temp = self.image_comparator.compare_with_path(self.image_path,
                                                                        self.get_images_from_bbox([self.bbox]), 0.9, 0.7)
         if gun_temp is None:

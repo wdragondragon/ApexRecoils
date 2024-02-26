@@ -47,7 +47,7 @@ class ShakeGun:
             for button in button_list:
                 KMCallBack.connect(KMCallBack("m", button, self.shake_gun_threading))
 
-    def shake_gun_threading(self, pressed, toggled):
+    def shake_gun_threading(self, key_type, key, pressed, toggled):
         if self.in_shake:
             return
         threading.Thread(target=self.shake_gun).start()

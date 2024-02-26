@@ -29,7 +29,7 @@ class KeyListener:
             self.toggle_key_map.append(key_name)
         for cb in KMCallBack.toggle_call_back:
             if cb.key_type == 'k' and cb.key == key_name and cb.is_press:
-                cb.call_back(True, cb.key in self.toggle_key_map)
+                cb.call_back(cb.key_type, cb.key, True, cb.key in self.toggle_key_map)
 
     # 释放按钮，按esc按键会退出监听
     def on_release(self, key):
@@ -42,7 +42,7 @@ class KeyListener:
             self.press_key.pop(key_name)
         for cb in KMCallBack.toggle_call_back:
             if cb.key_type == 'k' and cb.key == key_name and not cb.is_press:
-                cb.call_back(True, cb.key in self.toggle_key_map)
+                cb.call_back(cb.key_type, cb.key, True, cb.key in self.toggle_key_map)
 
     def is_open(self, button):
         """
@@ -102,14 +102,14 @@ class MouseListener:
                 self.toggle_mouse_key_map.append(button.name)
             for cb in KMCallBack.toggle_call_back:
                 if cb.key_type == 'm' and cb.key == button.name and cb.is_press:
-                    cb.call_back(pressed, cb.key in self.toggle_mouse_key_map)
+                    cb.call_back(cb.key_type, cb.key, pressed, cb.key in self.toggle_mouse_key_map)
         elif not pressed:
             if button.name not in self.on_mouse_key_map:
                 return
             self.on_mouse_key_map.pop(button.name)
             for cb in KMCallBack.toggle_call_back:
                 if cb.key_type == 'm' and cb.key == button.name and not cb.is_press:
-                    cb.call_back(pressed, cb.key in self.toggle_mouse_key_map)
+                    cb.call_back(cb.key_type, cb.key, pressed, cb.key in self.toggle_mouse_key_map)
 
     def on_scroll(self, x, y, dx, dy):
         """
