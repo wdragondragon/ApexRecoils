@@ -11,6 +11,7 @@ import numpy as np
 import win32gui
 from skimage.metrics import structural_similarity
 from collections import deque
+import mss
 
 
 class Tools:
@@ -47,6 +48,10 @@ class Tools:
         gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)
         (score, diff) = structural_similarity(gray_a, gray_b, full=True)
         return score
+
+    def mss_shot(sel, bbox):
+        with mss.mss() as sct:
+            return sct.grab(bbox)
 
     @staticmethod
     def current_milli_time():

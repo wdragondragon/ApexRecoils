@@ -51,30 +51,6 @@ class Server:
             data = pickle.loads(data)
             self.logger.print_log("客户端类型：{}".format(data))
             threading.Thread(target=self.listener, args=(client_socket, data)).start()
-            # try:
-            #     while True:
-            #         data = SocketUtil.recv(client_socket)
-            #         data = pickle.loads(data)
-            #         data_type = data["type"]
-            #         data = data["data"]
-            #         if data_type == "compare_with_path":
-            #             result = self.image_comparator.compare_with_path(*data)
-            #             result_data = pickle.dumps(result)
-            #             SocketUtil.send(client_socket, result_data)
-            #         elif data_type == "move":
-            #             result = self.image_comparator.compare_with_path(*data)
-            #             result_data = pickle.dumps(result)
-            #             SocketUtil.send(client_socket, result_data)
-            # except Exception as e:
-            #     print(e)
-            #     traceback.print_exc()
-            # finally:
-            #     # 关闭连接
-            #     try:
-            #         client_socket.close()
-            #     except Exception as e:
-            #         print(e)
-            #         traceback.print_exc()
 
     def listener(self, client_socket, data_type):
         """

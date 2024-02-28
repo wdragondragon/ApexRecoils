@@ -15,7 +15,6 @@ from mouse_mover import MoverFactory
 from mouse_mover.MouseMover import MouseMover
 from net.socket.NetImageComparator import NetImageComparator
 from net.socket.Server import Server
-from tools.Tools import Tools
 from verification import Check
 from windows.SystemTrayApp import SystemTrayApp
 
