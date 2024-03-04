@@ -1,7 +1,10 @@
 {
   "refresh_buttons": [
     "1",
-    "2"
+    "2",
+	"f",
+	"F",
+	"tab"
   ],
   "mouse_mover": "win32api",
   "rea_snow_mouse_mover": "distributed",

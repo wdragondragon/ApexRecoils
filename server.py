@@ -35,13 +35,15 @@ if __name__ == '__main__':
 
     mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                      config=config,
-                                                     mouse_model=config.server_mouse_mover)
+                                                     mouse_model=config.server_mouse_mover,
+                                                     game_windows_status=game_windows_status)
     rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
                                            config_name=config.rea_snow_gun_config_name)
 
     c1_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                         config=config,
-                                                        mouse_model=config.mouse_mover)
+                                                        mouse_model=config.mouse_mover,
+                                                        game_windows_status=game_windows_status)
     # jtk启动
     jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mouse_mover,
                    game_windows_status=game_windows_status)

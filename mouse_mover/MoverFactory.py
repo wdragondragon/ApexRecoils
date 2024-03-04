@@ -12,7 +12,8 @@ from mouse_mover.WuYaMover import WuYaMover
 from net.socket.SocketMouseMover import SocketMouseMover
 
 
-def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, parent_mover=None, c1_mover=None):
+def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, parent_mover=None, c1_mover=None,
+              game_windows_status=None):
     if mouse_model is None:
         mouse_model = config.mouse_mover
     mouse_mover_params = config.mouse_mover_params
@@ -40,7 +41,8 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
                                                                   km_box_net_listener=current_mover.listener,
                                                                   delayed_activation_key_list=config.delayed_activation_key_list,
                                                                   mouse_mover=parent_mover, c1_mouse_mover=c1_mover,
-                                                                  toggle_hold_key=config.toggle_hold_key)
+                                                                  toggle_hold_key=config.toggle_hold_key,
+                                                                  game_windows_status=game_windows_status)
             # joy_listener = JoyListener(logger=logger)
             # joy_listener.connect_button(current_mover.toggle_key_listener.controller_toggle_hold_change)
             # joy_listener.start(None)
@@ -48,6 +50,7 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
     elif mouse_model == "distributed":
         current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)
         server_mover = get_mover(logger=logger, mouse_listener=mouse_listener, config=config,
-                                 mouse_model=config.server_mouse_mover, parent_mover=current_mover, c1_mover=c1_mover)
+                                 mouse_model=config.server_mouse_mover, parent_mover=current_mover, c1_mover=c1_mover,
+                                 game_windows_status=game_windows_status)
         current_mover.server_mouse_mover = server_mover
         return current_mover

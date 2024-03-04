@@ -114,6 +114,9 @@ class SelectGun:
         # cache_key = key_type + ":" + key
         # if cache_key not in self.select_gun_cache:
         #
+        if not self.game_windows_status.get_game_windows_status():
+            return False
+
         gun_temp, score_temp = self.image_comparator.compare_with_path(self.image_path,
                                                                        self.get_images_from_bbox([self.bbox]), 0.9, 0.7)
         if gun_temp is None:
@@ -121,43 +124,44 @@ class SelectGun:
             self.current_gun = None
             self.current_scope = None
             self.current_hot_pop = None
-            return False
-
-        scope_temp, score_scope_temp = self.image_comparator.compare_with_path(self.scope_path,
-                                                                               self.get_images_from_bbox(
-                                                                                   self.scope_bbox), 0.9,
-                                                                               0.4)
-        if scope_temp is None:
-            self.logger.print_log("未找到配件，默认为1倍")
-            scope_temp = '1x'
-
-        if gun_temp in self.has_turbocharger:
-            hop_up_temp, score_hop_up_temp = self.image_comparator.compare_with_path(self.hop_up_path,
-                                                                                     self.get_images_from_bbox(
-                                                                                         self.hop_up_bbox),
-                                                                                     0.9, 0.6)
         else:
-            hop_up_temp = None
-            score_hop_up_temp = 0
+            scope_temp, score_scope_temp = self.image_comparator.compare_with_path(self.scope_path,
+                                                                                   self.get_images_from_bbox(
+                                                                                       self.scope_bbox), 0.9,
+                                                                                   0.4)
+            if scope_temp is None:
+                self.logger.print_log("未找到配件，默认为1倍")
+                scope_temp = '1x'
 
-        if gun_temp == self.current_gun and scope_temp == self.current_scope and hop_up_temp == self.current_hot_pop:
-            self.logger.print_log(
-                "当前枪械搭配已经是: {}-{}-{}".format(self.current_gun, self.current_scope, self.current_hot_pop))
-            if auto:
-                return False
-        else:
-            self.current_scope = scope_temp
-            self.current_gun = gun_temp
-            self.current_hot_pop = hop_up_temp
-            self.logger.print_log(
-                "枪械: {},相似: {}-配件: {},相似: {}-hop_up: {},相似: {}".format(self.current_gun, score_temp,
-                                                                                 self.current_scope, score_scope_temp,
-                                                                                 self.current_hot_pop,
-                                                                                 score_hop_up_temp))
+            if gun_temp in self.has_turbocharger:
+                hop_up_temp, score_hop_up_temp = self.image_comparator.compare_with_path(self.hop_up_path,
+                                                                                         self.get_images_from_bbox(
+                                                                                             self.hop_up_bbox),
+                                                                                         0.9, 0.6)
+            else:
+                hop_up_temp = None
+                score_hop_up_temp = 0
+
+            if gun_temp == self.current_gun and scope_temp == self.current_scope and hop_up_temp == self.current_hot_pop:
+                self.logger.print_log(
+                    "当前枪械搭配已经是: {}-{}-{}".format(self.current_gun, self.current_scope, self.current_hot_pop))
+                if auto:
+                    return False
+            else:
+                self.current_scope = scope_temp
+                self.current_gun = gun_temp
+                self.current_hot_pop = hop_up_temp
+                self.logger.print_log(
+                    "枪械: {},相似: {}-配件: {},相似: {}-hop_up: {},相似: {}".format(self.current_gun, score_temp,
+                                                                                     self.current_scope,
+                                                                                     score_scope_temp,
+                                                                                     self.current_hot_pop,
+                                                                                     score_hop_up_temp))
 
         for func in self.call_back:
             func(self.current_gun, self.current_scope, self.current_hot_pop)
-        return True
+
+        return self.current_gun is not None
 
     def connect(self, func):
         self.call_back.append(func)

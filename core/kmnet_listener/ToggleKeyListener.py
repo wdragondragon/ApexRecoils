@@ -12,13 +12,14 @@ class ToggleKeyListener:
     """
 
     def __init__(self, logger: Logger, km_box_net_listener: KmBoxNetListener, delayed_activation_key_list,
-                 mouse_mover: MouseMover, c1_mouse_mover: MouseMover, toggle_hold_key):
+                 mouse_mover: MouseMover, c1_mouse_mover: MouseMover, toggle_hold_key,game_windows_status):
         import kmNet
         self.kmNet = kmNet
         self.logger = logger
         self.mouse_mover = mouse_mover
         self.c1_mouse_mover = c1_mouse_mover
         self.km_box_net_listener = km_box_net_listener
+        self.game_windows_status = game_windows_status
         # 自定义按住延迟转换
         self.delayed_activation_key_status_map = {}
         self.delayed_activation_key_list = [(Tools.convert_to_decimal(key), value) for key, value in
@@ -49,6 +50,8 @@ class ToggleKeyListener:
             self.key_status_map[key] = ToggleKey()
 
     def toggle_change(self):
+        if not self.game_windows_status.get_game_windows_status():
+            return
         for key in self.toggle_hold_key:
             num_key = Tools.convert_to_decimal(key)
             if num_key is None:
@@ -96,6 +99,8 @@ class ToggleKeyListener:
                     toggle_key_status.toggle()
 
     def delayed_activation(self):
+        if not self.game_windows_status.get_game_windows_status():
+            return
         for key, delayed_param in self.delayed_activation_key_list:
             key_time = delayed_param["delay"] if "delay" in delayed_param else None
             up_deactivation = delayed_param["up_deactivation"]
