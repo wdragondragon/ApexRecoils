@@ -32,6 +32,8 @@ class Client:
         SocketUtil.send(self.client_socket, data)
         result_data = SocketUtil.recv(self.client_socket)
         result = pickle.loads(result_data)
+        if result == 'msg:error':
+            return 0, 0
         return result
 
     def key_trigger(self, select_gun, select_scope, hot_pop):
@@ -44,6 +46,7 @@ class Client:
         data = (select_gun, select_scope, hot_pop)
         data = pickle.dumps(data)
         SocketUtil.send(self.client_socket, data)
+        SocketUtil.recv(self.client_socket)
 
     def mouse_mover(self, func_name, param):
         """
@@ -55,6 +58,7 @@ class Client:
         data = (func_name, param)
         data = pickle.dumps(data)
         SocketUtil.send(self.client_socket, data)
+        SocketUtil.recv(self.client_socket)
 
     def get_images_from_bbox(self, bbox_list):
         """
@@ -65,4 +69,6 @@ class Client:
         SocketUtil.send(self.client_socket, data)
         result_data = SocketUtil.recv(self.client_socket)
         result = pickle.loads(result_data)
+        if result == 'msg:error':
+            return None
         return result

@@ -60,23 +60,30 @@ class Server:
         """
         try:
             while True:
-                data = SocketUtil.recv(client_socket)
-                data = pickle.loads(data)
-                if data_type == "compare_with_path":
-                    result = self.image_comparator.compare_with_path(*data)
-                    result_data = pickle.dumps(result)
-                    SocketUtil.send(client_socket, result_data)
-                elif data_type == "key_trigger":
-                    self.select_gun.trigger_button(*data)
-                elif data_type == "mouse_mover":
-                    func_name, param = data
-                    self.logger.print_log(f"mouse_mover:{func_name}({param})) ")
-                    f = getattr(self.mouse_mover, func_name)
-                    f(*param)
-                elif data_type == "screen_taker":
-                    images = self.screen_taker.get_images_from_bbox(data)
-                    result_data = pickle.dumps(images)
-                    SocketUtil.send(client_socket, result_data)
+                try:
+                    data = SocketUtil.recv(client_socket)
+                    data = pickle.loads(data)
+                    if data_type == "compare_with_path":
+                        result = self.image_comparator.compare_with_path(*data)
+                        result_data = pickle.dumps(result)
+                        SocketUtil.send(client_socket, result_data)
+                    elif data_type == "key_trigger":
+                        self.select_gun.trigger_button(*data)
+                        SocketUtil.send(client_socket, pickle.dumps('ok'))
+                    elif data_type == "mouse_mover":
+                        func_name, param = data
+                        self.logger.print_log(f"mouse_mover:{func_name}({param})) ")
+                        f = getattr(self.mouse_mover, func_name)
+                        f(*param)
+                        SocketUtil.send(client_socket, pickle.dumps('ok'))
+                    elif data_type == "screen_taker":
+                        images = self.screen_taker.get_images_from_bbox(data)
+                        result_data = pickle.dumps(images)
+                        SocketUtil.send(client_socket, result_data)
+                except Exception as e:
+                    print(e)
+                    traceback.print_exc()
+                    SocketUtil.send(client_socket, pickle.dumps("msg:error"))
         except Exception as e:
             print(e)
             traceback.print_exc()

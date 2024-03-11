@@ -28,3 +28,4 @@ class ReaSnowSelectGunSocket:
         start = time.time()
         self.client.key_trigger(select_gun, select_scope, hot_pop)
         self.logger.print_log(f"该次按键触发耗时：{int(1000 * (time.time() - start))}ms")
+
