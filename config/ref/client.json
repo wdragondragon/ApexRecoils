@@ -1,10 +1,12 @@
 {
+  "screen_width": 1920,
+  "screen_height": 1080,
   "refresh_buttons": [
     "1",
     "2",
-	"f",
-	"F",
-	"tab"
+    "f",
+    "F",
+    "tab"
   ],
   "mouse_mover": "win32api",
   "rea_snow_mouse_mover": "distributed",
@@ -90,5 +92,6 @@
       "b0"
     ]
   },
-  "rea_snow_gun_config_name": "ReaSnowGun"
+  "rea_snow_gun_config_name": "ReaSnowGun",
+  "screen_taker": "hd33"
 }

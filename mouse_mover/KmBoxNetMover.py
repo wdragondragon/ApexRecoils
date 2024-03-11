@@ -61,3 +61,6 @@ class KmBoxNetMover(MouseMover):
 
     def key_up(self, value):
         self.kmNet.keyup(value)
+
+    def show_pic(self, pic_array):
+        self.kmNet.lcd_picture_bottom(pic_array)
