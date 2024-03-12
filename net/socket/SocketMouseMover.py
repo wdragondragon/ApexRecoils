@@ -1,3 +1,5 @@
+import threading
+
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
 from net.socket.Client import Client
@@ -14,6 +16,7 @@ class SocketMouseMover(MouseMover):
 
     def move_rp(self, x: int, y: int):
         self.client.mouse_mover("move_rp", (x, y))
+
 
     def move(self, x: int, y: int):
         self.client.mouse_mover("move", (x, y))

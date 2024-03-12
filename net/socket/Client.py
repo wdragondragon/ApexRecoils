@@ -1,5 +1,6 @@
 import pickle  # 用于序列化/反序列化数据
 import socket
+import threading
 
 from net.socket import SocketUtil
 
@@ -16,25 +17,26 @@ class Client:
         self.client_socket.connect(socket_address)
         data = pickle.dumps(client_type)
         SocketUtil.send(self.client_socket, data)
+        self.intention_lock = threading.Lock()
 
     def compare_with_path(self, path, images, lock_score, discard_score):
         """
-
         :param path:
         :param images:
         :param lock_score:
         :param discard_score:
         :return:
         """
-        data = (path, images, lock_score, discard_score)
-        # data = {"type": "compare_with_path", "data": (path, images, lock_score, discard_score)}
-        data = pickle.dumps(data)
-        SocketUtil.send(self.client_socket, data)
-        result_data = SocketUtil.recv(self.client_socket)
-        result = pickle.loads(result_data)
-        if result == 'msg:error':
-            return 0, 0
-        return result
+        with self.intention_lock:
+            data = (path, images, lock_score, discard_score)
+            # data = {"type": "compare_with_path", "data": (path, images, lock_score, discard_score)}
+            data = pickle.dumps(data)
+            SocketUtil.send(self.client_socket, data)
+            result_data = SocketUtil.recv(self.client_socket)
+            result = pickle.loads(result_data)
+            if result == 'msg:error':
+                return 0, 0
+            return result
 
     def key_trigger(self, select_gun, select_scope, hot_pop):
         """
@@ -43,10 +45,11 @@ class Client:
         :param select_scope:
         :param hot_pop:
         """
-        data = (select_gun, select_scope, hot_pop)
-        data = pickle.dumps(data)
-        SocketUtil.send(self.client_socket, data)
-        SocketUtil.recv(self.client_socket)
+        with self.intention_lock:
+            data = (select_gun, select_scope, hot_pop)
+            data = pickle.dumps(data)
+            SocketUtil.send(self.client_socket, data)
+            SocketUtil.recv(self.client_socket)
 
     def mouse_mover(self, func_name, param):
         """
@@ -55,20 +58,22 @@ class Client:
         :param param:
         :return:
         """
-        data = (func_name, param)
-        data = pickle.dumps(data)
-        SocketUtil.send(self.client_socket, data)
-        SocketUtil.recv(self.client_socket)
+        with self.intention_lock:
+            data = (func_name, param)
+            data = pickle.dumps(data)
+            SocketUtil.send(self.client_socket, data)
+            SocketUtil.recv(self.client_socket)
 
     def get_images_from_bbox(self, bbox_list):
         """
             从服务获取截图，反向架构
         """
-        data = bbox_list
-        data = pickle.dumps(data)
-        SocketUtil.send(self.client_socket, data)
-        result_data = SocketUtil.recv(self.client_socket)
-        result = pickle.loads(result_data)
-        if result == 'msg:error':
-            return None
-        return result
+        with self.intention_lock:
+            data = bbox_list
+            data = pickle.dumps(data)
+            SocketUtil.send(self.client_socket, data)
+            result_data = SocketUtil.recv(self.client_socket)
+            result = pickle.loads(result_data)
+            if result == 'msg:error':
+                return None
+            return result
