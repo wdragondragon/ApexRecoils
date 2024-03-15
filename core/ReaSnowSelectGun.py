@@ -52,14 +52,17 @@ class ReaSnowSelectGun:
                 self.mouse_mover.click_key(self.no_macro_key)
                 self.mouse_mover.toggle_caps_lock(False)
             return
-        caps_lock = True
-        if "caps" in gun_scope_dict:
-            caps_lock = gun_scope_dict["caps"]
-
         if hot_pop is not None and hot_pop in gun_scope_dict:
             gun_scope_dict = gun_scope_dict[hot_pop]
 
         first_char = select_scope[0]
+
+        caps_lock = True
+        if "caps_" + first_char in gun_scope_dict:
+            caps_lock = gun_scope_dict["caps_" + first_char]
+        elif "caps" in gun_scope_dict:
+            caps_lock = gun_scope_dict["caps"]
+
         if first_char in gun_scope_dict:
             scope_data = gun_scope_dict[first_char]
         else:
