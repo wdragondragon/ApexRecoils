@@ -1,4 +1,4 @@
-from core.screentaker.HD33ScreenTaker import HD33ScreenTaker
+from core.screentaker.CapScreenTaker import CapScreenTaker
 from core.screentaker.LocalMssScreenTaker import LocalMssScreenTaker
 from net.socket.SocketScreenTaker import SocketScreenTaker
 
@@ -11,5 +11,5 @@ def get_screen_taker(logger, screen_taker, distributed_param):
         return LocalMssScreenTaker(logger)
     elif screen_taker == "distributed":
         return SocketScreenTaker(logger, (distributed_param["ip"], distributed_param["port"]))
-    elif screen_taker == 'hd33':
-        return HD33ScreenTaker(logger)
+    elif screen_taker == 'cap':
+        return CapScreenTaker(logger)

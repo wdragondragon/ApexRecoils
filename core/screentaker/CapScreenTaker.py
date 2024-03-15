@@ -4,7 +4,7 @@ from core.screentaker.ScreenTaker import ScreenTaker
 from log.Logger import Logger
 
 
-class HD33ScreenTaker(ScreenTaker):
+class CapScreenTaker(ScreenTaker):
     """
         本地截图
     """
@@ -14,6 +14,7 @@ class HD33ScreenTaker(ScreenTaker):
         self.cap = cv2.VideoCapture(0)  # 视频流
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
+        self.logger.print_log("使用视频采集卡")
 
     def get_images_from_bbox(self, bbox_list):
         frames = []

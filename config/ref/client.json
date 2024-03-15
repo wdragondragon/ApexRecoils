@@ -58,11 +58,11 @@
       "click_keys": [
         {
           "delay": 650,
-          "click_key": "0x1D"
+          "click_key": "29"
         },
         {
           "delay": 1500,
-          "click_key": "0x1D"
+          "click_key": "29"
         }
       ]
     },
@@ -70,19 +70,19 @@
       "delay": 100,
       "down_deactivation": true,
       "up_deactivation": true,
-      "click_key": "0x23"
+      "click_key": "35"
     },
     "0x2B": {
       "delay": 0,
       "down_deactivation": false,
       "up_deactivation": true,
-      "click_key": "0x1D"
+      "click_key": "29"
     },
     "0x29": {
       "delay": 0,
       "down_deactivation": false,
       "up_deactivation": true,
-      "click_key": "0x1D"
+      "click_key": "29"
     }
   },
   "toggle_hold_key": {
@@ -93,5 +93,5 @@
     ]
   },
   "rea_snow_gun_config_name": "ReaSnowGun",
-  "screen_taker": "hd33"
+  "screen_taker": "cap"
 }

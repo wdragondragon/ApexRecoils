@@ -4,16 +4,14 @@ import kmNet
 
 # import time
 
-kmNet.init('192.168.2.188', '35368', '8A6E5C53')  # 连接盒子
-time.sleep(3)
-kmNet.keydown(int("0x35", 16))
-kmNet.keyup(0x35)
-# kmNet.unmask_all()
-# kmNet.monitor(10000)
+kmNet.init('192.168.2.188', '35368', '8A6E5C53')  # 连接盒子0
+time.sleep(1)
+kmNet.keydown(78)
+kmNet.keyup(78)
+# kmNet.unmask_all()/*# kmNet.monitor(10000)-
 # while True:
-#     print(kmNet.isdown_keyboard(0xE0) == 1)
-"""
--   0x2D    0x56
+#     print(kmNet.isdown_keyboard(0xE0) == 1)+
+"""-   0x2D    0x56-
 +   0x2E    0x57
 [   0x2F
 ]   0x30
@@ -27,7 +25,7 @@ kmNet.keyup(0x35)
 CAPS LOCK   0x39
 INSERT  0x49
 PAGEUP   0x4B
-PAGEDN  0x4E
+PAGEDN  0x4E+
 DELETE  0x4C
 UP  0x52
 DOWN    0x51
