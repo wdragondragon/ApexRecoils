@@ -28,6 +28,11 @@ class ReaSnowSelectGun:
         else:
             self.no_found_click_close_key = True
 
+        if "auto_caps" in self.key_dict:
+            self.auto_caps = self.key_dict["auto_caps"]
+        else:
+            self.auto_caps = True
+
         self.no_macro_key = Tools.convert_to_decimal(self.no_macro_key)
 
     def trigger_button(self, select_gun, select_scope, hot_pop):
@@ -73,4 +78,5 @@ class ReaSnowSelectGun:
         if scope_data is not None:
             self.logger.print_log(f"枪械[{select_gun}]按下键位[{scope_data}]切换数据")
             self.mouse_mover.click_key(Tools.convert_to_decimal(scope_data))
-            self.mouse_mover.toggle_caps_lock(caps_lock)
+            if self.auto_caps:
+                self.mouse_mover.toggle_caps_lock(caps_lock)

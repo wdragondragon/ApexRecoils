@@ -90,6 +90,8 @@ class Config:
         self.screen_taker = None
         self.rea_snow_gun_config_name = None
 
+        self.delay_refresh_buttons = None
+
         self.logger = logger
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
 
@@ -153,7 +155,8 @@ class Config:
         self.scope_path = 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
         self.hop_up_path = 'hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
 
-        self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E'])
+        self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E', 'e'])
+        self.delay_refresh_buttons = self.get_config(self.config_data, 'delay_refresh_buttons', {})
 
         self.mouse_mover = self.get_config(self.config_data, "mouse_mover", "win32api")
         self.rea_snow_mouse_mover = self.get_config(self.config_data, "rea_snow_mouse_mover", "distributed")

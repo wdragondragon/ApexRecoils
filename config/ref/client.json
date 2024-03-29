@@ -5,9 +5,10 @@
     "1",
     "2",
     "f",
-    "F",
-    "tab"
+    "F"
   ],
+  "delay_refresh_buttons": {
+  },
   "mouse_mover": "win32api",
   "rea_snow_mouse_mover": "distributed",
   "server_mouse_mover": "km_box_net",

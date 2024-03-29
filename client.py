@@ -47,7 +47,7 @@ if __name__ == '__main__':
                            hop_up_bbox=config.select_hop_up_bbox,
                            hop_up_path=config.hop_up_path,
                            image_comparator=image_comparator,
-                           screen_taker=screen_taker, game_windows_status=game_windows_status)
+                           screen_taker=screen_taker, game_windows_status=game_windows_status,delay_refresh_buttons=config.delay_refresh_buttons)
 
     mouse_listener = pynput.mouse.Listener(on_click=apex_mouse_listener.on_click)
     keyboard_listener = pynput.keyboard.Listener(on_press=apex_key_listener.on_press,

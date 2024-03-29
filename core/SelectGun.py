@@ -16,7 +16,8 @@ class SelectGun:
     """
 
     def __init__(self, logger: Logger, bbox, image_path, scope_bbox, scope_path, hop_up_bbox, hop_up_path,
-                 refresh_buttons, has_turbocharger, image_comparator, screen_taker: ScreenTaker, game_windows_status):
+                 refresh_buttons, has_turbocharger, image_comparator, screen_taker: ScreenTaker, game_windows_status,
+                 delay_refresh_buttons=None):
         super().__init__()
         self.logger = logger
         self.on_key_map = dict()
@@ -38,7 +39,16 @@ class SelectGun:
         self.screen_taker = screen_taker
         self.game_windows_status = game_windows_status
         self.select_gun_cache = {}
+
         for refresh_button in self.refresh_buttons:
+            KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun_threading, False))
+
+        if delay_refresh_buttons is None:
+            delay_refresh_buttons = {}
+        self.delay_refresh_buttons = delay_refresh_buttons
+        self.delay_refresh_buttons_map = {}
+        for refresh_button, delay in self.delay_refresh_buttons.items():
+            self.delay_refresh_buttons_map[refresh_button] = delay
             KMCallBack.connect(KMCallBack("k", refresh_button, self.select_gun_threading, False))
 
         threading.Thread(target=self.timing_execution).start()
@@ -82,14 +92,19 @@ class SelectGun:
         :param pressed:
         :param toggle:
         :param auto:
+        :param delay:
         :return:
         """
         if self.select_gun_sign:
             return
+        delay = 0
+        if key in self.delay_refresh_buttons_map:
+            delay = self.delay_refresh_buttons_map[key]
+            time.sleep(delay / 1000)
         self.select_gun_sign = True
         start = time.time()
         result = self.select_gun(key_type, key, pressed, toggle, auto)
-        self.logger.print_log(f"该次识别耗时：{int((time.time() - start) * 1000)}ms")
+        self.logger.print_log(f"该次识别延迟：{delay}ms 耗时：{int((time.time() - start) * 1000)}ms")
         self.select_gun_sign = False
         return result
 
