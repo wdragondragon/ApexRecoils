@@ -1,6 +1,4 @@
 {
-  "screen_width": 1920,
-  "screen_height": 1080,
   "mouse_mover": "win32api",
   "server_mouse_mover": "km_box_net",
   "mouse_mover_params": {

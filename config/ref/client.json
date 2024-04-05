@@ -1,11 +1,9 @@
 {
-  "screen_width": 1920,
-  "screen_height": 1080,
   "refresh_buttons": [
     "1",
     "2",
     "f",
-    "F"
+    "F"Z`
   ],
   "delay_refresh_buttons": {
   },
@@ -94,5 +92,5 @@
     ]
   },
   "rea_snow_gun_config_name": "ReaSnowGun",
-  "screen_taker": "cap"
+  "screen_taker": "local"
 }
