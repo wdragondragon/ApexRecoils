@@ -11,6 +11,9 @@ from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
 from core.image_comparator import ImageComparatorFactory
+from core.joy_listener.JoyListener import JoyListener
+from core.joy_listener.JoyToKey import JoyToKey
+from core.joy_listener.RockerMonitor import RockerMonitor
 from core.screentaker import ScreenTakerFactory
 from log.Logger import Logger
 from mouse_mover import MoverFactory
@@ -47,7 +50,8 @@ if __name__ == '__main__':
                            hop_up_bbox=config.select_hop_up_bbox,
                            hop_up_path=config.hop_up_path,
                            image_comparator=image_comparator,
-                           screen_taker=screen_taker, game_windows_status=game_windows_status,delay_refresh_buttons=config.delay_refresh_buttons)
+                           screen_taker=screen_taker, game_windows_status=game_windows_status,
+                           delay_refresh_buttons=config.delay_refresh_buttons)
 
     mouse_listener = pynput.mouse.Listener(on_click=apex_mouse_listener.on_click)
     keyboard_listener = pynput.keyboard.Listener(on_press=apex_key_listener.on_press,
@@ -98,11 +102,14 @@ if __name__ == '__main__':
                                                config_name=config.rea_snow_gun_config_name)
     select_gun.connect(rea_snow_select_gun.trigger_button)
 
-    # jtk启动，挪到server运行
-    # jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=mouse_mover)
-    # joy_listener = JoyListener(logger=logger)
-    # joy_listener.connect_axis(jtk.axis_to_key)
-    # joy_listener.start(None)
+    if config.key_trigger_mode == 'local':
+        # jtk启动
+        jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=mouse_mover,
+                       game_windows_status=game_windows_status)
+        joy_listener = JoyListener(logger=logger)
+        joy_listener.connect_axis(jtk.axis_to_key)
+        joy_listener.start(None)
+        rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener)
     system_tray_app = SystemTrayApp(logger, "client")
     # 自动识别启动
     threading.Thread(target=select_gun.test).start()

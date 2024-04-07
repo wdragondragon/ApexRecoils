@@ -9,6 +9,7 @@ from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.image_comparator.LocalImageComparator import LocalImageComparator
 from core.joy_listener.JoyListener import JoyListener
 from core.joy_listener.JoyToKey import JoyToKey
+from core.joy_listener.RockerMonitor import RockerMonitor
 from core.screentaker.LocalScreenTaker import LocalScreenTaker
 from log.Logger import Logger
 from mouse_mover import MoverFactory
@@ -50,6 +51,8 @@ if __name__ == '__main__':
     joy_listener = JoyListener(logger=logger)
     joy_listener.connect_axis(jtk.axis_to_key)
     joy_listener.start(None)
+    rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener)
+
     system_tray_app = SystemTrayApp(logger, "server")
     server = Server(logger=logger, server_address=(config.distributed_param["ip"], config.distributed_param["port"]),
                     image_comparator=image_comparator,
