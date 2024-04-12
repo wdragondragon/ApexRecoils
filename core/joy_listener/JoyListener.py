@@ -76,7 +76,7 @@ class JoyListener:
                             func(joystick)
                         except:
                             traceback.print_exc()
-            clock.tick(20)
+            clock.tick(1000)
         self.axis.clear()
         pygame.joystick.quit()
         pygame.quit()
