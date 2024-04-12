@@ -87,20 +87,21 @@ if __name__ == '__main__':
     #                                    mouse_mover=mouse_mover,
     #                                    select_gun=select_gun)
 
-    # 判断c1透传
-    if config.rea_snow_mouse_mover == config.mouse_mover:
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
-                                               config_name=config.rea_snow_gun_config_name)
-    else:
-        rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
-                                                                  mouse_listener=apex_mouse_listener,
-                                                                  config=config,
-                                                                  mouse_model=config.rea_snow_mouse_mover,
-                                                                  c1_mover=mouse_mover,
-                                                                  game_windows_status=game_windows_status)
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
-                                               config_name=config.rea_snow_gun_config_name)
-    select_gun.connect(rea_snow_select_gun.trigger_button)
+    if config.rea_snow_gun_config_name != '':
+        # 判断c1透传
+        if config.rea_snow_mouse_mover == config.mouse_mover:
+            rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
+                                                   config_name=config.rea_snow_gun_config_name)
+        else:
+            rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
+                                                                      mouse_listener=apex_mouse_listener,
+                                                                      config=config,
+                                                                      mouse_model=config.rea_snow_mouse_mover,
+                                                                      c1_mover=mouse_mover,
+                                                                      game_windows_status=game_windows_status)
+            rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
+                                                   config_name=config.rea_snow_gun_config_name)
+        select_gun.connect(rea_snow_select_gun.trigger_button)
 
     if config.key_trigger_mode == 'local':
         # jtk启动
