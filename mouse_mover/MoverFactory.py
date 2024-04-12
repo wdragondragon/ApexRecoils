@@ -37,15 +37,13 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
             threading.Thread(target=current_mover.listener.km_box_net_start).start()
             if parent_mover is None:
                 parent_mover = current_mover
-            current_mover.toggle_key_listener = ToggleKeyListener(logger=logger,
-                                                                  km_box_net_listener=current_mover.listener,
-                                                                  delayed_activation_key_list=config.delayed_activation_key_list,
-                                                                  mouse_mover=parent_mover, c1_mouse_mover=c1_mover,
-                                                                  toggle_hold_key=config.toggle_hold_key,
-                                                                  game_windows_status=game_windows_status)
-            # joy_listener = JoyListener(logger=logger)
-            # joy_listener.connect_button(current_mover.toggle_key_listener.controller_toggle_hold_change)
-            # joy_listener.start(None)
+            if config.rea_snow_gun_config_name is not None and config.rea_snow_gun_config_name != '':
+                current_mover.toggle_key_listener = ToggleKeyListener(logger=logger,
+                                                                      km_box_net_listener=current_mover.listener,
+                                                                      delayed_activation_key_list=config.delayed_activation_key_list,
+                                                                      mouse_mover=parent_mover, c1_mouse_mover=c1_mover,
+                                                                      toggle_hold_key=config.toggle_hold_key,
+                                                                      game_windows_status=game_windows_status)
         return current_mover
     elif mouse_model == "distributed":
         current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)
