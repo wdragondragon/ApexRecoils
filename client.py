@@ -77,8 +77,8 @@ if __name__ == '__main__':
                                        mouse_listener=apex_mouse_listener,
                                        select_gun=select_gun,
                                        intent_manager=intent_manager)
-    recoils_listener_thread = threading.Thread(target=recoils_listener.start)
-    recoils_listener_thread.start()
+    # recoils_listener_thread = threading.Thread(target=recoils_listener.start)
+    # recoils_listener_thread.start()
 
     # logger.set_recoils_config(recoils_config)
 

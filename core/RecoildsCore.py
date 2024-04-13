@@ -106,4 +106,5 @@ class RecoilsListener:
                 start_time = None
                 num = 0
                 sleep_time = 0.01
-            time.sleep(sleep_time)
+            if sleep_time != 0:
+                time.sleep(sleep_time)
