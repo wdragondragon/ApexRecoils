@@ -54,12 +54,13 @@ class RecoilsListener:
                  recoils_config: RecoilsConfig,
                  mouse_listener: MouseListener,
                  select_gun: SelectGun,
-                 intent_manager: IntentManager):
+                 intent_manager: IntentManager,game_windows_status):
         self.logger = logger
         self.recoils_config = recoils_config
         self.mouse_listener = mouse_listener
         self.select_gun = select_gun
         self.intent_manager = intent_manager
+        self.game_windows_status = game_windows_status
 
     def start(self):
         """
@@ -69,37 +70,43 @@ class RecoilsListener:
         num = 0
         sleep_time = 0.001
         while True:
+            if not self.game_windows_status.get_game_windows_status():
+                time.sleep(1)
+                continue
             current_gun = self.select_gun.current_gun
             left_press = self.mouse_listener.is_press(Button.left)
             right_press = self.mouse_listener.is_press(Button.right)
             if current_gun is not None and left_press:
-                spec = self.recoils_config.get_config(current_gun)
+                spec = self.recoils_config.get_config(current_gun)['recoils']
                 if spec is not None:
                     sleep_time = 0.001
                     if start_time is None:
                         start_time = time.time()
                         self.logger.print_log("开始压枪")
                     if right_press:
-                        time_points = spec['time_points']
-                        point = (time.time() - start_time) * 1000
-                        index = len(time_points) - 1 if point > time_points[-1] else next(
-                            (i - 1 for i, time_point in enumerate(time_points) if time_point > point),
-                            -1)
-                        if index is not None and index >= 0 and num <= index:
-                            # 获取对应下标的x和y
-                            x_values = spec['x']
-                            y_values = spec['y']
-                            if len(x_values) >= num + 1:
-                                x_value = x_values[num]
-                                y_value = y_values[num]
-                                self.logger.print_log(
-                                    f'执行时间：[{time_points[num]}]<[{point}],正在压第{str(num + 1)}步，剩余{str(len(time_points) - (num + 1))}步，鼠标移动轨迹为({x_value},{y_value})')
-                                # self.intent_manager.set_intention(x_value, y_value)
-                                self.intent_manager.mouse_mover.move_rp(x_value, y_value)
-                            else:
-                                self.logger.print_log(
-                                    f'缺失第[{num + 1}个轨迹，时间为{time_points[num]}])')
-                            num += 1
+                        spec = spec['aim']
+                    else:
+                        spec = spec['un_aim']
+                    time_points = spec['time_points']
+                    point = (time.time() - start_time) * 1000
+                    index = len(time_points) - 1 if point > time_points[-1] else next(
+                        (i - 1 for i, time_point in enumerate(time_points) if time_point > point),
+                        -1)
+                    if index is not None and index >= 0 and num <= index:
+                        # 获取对应下标的x和y
+                        x_values = spec['x']
+                        y_values = spec['y']
+                        if len(x_values) >= num + 1:
+                            x_value = x_values[num]
+                            y_value = y_values[num]
+                            self.logger.print_log(
+                                f'执行时间：[{time_points[num]}]<[{point}],正在压第{str(num + 1)}步，剩余{str(len(time_points) - (num + 1))}步，鼠标移动轨迹为({x_value},{y_value})')
+                            # self.intent_manager.set_intention(x_value, y_value)
+                            self.intent_manager.mouse_mover.move_rp(x_value, y_value)
+                        else:
+                            self.logger.print_log(
+                                f'缺失第[{num + 1}个轨迹，时间为{time_points[num]}])')
+                        num += 1
                 else:
                     self.logger.print_log(f"未找到[{current_gun}的压枪数据]")
             else:
