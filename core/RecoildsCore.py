@@ -2,6 +2,7 @@ import os.path as op
 import json
 import time
 
+import requests
 from pynput.mouse import Button
 
 from core.KeyAndMouseListener import MouseListener
@@ -30,7 +31,9 @@ class RecoilsConfig:
                 self.specs_data = json.load(file)
                 self.logger.print_log("加载配置文件: {}".format(config_file_path))
         else:
-            self.logger.print_log("配置文件不存在: {}".format(config_file_path))
+            config_json_str = RecoilsConfig.read_file_from_url("http://1.15.138.227:9000/apex/specs.json")
+            self.specs_data = json.loads(config_json_str)
+            self.logger.print_log("加载配置文件成功")
 
     def get_config(self, name):
         """
@@ -43,6 +46,30 @@ class RecoilsConfig:
                 return spec
         return None
 
+    @staticmethod
+    def read_file_from_url(url):
+        """
+
+        :param url:
+        :return:
+        """
+        try:
+            # 发送GET请求获取文件内容
+            # headers = random.choice(headers_list)
+            response = requests.get(url)
+            response.encoding = 'utf-8'
+            # 检查请求是否成功
+            if response.status_code == 200:
+                # 根据换行符切割文件内容并返回列表
+                text = response.text
+                return text
+            else:
+                print(f"Failed to read file from URL. Status code: {response.status_code}")
+                return None
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
 
 class RecoilsListener:
     """
@@ -54,7 +81,7 @@ class RecoilsListener:
                  recoils_config: RecoilsConfig,
                  mouse_listener: MouseListener,
                  select_gun: SelectGun,
-                 intent_manager: IntentManager,game_windows_status):
+                 intent_manager: IntentManager, game_windows_status):
         self.logger = logger
         self.recoils_config = recoils_config
         self.mouse_listener = mouse_listener
@@ -77,9 +104,12 @@ class RecoilsListener:
             left_press = self.mouse_listener.is_press(Button.left)
             right_press = self.mouse_listener.is_press(Button.right)
             if current_gun is not None and left_press:
-                spec = self.recoils_config.get_config(current_gun)['recoils']
+                current_hot_pop = self.select_gun.current_hot_pop
+                spec = self.recoils_config.get_config(current_gun)
+                spec = spec['recoils']
+                if current_hot_pop is not None and current_hot_pop in spec:
+                    spec = spec[current_hot_pop]
                 if spec is not None:
-                    sleep_time = 0.001
                     if start_time is None:
                         start_time = time.time()
                         self.logger.print_log("开始压枪")
@@ -88,6 +118,10 @@ class RecoilsListener:
                     else:
                         spec = spec['un_aim']
                     time_points = spec['time_points']
+                    if len(time_points) == 0:
+                        time.sleep(0.01)
+                        continue
+                    sleep_time = 0.001
                     point = (time.time() - start_time) * 1000
                     index = len(time_points) - 1 if point > time_points[-1] else next(
                         (i - 1 for i, time_point in enumerate(time_points) if time_point > point),
