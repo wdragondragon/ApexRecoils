@@ -70,16 +70,7 @@ if __name__ == '__main__':
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
 
-    # 压枪
-    recoils_config = RecoilsConfig(logger=logger)
-    recoils_listener = RecoilsListener(logger=logger,
-                                       recoils_config=recoils_config,
-                                       mouse_listener=apex_mouse_listener,
-                                       select_gun=select_gun,
-                                       intent_manager=intent_manager,
-                                       game_windows_status=game_windows_status)
-    recoils_listener_thread = threading.Thread(target=recoils_listener.start)
-    recoils_listener_thread.start()
+
 
     # logger.set_recoils_config(recoils_config)
 
@@ -103,6 +94,17 @@ if __name__ == '__main__':
             rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
                                                    config_name=config.rea_snow_gun_config_name)
         select_gun.connect(rea_snow_select_gun.trigger_button)
+    else:
+        # 压枪
+        recoils_config = RecoilsConfig(logger=logger)
+        recoils_listener = RecoilsListener(logger=logger,
+                                           recoils_config=recoils_config,
+                                           mouse_listener=apex_mouse_listener,
+                                           select_gun=select_gun,
+                                           intent_manager=intent_manager,
+                                           game_windows_status=game_windows_status)
+        recoils_listener_thread = threading.Thread(target=recoils_listener.start)
+        recoils_listener_thread.start()
 
     if config.key_trigger_mode == 'local':
         # jtk启动
