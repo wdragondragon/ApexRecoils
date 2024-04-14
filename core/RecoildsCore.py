@@ -94,8 +94,8 @@ class RecoilsListener:
                                 y_value = y_values[num]
                                 self.logger.print_log(
                                     f'执行时间：[{time_points[num]}]<[{point}],正在压第{str(num + 1)}步，剩余{str(len(time_points) - (num + 1))}步，鼠标移动轨迹为({x_value},{y_value})')
-                                self.intent_manager.set_intention(x_value, y_value)
-                                # self.intent_manager.mouse_mover.move_rp(x_value, y_value)
+                                # self.intent_manager.set_intention(x_value, y_value)
+                                self.intent_manager.mouse_mover.move_rp(x_value, y_value)
                             else:
                                 self.logger.print_log(
                                     f'缺失第[{num + 1}个轨迹，时间为{time_points[num]}])')
