@@ -106,10 +106,10 @@ class RecoilsListener:
             if current_gun is not None and left_press:
                 current_hot_pop = self.select_gun.current_hot_pop
                 spec = self.recoils_config.get_config(current_gun)
-                spec = spec['recoils']
-                if current_hot_pop is not None and current_hot_pop in spec:
-                    spec = spec[current_hot_pop]
                 if spec is not None:
+                    spec = spec['recoils']
+                    if current_hot_pop is not None and current_hot_pop in spec:
+                        spec = spec[current_hot_pop]
                     if start_time is None:
                         start_time = time.time()
                         self.logger.print_log("开始压枪")
