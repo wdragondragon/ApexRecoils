@@ -20,6 +20,52 @@ def merge(time_points, x, y, step):
     print(time_points_merge)
 
 
+def merge_x_y(x, y, time_points_x, time_points_y):
+    new_x = []
+    new_y = []
+    new_time_points = []
+
+    x_length = len(time_points_x)
+    y_length = len(time_points_y)
+
+    xi = 0
+    yi = 0
+    while xi < x_length or yi < y_length:
+        if xi >= x_length:
+            new_y.append(y[yi])
+            new_x.append(0)
+            new_time_points.append(time_points_y[yi])
+            yi += 1
+            continue
+        if yi >= y_length:
+            new_x.append(x[xi])
+            new_y.append(0)
+            new_time_points.append(time_points_x[xi])
+            xi += 1
+            continue
+
+        if time_points_x[xi] == time_points_y[yi]:
+            new_x.append(x[xi])
+            new_y.append(y[yi])
+            new_time_points.append(time_points_x[xi])
+            xi += 1
+            yi += 1
+        elif time_points_x[xi] < time_points_y[yi]:
+            new_x.append(x[xi])
+            new_y.append(0)
+            new_time_points.append(time_points_x[xi])
+            xi += 1
+        elif time_points_x[xi] > time_points_y[yi]:
+            new_y.append(y[yi])
+            new_x.append(0)
+            new_time_points.append(time_points_y[yi])
+            yi += 1
+    print(new_time_points)
+    print(new_x)
+    print(new_y)
+    return new_time_points, new_x, new_y
+
+
 time_points = [0, 3, 12, 16, 25, 28, 35, 41, 47, 58, 60, 67, 77, 82, 92, 99, 104, 112, 118, 129, 132, 142, 149, 154,
                162, 167, 171, 180, 185, 191, 197, 207, 216, 220, 233, 240, 244, 257, 264, 268, 277, 290, 295, 307, 313,
                319, 329, 337, 343, 354, 361, 375, 380, 387, 395, 404, 408, 417, 425, 434, 446, 450, 460, 466, 475, 490,
@@ -45,3 +91,10 @@ y = [-1, 0, -1, 3, -1, 7, 1, 7, 2, 2, 6, 2, 5, 2, 2, 6, 3, 2, 2, 2, 0, 2, 4, 2, 
      1, 1, 3, 2, 1, 1, 2, 1, 1, 0, 2, 1, 0, 1, 1, 1, 0, -2, 1, -4, 1, 1, -4, 2, -4, 0, -4, -1, -1, 0, 3, -1, 0, 4, -1,
      -1, 0, 0, -2, -2, -2, -2, -2, -2, -3, -2, -1, -2, 3, 4, -1, 4, 2, -2]
 merge(time_points, x, y, 27.5)
+
+t_x = [1, 3, 6]
+x = [1, 3, 4]
+t_y = []
+y = []
+
+merge_x_y(x, y, t_x, t_y)
