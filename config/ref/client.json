@@ -8,8 +8,8 @@
   "delay_refresh_buttons": {
   },
   "mouse_mover": "win32api",
-  "rea_snow_mouse_mover": "distributed",
-  "server_mouse_mover": "km_box_net",
+  "rea_snow_mouse_mover": "win32api",
+  "server_mouse_mover": "win32api",
   "mouse_mover_params": {
     "win32api": {},
     "km_box": {
@@ -47,9 +47,9 @@
     "专注",
     "哈沃克"
   ],
-  "comparator_mode": "distributed",
+  "comparator_mode": "net",
   "read_image_mode": "net",
-  "key_trigger_mode": "distributed",
+  "key_trigger_mode": "local",
   "delayed_activation_key_list": {
     "0x09": {
       "down_deactivation": true,
@@ -91,6 +91,6 @@
       "b0"
     ]
   },
-  "rea_snow_gun_config_name": "ReaSnowGun",
+  "rea_snow_gun_config_name": "",
   "screen_taker": "local"
 }

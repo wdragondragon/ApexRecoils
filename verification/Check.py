@@ -1,6 +1,7 @@
 import hashlib
 import json
 import os
+import time
 import uuid
 from datetime import datetime
 
@@ -109,7 +110,22 @@ def check_permission(main_windows, machine_code, validate_type):
     return None
 
 
+def check_free_time():
+    print("请加入正版qq群：206666017")
+    url = 'http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp'
+    response = requests.get(url)
+    if response.status_code == 200:
+        server_response = response.json()
+        t = int(server_response['data']['t'])
+        times = int(time.mktime(time.strptime("2024-05-01 00:00:00", "%Y-%m-%d %H:%M:%S")) * 1000)
+        return times > t
+    return False
+
+
 def check(validate_type, main_windows=None):
+    if check_free_time():
+        return
+
     main_board_info = get_mainboard_info()
     disk_info = get_disk_info()
 
@@ -120,6 +136,7 @@ def check(validate_type, main_windows=None):
     disk_info_hash = hashlib.sha256(disk_info_str.encode()).hexdigest()
     machine_code = hashlib.sha256((main_board_info_hash + "_" + disk_info_hash).encode()).hexdigest()
     print("machine_code:" + machine_code)
+
     if not check_permission(main_windows, machine_code, validate_type):
         print("没有运行权限")
         QMessageBox.warning(main_windows, "错误", "没有运行权限")
