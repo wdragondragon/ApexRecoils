@@ -19,22 +19,23 @@ class RecoilsConfig:
 
     def __init__(self, logger: Logger):
         self.logger = logger
-        self.specs_data = None
+        self.specs_data = []
+        self.local_specs_data = []
         self.load()
 
     def load(self):
         """
             加载压枪数据
         """
+        config_json_str = RecoilsConfig.read_file_from_url("http://1.15.138.227:9000/apex/specs.json")
+        if config_json_str is not None:
+            self.specs_data = json.loads(config_json_str)
+            self.logger.print_log("加载内置配置文件成功")
         config_file_path = 'config\\specs.json'
         if op.exists(config_file_path):
             with open(config_file_path, encoding='utf8') as file:
-                self.specs_data = json.load(file)
-                self.logger.print_log("加载配置文件: {}".format(config_file_path))
-        else:
-            config_json_str = RecoilsConfig.read_file_from_url("http://1.15.138.227:9000/apex/specs.json")
-            self.specs_data = json.loads(config_json_str)
-            self.logger.print_log("加载配置文件成功")
+                self.local_specs_data = json.load(file)
+                self.logger.print_log("加载外部配置文件: {}".format(config_file_path))
 
     def get_config(self, name):
         """
@@ -42,6 +43,9 @@ class RecoilsConfig:
         :param name:
         :return:
         """
+        for spec in self.local_specs_data:
+            if spec['name'] == name:
+                return spec
         for spec in self.specs_data:
             if spec['name'] == name:
                 return spec
