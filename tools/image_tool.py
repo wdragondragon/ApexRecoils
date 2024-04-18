@@ -12,7 +12,6 @@ config.read("image_tool.conf", encoding="utf-8")
 # 获取当前屏幕的高
 
 # 睡眠1秒 给自己留时间打开需要打开的页面
-# time.sleep(1)
 # print('获取当前屏幕', xw, yh)
 
 path = config.get("conf", "path")  # 需要保存到E盘的目录文件名
