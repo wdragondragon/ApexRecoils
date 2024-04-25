@@ -174,7 +174,7 @@ class SelectGun:
                                                                                      score_hop_up_temp))
 
         for func in self.call_back:
-            func(self.current_gun, self.current_scope, self.current_hot_pop)
+            func(self.current_gun, self.current_scope, self.current_hot_pop, key_type, key)
 
         return self.current_gun is not None
 

@@ -35,12 +35,14 @@ class ReaSnowSelectGun:
 
         self.no_macro_key = Tools.convert_to_decimal(self.no_macro_key)
 
-    def trigger_button(self, select_gun, select_scope, hot_pop):
+    def trigger_button(self, select_gun, select_scope, hot_pop, key_type, key):
         """
 
         :param select_gun:
         :param select_scope:
         :param hot_pop:
+        :param key_type:
+        :param key:
         :return:
         """
         if select_gun is None or select_scope is None:

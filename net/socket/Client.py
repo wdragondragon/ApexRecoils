@@ -38,15 +38,17 @@ class Client:
                 return 0, 0
             return result
 
-    def key_trigger(self, select_gun, select_scope, hot_pop):
+    def key_trigger(self, select_gun, select_scope, hot_pop, key_type, key):
         """
 
         :param select_gun:
         :param select_scope:
         :param hot_pop:
+        :param key_type:
+        :param key:
         """
         with self.intention_lock:
-            data = (select_gun, select_scope, hot_pop)
+            data = (select_gun, select_scope, hot_pop, key_type, key)
             data = pickle.dumps(data)
             SocketUtil.send(self.client_socket, data)
             SocketUtil.recv(self.client_socket)
