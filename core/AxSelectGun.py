@@ -93,3 +93,5 @@ class AxSelectGun:
                 # todo 按下组合键绑定宏 并开启宏
             # 开启宏
             self.mouse_mover.click_key(self.open_key)
+        self.refresh_index = [False, False]
+        
