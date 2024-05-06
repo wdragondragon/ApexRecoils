@@ -111,7 +111,7 @@ def check_permission(main_windows, machine_code, validate_type):
 
 
 def check_free_time():
-    print("请加入正版qq群：206666017")
+    print("请加入正版qq群：206666041")
     url = 'http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp'
     response = requests.get(url)
     if response.status_code == 200:
