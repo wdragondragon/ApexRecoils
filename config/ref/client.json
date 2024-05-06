@@ -8,7 +8,7 @@
   "delay_refresh_buttons": {
   },
   "mouse_mover": "win32api",
-  "rea_snow_mouse_mover": "distributed",
+  "rea_snow_mouse_mover": "km_box_net",
   "server_mouse_mover": "km_box_net",
   "mouse_mover_params": {
     "win32api": {},
@@ -49,7 +49,7 @@
   ],
   "comparator_mode": "net",
   "read_image_mode": "net",
-  "key_trigger_mode": "distributed",
+  "key_trigger_mode": "local",
   "delayed_activation_key_list": {
     "0x09": {
       "down_deactivation": true,
