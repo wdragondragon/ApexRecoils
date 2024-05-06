@@ -15,6 +15,9 @@ class ReaSnowSelectGun:
         self.logger = logger
         self.config_path = f".\\config\\{config_name}.json"
         self.mouse_mover = mouse_mover
+        self.current_gun = None
+        self.current_scope = None
+        self.current_hot_pop = None
         if op.exists(self.config_path):
             with open(self.config_path, encoding='utf-8') as global_file:
                 self.key_dict = json.load(global_file)
@@ -80,3 +83,6 @@ class ReaSnowSelectGun:
             self.mouse_mover.click_key(Tools.convert_to_decimal(scope_data))
             if self.auto_caps:
                 self.mouse_mover.toggle_caps_lock(caps_lock)
+        self.current_gun = select_gun
+        self.current_scope = select_scope
+        self.current_hot_pop = hot_pop

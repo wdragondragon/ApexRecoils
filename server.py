@@ -53,7 +53,7 @@ if __name__ == '__main__':
     joy_listener = JoyListener(logger=logger)
     joy_listener.connect_axis(jtk.axis_to_key)
     joy_listener.start(None)
-    rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener)
+    rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=rea_snow_select_gun)
 
     system_tray_app = SystemTrayApp(logger, "server")
     server = Server(logger=logger, server_address=(config.distributed_param["ip"], config.distributed_param["port"]),

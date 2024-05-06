@@ -70,8 +70,6 @@ if __name__ == '__main__':
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
 
-
-
     # logger.set_recoils_config(recoils_config)
 
     # if config.shake_gun_toggle:
@@ -113,7 +111,7 @@ if __name__ == '__main__':
         joy_listener = JoyListener(logger=logger)
         joy_listener.connect_axis(jtk.axis_to_key)
         joy_listener.start(None)
-        rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener)
+        rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=select_gun)
     system_tray_app = SystemTrayApp(logger, "client")
     # 自动识别启动
     threading.Thread(target=select_gun.test).start()

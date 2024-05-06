@@ -28,7 +28,7 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
         return KmBoxMover(logger, mouse_mover_param)
     elif mouse_model == "wu_ya":
         return WuYaMover(logger, mouse_mover_param)
-    elif mouse_model == "fei_yi_lai":
+    elif mouse_model == "fei_yi_lai" or mouse_model == 'fei_yi_lai_single':
         return FeiMover(logger, mouse_mover_param)
     elif mouse_model == "km_box_net":
         current_mover = KmBoxNetMover(logger, mouse_mover_param)
