@@ -5,8 +5,10 @@ from core.kmnet_listener.KmBoxNetListener import KmBoxNetListener
 from core.kmnet_listener.ToggleKeyListener import ToggleKeyListener
 from log.Logger import Logger
 from mouse_mover.FeiMover import FeiMover
+from mouse_mover.GHubMover import GHubMover
 from mouse_mover.KmBoxMover import KmBoxMover
 from mouse_mover.KmBoxNetMover import KmBoxNetMover
+from mouse_mover.PanNiMover import PanNiMover
 from mouse_mover.Win32ApiMover import Win32ApiMover
 from mouse_mover.WuYaMover import WuYaMover
 from net.socket.SocketMouseMover import SocketMouseMover
@@ -28,6 +30,10 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
         return KmBoxMover(logger, mouse_mover_param)
     elif mouse_model == "wu_ya":
         return WuYaMover(logger, mouse_mover_param)
+    elif mouse_model == 'logitech':
+        return GHubMover(logger, mouse_mover_param)
+    elif mouse_model == "pan_ni":
+        return PanNiMover(logger, mouse_mover_param)
     elif mouse_model == "fei_yi_lai" or mouse_model == 'fei_yi_lai_single':
         return FeiMover(logger, mouse_mover_param)
     elif mouse_model == "km_box_net":

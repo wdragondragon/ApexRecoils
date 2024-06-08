@@ -39,10 +39,11 @@ def get_disk_info():
     for pd in s.Win32_DiskDrive():
         disk.append(
             {
-                "Serial": s.Win32_PhysicalMedia()[0].SerialNumber.lstrip().rstrip(),  # 获取硬盘序列号，调用另外一个win32 API
+                # "Serial": s.Win32_PhysicalMedia()[0].SerialNumber.lstrip().rstrip(),  # 获取硬盘序列号，调用另外一个win32 API
+                "Serial": pd.qualifiers['UUID'].lstrip().rstrip(),
                 "ID": pd.deviceid,
-                "Caption": pd.Caption,
-                "size": str(int(float(pd.Size) / 1024 / 1024 / 1024)) + "G"
+                "Caption": pd.Caption
+                # "size": str(int(float(pd.Size) / 1024 / 1024 / 1024)) + "G"
             }
         )
     return sorted(disk, key=lambda x: x['ID'])
@@ -117,7 +118,7 @@ def check_free_time():
     if response.status_code == 200:
         server_response = response.json()
         t = int(server_response['data']['t'])
-        times = int(time.mktime(time.strptime("2024-05-01 00:00:00", "%Y-%m-%d %H:%M:%S")) * 1000)
+        times = int(time.mktime(time.strptime("2024-07-01 00:00:00", "%Y-%m-%d %H:%M:%S")) * 1000)
         return times > t
     return False
 
