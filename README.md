@@ -12,6 +12,8 @@ update(2024-04-18): mnk压枪数据开发基本完成。
 
 开源交流群新建于2024-04-25，群号：206666041，入群前请贡献出你的star。
 
+[![Star History Chart](https://api.star-history.com/svg?repos=wdragondragon/ApexRecoils&type=Date)](https://star-history.com/#wdragondragon/ApexRecoils&Date)
+
 ### 功能清单
 
 - [x] 自动识别枪械
