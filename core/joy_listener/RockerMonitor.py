@@ -20,7 +20,7 @@ class RockerMonitor:
         self.hold_time = None
         joy_listener.connect_joystick(pygame.JOYAXISMOTION, self.monitor)
 
-    def monitor(self, joystick):
+    def monitor(self, joystick, event):
         """
         :param joystick
         """

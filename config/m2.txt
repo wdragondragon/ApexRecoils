@@ -77,3 +77,19 @@ p2020   [   47
 re45    ,   54
 哈沃克无涡轮  Up  82
 汗洛  Left    80
+
+
+星辰v10 s21
+R301    pad1    F2  F3  F4
+r99 F9
+电冲  0   Prtsc
+喷火  Right   pad7    pad8
+平行  F5  F6  F7  F8
+car F11 F12
+汗洛  insert  delete  pgup    pgdn
+哈沃克无涡轮  i   o   p
+哈沃克涡轮   ]   \
+复仇  L   ;   '   ,
+lstar   =   Up  Down
+转换者 ScrLk
+专注空投·

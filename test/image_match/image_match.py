@@ -4,7 +4,8 @@ import cv2
 import numpy as np
 
 
-def match_template(origin_image, match_image_list, save_image=False, early_termination=True, threshold=0.6):
+def match_template(origin_image, match_image_list, save_image=False, early_termination=True, threshold=0.6,
+                   dynamic_range=0.5):
     # 转换为灰度图
     image_gray = cv2.cvtColor(origin_image, cv2.COLOR_BGR2GRAY)
     found_list = []
@@ -16,9 +17,9 @@ def match_template(origin_image, match_image_list, save_image=False, early_termi
         found = None
         # 定义缩放范围
         if temp_scale is None:
-            scales = np.linspace(0.5, 1.5, 5)[::-1]
+            scales = np.linspace(1 - dynamic_range, 1 + dynamic_range, 5)
         else:
-            scales = np.linspace(temp_scale - 0.4, temp_scale + 0.4, 5)[::-1]
+            scales = np.linspace(temp_scale - dynamic_range, temp_scale + dynamic_range, 5)
         for scale in scales:
             resized = cv2.resize(template_gray, (int(template_width * scale), int(template_height * scale)))
             r = float(resized.shape[1]) / template_gray.shape[1]
@@ -31,8 +32,8 @@ def match_template(origin_image, match_image_list, save_image=False, early_termi
 
             if found is None or max_val > found[0]:
                 found = (max_val, max_loc, r)
-                temp_scale = scale
                 if found[0] > threshold:
+                    temp_scale = scale
                     print(scales)
                     break
 
@@ -55,10 +56,10 @@ def match_template(origin_image, match_image_list, save_image=False, early_termi
 
 if __name__ == '__main__':
     # 读取图像
-    image_path = 'big.png'  # 替换为你的大图路径
+    image_path = 'box.png'  # 替换为你的大图路径
     image = cv2.imread(image_path)
 
-    template_path = ['s.png', 's1.png', 's2.png']  # 替换为你要查找的小图路径
+    template_path = ['s.png', 's2.png', 's3.png']  # 替换为你要查找的小图路径
     template_image = [cv2.imread(template) for template in template_path]
 
     start = time.time()

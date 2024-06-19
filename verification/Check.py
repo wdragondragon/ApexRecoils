@@ -124,8 +124,8 @@ def check_free_time():
 
 
 def check(validate_type, main_windows=None):
-    if check_free_time():
-        return
+    # if check_free_time():
+    #     return
 
     main_board_info = get_mainboard_info()
     disk_info = get_disk_info()

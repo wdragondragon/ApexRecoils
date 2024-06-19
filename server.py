@@ -6,10 +6,13 @@ from PyQt5.QtWidgets import QApplication
 from core.Config import Config
 from core.GameWindowsStatus import GameWindowsStatus
 from core.ReaSnowSelectGun import ReaSnowSelectGun
+from core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from core.image_comparator.LocalImageComparator import LocalImageComparator
 from core.joy_listener.JoyListener import JoyListener
 from core.joy_listener.JoyToKey import JoyToKey
 from core.joy_listener.RockerMonitor import RockerMonitor
+from core.joy_listener.S1SwitchMonitor import S1SwitchMonitor
+from core.screentaker.LocalMssScreenTaker import LocalMssScreenTaker
 from core.screentaker.LocalScreenTaker import LocalScreenTaker
 from log.Logger import Logger
 from mouse_mover import MoverFactory
@@ -53,6 +56,14 @@ if __name__ == '__main__':
     joy_listener = JoyListener(logger=logger)
     joy_listener.connect_axis(jtk.axis_to_key)
     joy_listener.start(None)
+    s1_switch_monitor = S1SwitchMonitor(logger=logger, joy_listener=joy_listener,
+                                        licking_state_path=config.licking_state_path,
+                                        licking_state_bbox=config.licking_state_bbox,
+                                        dynamicSizeImageComparator=DynamicSizeImageComparator(logger=logger,
+                                                                                              base_path=config.image_base_path),
+                                        screen_taker=LocalMssScreenTaker(logger),
+                                        mouser_mover=mouse_mover, toggle_key="29"
+                                        )
     rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=rea_snow_select_gun)
 
     system_tray_app = SystemTrayApp(logger, "server")
