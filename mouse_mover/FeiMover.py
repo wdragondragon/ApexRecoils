@@ -28,6 +28,12 @@ class FeiMover(MouseMover):
     def click_key(self, value):
         self.dll.M_KeyPress(self.hdl, value, 1)
 
+    def key_down(self, value):
+        self.dll.M_KeyDown(self.hdl, value)
+
+    def key_up(self, value):
+        self.dll.M_KeyUp(self.hdl, value)
+
     def init_dll(self):
         objdll = ctypes.cdll.LoadLibrary(r".\msdk.dll")
         # 定义函数原型

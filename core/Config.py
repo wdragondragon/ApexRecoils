@@ -73,11 +73,13 @@ class Config:
         self.game_solution = None
         self.mouse_mover_params = None
         self.select_gun_bbox = None
+        self.licking_state_bbox = None
         self.select_scope_bbox = None
         self.select_hop_up_bbox = None
         self.image_path = None
         self.scope_path = None
         self.hop_up_path = None
+        self.licking_state_path = None
         self.shake_gun_toggle = None
         self.shake_gun_toggle_button = None
         self.shake_gun_trigger_button = None
@@ -145,6 +147,8 @@ class Config:
         else:
             self.select_gun_bbox = screenshot_resolution[(1920, 1080)]
 
+        self.licking_state_bbox = [(0, 0, self.desktop_width, self.desktop_height)]
+
         if self.game_solution in scope_screenshot_resolution:
             self.select_scope_bbox = scope_screenshot_resolution[self.game_solution]
 
@@ -163,6 +167,7 @@ class Config:
         self.image_path = '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
         self.scope_path = 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
         self.hop_up_path = 'hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
+        self.licking_state_path = 'licking/'
 
         self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E', 'e'])
         self.delay_refresh_buttons = self.get_config(self.config_data, 'delay_refresh_buttons', {})
