@@ -14,9 +14,36 @@ class LocalImageComparator(ImageComparator):
     """
 
     def __init__(self, logger: Logger, base_path):
+        super().__init__(logger, base_path)
         self.image_cache = {}
         self.logger = logger
         self.base_path = base_path
+
+    def read_file_from_url(self, path):
+        return [file for file in os.listdir(path) if file.endswith('.png') or file.endswith(".jpg")]
+
+    def cache_image(self, base_path, url):
+        # 如果图像已经在缓存中，直接返回缓存的图像
+        url = base_path + url
+        url = url.strip()
+        if url in self.image_cache:
+            return
+        self.logger.print_log(f"正在加载图片：{url.replace(self.base_path, '')}")
+        if os.path.exists(url) and os.path.isfile(url):
+            self.image_cache[url] = np.fromfile(url, dtype=np.uint8)
+        else:
+            # 如果请求失败，打印错误信息
+            self.logger.print_log(f"Failed to load image: {url}. check exists")
+
+    def get_image_from_cache(self, url):
+        """
+            缓存获取图片
+        """
+        # 如果图像已经在缓存中，直接返回缓存的图像
+        url = url.strip()
+        if url not in self.image_cache:
+            self.cache_image(url)
+        return self.image_cache[url]
 
     def compare_image(self, img, path_image):
         """
@@ -25,33 +52,14 @@ class LocalImageComparator(ImageComparator):
         :param path_image:
         :return:
         """
-        image_a = np.array(img)
-        image_b = cv2.imdecode(np.fromfile(path_image, dtype=np.uint8), cv2.IMREAD_COLOR)
-        gray_a = cv2.cvtColor(image_a, cv2.COLOR_BGR2GRAY)
-        gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)
-        (score, diff) = structural_similarity(gray_a, gray_b, full=True)
-        return score
+        cache_image = self.image_cache.get(path_image)
 
-    def compare_with_path(self, path, images, lock_score, discard_score):
-        """
-            截图范围与文件路径内的所有图片对比
-        :param path:
-        :param images:
-        :param lock_score:
-        :param discard_score:
-        :return:
-        """
-        path = self.base_path + path
-        select_name = ''
-        score_temp = 0.00000000000000000000
-        for img in images:
-            for fileName in [file for file in os.listdir(path) if file.endswith('.png') or file.endswith(".jpg")]:
-                score = self.compare_image(img, path + fileName)
-                if score > score_temp:
-                    score_temp = score
-                    select_name = fileName.split('.')[0]
-                if score_temp > lock_score:
-                    break
-        if score_temp < discard_score:
-            select_name = None
-        return select_name, score_temp
+        if cache_image:
+            image_a = np.array(img)
+            image_b = cv2.imdecode(cache_image, cv2.IMREAD_COLOR)
+            gray_a = cv2.cvtColor(image_a, cv2.COLOR_BGR2GRAY)
+            gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)
+            (score, diff) = structural_similarity(gray_a, gray_b, full=True)
+            return score
+        else:
+            return 0

@@ -56,16 +56,16 @@ if __name__ == '__main__':
     joy_listener = JoyListener(logger=logger)
     joy_listener.connect_axis(jtk.axis_to_key)
     joy_listener.start(None)
+
+    dynamic_size_image_comparator = DynamicSizeImageComparator(logger=logger,
+                                                               base_path=config.image_base_path,
+                                                               screen_taker=LocalMssScreenTaker(logger))
     s1_switch_monitor = S1SwitchMonitor(logger=logger, joy_listener=joy_listener,
                                         licking_state_path=config.licking_state_path,
                                         licking_state_bbox=config.licking_state_bbox,
-                                        dynamicSizeImageComparator=DynamicSizeImageComparator(logger=logger,
-                                                                                              base_path=config.image_base_path,
-                                                                                              screen_taker=LocalMssScreenTaker(
-                                                                                                  logger)),
-                                        screen_taker=LocalMssScreenTaker(logger),
-                                        mouser_mover=mouse_mover, toggle_key="29"
-                                        )
+                                        mouser_mover=mouse_mover,
+                                        toggle_key="29",
+                                        dynamic_size_image_comparator=dynamic_size_image_comparator)
     rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=rea_snow_select_gun)
 
     system_tray_app = SystemTrayApp(logger, "server")

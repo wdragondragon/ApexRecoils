@@ -21,24 +21,22 @@ class DynamicSizeImageComparator(NetImageComparator):
     def compare_with_path(self, path, images, lock_score, discard_score):
         path = self.base_path + path
         image_info_arr = [image_info.split() for image_info in
-                          self.read_file_from_url(path + "list.txt")]
+                          self.read_file_from_url_and_cache(path, "list.txt")]
         select_name, score_temp = self.match_template(path, image_info_arr, threshold=discard_score)
         return select_name, score_temp
 
     def match_template(self, path, image_info_arr, threshold=0.8):
         for image_info in image_info_arr:
-            file_path = path + image_info[0]
-            box = (int(image_info[1]), int(image_info[2]), int(image_info[3]), int(image_info[4]))
-            downloaded_image = self.get_image_from_cache(file_path)
-            downloaded_image.seek(0)
-            image_a = cv2.imdecode(np.frombuffer(downloaded_image.getvalue(), dtype=np.uint8), cv2.IMREAD_COLOR)
-            downloaded_image.close()
-            image_b = self.screen_taker.get_images_from_bbox([box])[0]
-            image_b = np.array(image_b)
-            gray_a = cv2.cvtColor(image_a, cv2.COLOR_BGR2GRAY)
-            gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)
-
-            (score, diff) = structural_similarity(gray_a, gray_b, full=True)
+            image_path, x, y, w, h = image_info
+            image_path = path + image_path
+            box = (int(x), int(y), int(w), int(h))
+            img = self.screen_taker.get_images_from_bbox([box])[0]
+            score = super().compare_image(img, image_path)
             if score > threshold:
-                return image_info[0], score
+                return image_info[0].split(".")[0], score
         return "", 0.0
+
+    def cache_image(self, base_path, line_content):
+        image_path, x, y, w, h = line_content
+        image_path = base_path + image_path
+        super().cache_image(base_path, image_path)

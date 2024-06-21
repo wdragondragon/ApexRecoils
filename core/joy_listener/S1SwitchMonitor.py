@@ -16,15 +16,13 @@ class S1SwitchMonitor:
                  licking_state_path,
                  licking_state_bbox,
                  toggle_key,
-                 dynamicSizeImageComparator: DynamicSizeImageComparator,
-                 screen_taker: ScreenTaker,
+                 dynamic_size_image_comparator: DynamicSizeImageComparator,
                  mouser_mover: MouseMover, retry=5):
         self.logger = logger
-        self.dynamicSizeImageComparator = dynamicSizeImageComparator
+        self.dynamic_size_image_comparator = dynamic_size_image_comparator
         self.licking_state_path = licking_state_path
         self.licking_state_bbox = licking_state_bbox
         self.toggle_key = toggle_key
-        self.screen_taker = screen_taker
         self.mouser_mover = mouser_mover
         self.click_state = False
         self.threading_state = False
@@ -43,10 +41,11 @@ class S1SwitchMonitor:
         # 触发后背包判断后，开始识别，识别到背包中则按下切层，直到未识别到背包则松开并退出循环
         while True:
             start = time.time()
-            _, score = self.dynamicSizeImageComparator.compare_with_path(path=self.licking_state_path, images=None,
-                                                                         lock_score=1,
-                                                                         discard_score=0.6)
-            print(f'识别耗时：{int((time.time() - start) * 1000)},识别分数:{score}')
+            select_name, score = self.dynamic_size_image_comparator.compare_with_path(path=self.licking_state_path,
+                                                                                      images=None,
+                                                                                      lock_score=1,
+                                                                                      discard_score=0.6)
+            print(f'识别耗时：{int((time.time() - start) * 1000)},识别到{select_name},识别分数:{score}')
 
             if not self.click_state:
                 if score > 0.0:
