@@ -50,27 +50,13 @@ if __name__ == '__main__':
                                                         config=config,
                                                         mouse_model=config.mouse_mover,
                                                         game_windows_status=game_windows_status)
-    # jtk启动
-    jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mouse_mover,
-                   game_windows_status=game_windows_status)
-    joy_listener = JoyListener(logger=logger)
-    joy_listener.connect_axis(jtk.axis_to_key)
-    joy_listener.start(None)
-
-    dynamic_size_image_comparator = DynamicSizeImageComparator(logger=logger,
-                                                               base_path=config.image_base_path,
-                                                               screen_taker=LocalMssScreenTaker(logger))
-    s1_switch_monitor = S1SwitchMonitor(logger=logger, joy_listener=joy_listener,
-                                        licking_state_path=config.licking_state_path,
-                                        licking_state_bbox=config.licking_state_bbox,
-                                        mouser_mover=mouse_mover,
-                                        toggle_key="29",
-                                        dynamic_size_image_comparator=dynamic_size_image_comparator)
-    rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=rea_snow_select_gun)
 
     system_tray_app = SystemTrayApp(logger, "server")
     server = Server(logger=logger, server_address=(config.distributed_param["ip"], config.distributed_param["port"]),
                     image_comparator=image_comparator,
-                    select_gun=rea_snow_select_gun, mouse_mover=mouse_mover, screen_taker=LocalScreenTaker(logger))
+                    select_gun=rea_snow_select_gun,
+                    mouse_mover=mouse_mover,
+                    c1_mouse_mover=c1_mouse_mover,
+                    screen_taker=LocalScreenTaker(logger))
     threading.Thread(target=server.wait_client).start()
     sys.exit(app.exec_())

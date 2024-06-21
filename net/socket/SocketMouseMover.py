@@ -6,17 +6,16 @@ from net.socket.Client import Client
 
 
 class SocketMouseMover(MouseMover):
-    def __init__(self, logger: Logger, mouse_mover_param):
+    def __init__(self, logger: Logger, mouse_mover_param, mode="mouse_mover"):
         super().__init__(mouse_mover_param)
         self.logger = logger
-        self.client = Client((mouse_mover_param["ip"], mouse_mover_param["port"]), "mouse_mover")
+        self.mode = mode
+        self.client = Client((mouse_mover_param["ip"], mouse_mover_param["port"]), mode)
         self.listener = None
         self.toggle_key_listener = None
-        self.server_mouse_mover = None
 
     def move_rp(self, x: int, y: int):
         self.client.mouse_mover("move_rp", (x, y))
-
 
     def move(self, x: int, y: int):
         self.client.mouse_mover("move", (x, y))

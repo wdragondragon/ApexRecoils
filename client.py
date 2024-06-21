@@ -11,9 +11,11 @@ from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.RecoildsCore import RecoilsListener, RecoilsConfig
 from core.SelectGun import SelectGun
 from core.image_comparator import ImageComparatorFactory
+from core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from core.joy_listener.JoyListener import JoyListener
 from core.joy_listener.JoyToKey import JoyToKey
 from core.joy_listener.RockerMonitor import RockerMonitor
+from core.joy_listener.S1SwitchMonitor import S1SwitchMonitor
 from core.screentaker import ScreenTakerFactory
 from log.Logger import Logger
 from mouse_mover import MoverFactory
@@ -70,18 +72,14 @@ if __name__ == '__main__':
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
 
-    # logger.set_recoils_config(recoils_config)
-
-    # if config.shake_gun_toggle:
-    #     shake_gun: ShakeGun = ShakeGun(logger=logger, config=config, mouse_listener=apex_mouse_listener,
-    #                                    mouse_mover=mouse_mover,
-    #                                    select_gun=select_gun)
-
+    # 如果需要对接s1
+    # 1. 识别触发s1按键，使用rea_snow_mouse_mover
+    # 2. s1的切换逻辑层的按键保持，使用rea_snow_mouse_mover
+    # 3. jtk，根据key_trigger_mode来选择 mouse_mover的配置还是固定的distributed_c1
     if config.rea_snow_gun_config_name != '':
         # 判断c1透传
         if config.rea_snow_mouse_mover == config.mouse_mover:
-            rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
-                                                   config_name=config.rea_snow_gun_config_name)
+            rea_snow_mouse_mover = mouse_mover
         else:
             rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
                                                                       mouse_listener=apex_mouse_listener,
@@ -89,9 +87,31 @@ if __name__ == '__main__':
                                                                       mouse_model=config.rea_snow_mouse_mover,
                                                                       c1_mover=mouse_mover,
                                                                       game_windows_status=game_windows_status)
-            rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
-                                                   config_name=config.rea_snow_gun_config_name)
+        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
+                                               config_name=config.rea_snow_gun_config_name)
         select_gun.connect(rea_snow_select_gun.trigger_button)
+
+        if config.key_trigger_mode == 'local':
+            c1_mover: MouseMover = mouse_mover
+        else:
+            c1_mover: MouseMover = MoverFactory.get_mover(logger=logger, config=config, mouse_model="distributed_c1")
+
+        joy_listener = JoyListener(logger=logger)
+        dynamic_size_image_comparator = DynamicSizeImageComparator(logger=logger,
+                                                                   base_path=config.image_base_path,
+                                                                   screen_taker=screen_taker)
+        s1_switch_monitor = S1SwitchMonitor(logger=logger, joy_listener=joy_listener,
+                                            licking_state_path=config.licking_state_path,
+                                            licking_state_bbox=config.licking_state_bbox,
+                                            mouser_mover=rea_snow_mouse_mover,
+                                            toggle_key="29",
+                                            dynamic_size_image_comparator=dynamic_size_image_comparator)
+        # jtk启动
+        jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mover,
+                       game_windows_status=game_windows_status)
+        joy_listener.connect_axis(jtk.axis_to_key)
+        rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=select_gun)
+        joy_listener.start(None)
     else:
         # 压枪
         recoils_config = RecoilsConfig(logger=logger)
@@ -104,14 +124,6 @@ if __name__ == '__main__':
         recoils_listener_thread = threading.Thread(target=recoils_listener.start)
         recoils_listener_thread.start()
 
-    if config.key_trigger_mode == 'local':
-        # jtk启动
-        jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=mouse_mover,
-                       game_windows_status=game_windows_status)
-        joy_listener = JoyListener(logger=logger)
-        joy_listener.connect_axis(jtk.axis_to_key)
-        joy_listener.start(None)
-        rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=select_gun)
     system_tray_app = SystemTrayApp(logger, "client")
     # 自动识别启动
     threading.Thread(target=select_gun.test).start()

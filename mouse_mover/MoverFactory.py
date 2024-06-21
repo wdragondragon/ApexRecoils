@@ -51,10 +51,11 @@ def get_mover(logger: Logger, config, mouse_listener=None, mouse_model=None, par
                                                                       toggle_hold_key=config.toggle_hold_key,
                                                                       game_windows_status=game_windows_status)
         return current_mover
-    elif mouse_model == "distributed":
-        current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param)
-        server_mover = get_mover(logger=logger, mouse_listener=mouse_listener, config=config,
-                                 mouse_model=config.server_mouse_mover, parent_mover=current_mover, c1_mover=c1_mover,
-                                 game_windows_status=game_windows_status)
-        current_mover.server_mouse_mover = server_mover
+    elif mouse_model == "distributed" or mouse_model == "distributed_c1":
+        current_mover = SocketMouseMover(logger=logger, mouse_mover_param=mouse_mover_param,
+                                         mode="mouse_mover" if mouse_model == "distributed" else "c1_mouse_mover")
+        # server_mover = get_mover(logger=logger, mouse_listener=mouse_listener, config=config,
+        #                          mouse_model=config.server_mouse_mover, parent_mover=current_mover, c1_mover=c1_mover,
+        #                          game_windows_status=game_windows_status)
+        # current_mover.server_mouse_mover = server_mover
         return current_mover

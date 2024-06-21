@@ -16,11 +16,12 @@ class Server:
     """
 
     def __init__(self, logger: Logger, server_address, image_comparator, select_gun: ReaSnowSelectGun,
-                 mouse_mover: MouseMover, screen_taker: ScreenTaker):
+                 mouse_mover: MouseMover, c1_mouse_mover: MouseMover, screen_taker: ScreenTaker):
         self.logger = logger
         self.server_address = server_address
         self.image_comparator = image_comparator
         self.mouse_mover = mouse_mover
+        self.c1_mouse_mover = c1_mouse_mover
         self.select_gun = select_gun
         self.screen_taker = screen_taker
         self.server_socket = None
@@ -70,10 +71,11 @@ class Server:
                     elif data_type == "key_trigger":
                         self.select_gun.trigger_button(*data)
                         SocketUtil.send(client_socket, pickle.dumps('ok'))
-                    elif data_type == "mouse_mover":
+                    elif data_type == "mouse_mover" or data_type == "c1_mouse_mover":
                         func_name, param = data
-                        self.logger.print_log(f"mouse_mover:{func_name}({param})) ")
-                        f = getattr(self.mouse_mover, func_name)
+                        self.logger.print_log(f"{data_type}:{func_name}({param})) ")
+                        mouse_mover = getattr(self, data_type)
+                        f = getattr(mouse_mover, func_name)
                         f(*param)
                         SocketUtil.send(client_socket, pickle.dumps('ok'))
                     elif data_type == "screen_taker":

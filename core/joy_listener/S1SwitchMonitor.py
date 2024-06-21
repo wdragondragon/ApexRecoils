@@ -5,7 +5,6 @@ import pygame
 
 from core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from core.joy_listener.JoyListener import JoyListener
-from core.screentaker.ScreenTaker import ScreenTaker
 from log.Logger import Logger
 from mouse_mover.MouseMover import MouseMover
 from tools.Tools import Tools
