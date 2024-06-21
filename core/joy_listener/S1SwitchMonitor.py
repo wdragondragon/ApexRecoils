@@ -43,11 +43,10 @@ class S1SwitchMonitor:
         # 触发后背包判断后，开始识别，识别到背包中则按下切层，直到未识别到背包则松开并退出循环
         while True:
             start = time.time()
-            images = self.screen_taker.get_images_from_bbox(self.licking_state_bbox)
-            _, score = self.dynamicSizeImageComparator.compare_with_path(path=self.licking_state_path, images=images,
+            _, score = self.dynamicSizeImageComparator.compare_with_path(path=self.licking_state_path, images=None,
                                                                          lock_score=1,
-                                                                         discard_score=0.8)
-            print(int((time.time() - start) * 1000))
+                                                                         discard_score=0.6)
+            print(f'识别耗时：{int((time.time() - start) * 1000)},识别分数:{score}')
 
             if not self.click_state:
                 if score > 0.0:

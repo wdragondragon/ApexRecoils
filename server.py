@@ -60,7 +60,9 @@ if __name__ == '__main__':
                                         licking_state_path=config.licking_state_path,
                                         licking_state_bbox=config.licking_state_bbox,
                                         dynamicSizeImageComparator=DynamicSizeImageComparator(logger=logger,
-                                                                                              base_path=config.image_base_path),
+                                                                                              base_path=config.image_base_path,
+                                                                                              screen_taker=LocalMssScreenTaker(
+                                                                                                  logger)),
                                         screen_taker=LocalMssScreenTaker(logger),
                                         mouser_mover=mouse_mover, toggle_key="29"
                                         )

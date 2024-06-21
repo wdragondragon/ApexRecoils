@@ -167,7 +167,7 @@ class Config:
         self.image_path = '{}x{}/'.format(*self.game_solution)  # 枪械图片路径
         self.scope_path = 'scope/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
         self.hop_up_path = 'hop_up/{}x{}/'.format(*self.game_solution)  # 镜子图片路径
-        self.licking_state_path = 'licking/'
+        self.licking_state_path = 'licking/{}x{}/'.format(*self.game_solution)
 
         self.refresh_buttons = self.get_config(self.config_data, 'refresh_buttons', ['1', '2', 'E', 'e'])
         self.delay_refresh_buttons = self.get_config(self.config_data, 'delay_refresh_buttons', {})

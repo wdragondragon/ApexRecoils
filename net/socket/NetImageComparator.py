@@ -92,34 +92,6 @@ headers_list = [
 net_file_cache = {}
 
 
-def read_file_from_url(url):
-    """
-
-    :param url:
-    :return:
-    """
-    try:
-        if url in net_file_cache:
-            return net_file_cache[url]
-        # 发送GET请求获取文件内容
-        # headers = random.choice(headers_list)
-        response = requests.get(url)
-        response.encoding = 'utf-8'
-        # 检查请求是否成功
-        if response.status_code == 200:
-            # 根据换行符切割文件内容并返回列表
-            text = response.text
-            lines = re.split(r'\r\n|\r|\n', text)
-            net_file_cache[url] = lines
-            return lines
-        else:
-            print(f"Failed to read file from URL. Status code: {response.status_code}")
-            return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
-
-
 class NetImageComparator(ImageComparator):
     def __init__(self, logger: Logger, base_path):
         # 用于缓存已下载图像的字典
@@ -131,7 +103,7 @@ class NetImageComparator(ImageComparator):
         """
             从文件中读取并下载图片
         """
-        images_path = read_file_from_url(base_path + file_name)
+        images_path = self.read_file_from_url(base_path + file_name)
         if images_path is None:
             return None
 
@@ -144,6 +116,33 @@ class NetImageComparator(ImageComparator):
             concurrent.futures.wait(futures)
 
         return images_path
+
+    def read_file_from_url(self, url):
+        """
+
+        :param url:
+        :return:
+        """
+        try:
+            if url in net_file_cache:
+                return net_file_cache[url]
+            # 发送GET请求获取文件内容
+            # headers = random.choice(headers_list)
+            response = requests.get(url)
+            response.encoding = 'utf-8'
+            # 检查请求是否成功
+            if response.status_code == 200:
+                # 根据换行符切割文件内容并返回列表
+                text = response.text
+                lines = re.split(r'\r\n|\r|\n', text)
+                net_file_cache[url] = lines
+                return lines
+            else:
+                print(f"Failed to read file from URL. Status code: {response.status_code}")
+                return None
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
 
     def download_image(self, url):
         """
