@@ -100,6 +100,7 @@ class Config:
         self.distributed_param = None
         self.screen_taker = None
         self.rea_snow_gun_config_name = None
+        self.s1_switch_hold_map = None
 
         self.delay_refresh_buttons = None
 
@@ -206,6 +207,7 @@ class Config:
         })
         self.screen_taker = self.get_config(self.config_data, "screen_taker", "local")
         self.rea_snow_gun_config_name = self.get_config(self.config_data, "rea_snow_gun_config_name", "ReaSnowGun")
+        self.s1_switch_hold_map = self.get_config(self.config_data, "s1_switch_hold_map", {})
 
     def get_config(self, read_config, pattern=None, default=None):
         """

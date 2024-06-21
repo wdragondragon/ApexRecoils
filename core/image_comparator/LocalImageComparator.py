@@ -7,6 +7,8 @@ from skimage.metrics import structural_similarity
 from core.image_comparator.ImageComparator import ImageComparator
 from log.Logger import Logger
 
+net_file_cache = {}
+
 
 class LocalImageComparator(ImageComparator):
     """
@@ -20,7 +22,9 @@ class LocalImageComparator(ImageComparator):
         self.base_path = base_path
 
     def read_file_from_url(self, path):
-        return [file for file in os.listdir(path) if file.endswith('.png') or file.endswith(".jpg")]
+        if path not in net_file_cache:
+            net_file_cache[path] = [file for file in os.listdir(path) if file.endswith('.png') or file.endswith(".jpg")]
+        return net_file_cache[path]
 
     def cache_image(self, base_path, url):
         # 如果图像已经在缓存中，直接返回缓存的图像

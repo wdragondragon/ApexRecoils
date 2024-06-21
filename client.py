@@ -104,8 +104,8 @@ if __name__ == '__main__':
                                             licking_state_path=config.licking_state_path,
                                             licking_state_bbox=config.licking_state_bbox,
                                             mouser_mover=rea_snow_mouse_mover,
-                                            toggle_key="29",
-                                            dynamic_size_image_comparator=dynamic_size_image_comparator)
+                                            dynamic_size_image_comparator=dynamic_size_image_comparator,
+                                            s1_switch_hold_map=config.s1_switch_hold_map)
         # jtk启动
         jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mover,
                        game_windows_status=game_windows_status)

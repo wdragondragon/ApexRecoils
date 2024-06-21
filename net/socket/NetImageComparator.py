@@ -156,7 +156,7 @@ class NetImageComparator(ImageComparator):
         # 如果图像已经在缓存中，直接返回缓存的图像
         url = url.strip()
         if url not in self.image_cache:
-            self.cache_image(url)
+            self.cache_image("", url)
         return BytesIO(self.image_cache[url])
 
     def compare_image(self, img, path_image):

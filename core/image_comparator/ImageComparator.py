@@ -66,6 +66,9 @@ class ImageComparator:
         return images_path
 
     def read_file_from_url(self, url):
+        """
+        :param url
+        """
         return []
 
     def cache_image(self, base_path, url):

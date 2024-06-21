@@ -37,6 +37,10 @@ class DynamicSizeImageComparator(NetImageComparator):
         return "", 0.0
 
     def cache_image(self, base_path, line_content):
-        image_path, x, y, w, h = line_content
-        image_path = base_path + image_path
-        super().cache_image(base_path, image_path)
+        arr = line_content.split()
+        if len(arr) == 5:
+            image_path, x, y, w, h = arr[0], arr[1], arr[2], arr[3], arr[4]
+            image_path = base_path + image_path
+        else:
+            image_path = line_content
+        super().cache_image("", image_path)

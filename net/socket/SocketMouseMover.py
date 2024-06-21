@@ -50,3 +50,6 @@ class SocketMouseMover(MouseMover):
 
     def toggle_caps_lock(self, lock_status):
         self.client.mouse_mover("toggle_caps_lock", (lock_status,))
+
+    def mouse_click(self, key, press):
+        self.client.mouse_mover("mouse_click", (key, press))
