@@ -30,7 +30,7 @@ class S1SwitchMonitor:
         }
         self.s1_switch_hold_map = s1_switch_hold_map
         self.hold_key = self.s1_switch_hold_map["key"]
-        self.toggle_key = None
+        self.toggle_key = self.s1_switch_hold_map["toggle_key"]
         self.hole_key_status_map = {}
         # todo 添加监听手柄按键类型
         joy_listener.connect_joystick(pygame.JOYBUTTONUP, self.monitor)
@@ -52,14 +52,19 @@ class S1SwitchMonitor:
         # 触发后背包判断后，开始识别，识别到背包中则按下切层，直到未识别到背包则松开并退出循环
         # start = time.time()
         detect_time = None
+        skip_detect = False
+        skip_delay = 0
         while True:
             for key in self.hold_key:
                 if int(key) in self.hole_key_status_map.keys():
                     start_time = self.hole_key_status_map[int(key)]
                     delay = self.hold_key[key]["delay"]
 
-                    if int((time.time() - start_time) * 1000) > delay:
+                    if self.time_out(start_time, delay):
                         detect_time = self.hold_key[key]["detect_time"]
+                        skip_detect = self.hold_key[key]["skip_detect"]
+                        if skip_detect:
+                            skip_delay = self.hold_key[key]["skip_delay"]
                         self.logger.print_log(f"按下{key}超过{delay}ms，开始识别{detect_time}ms")
                         break
             if detect_time is not None:
@@ -67,29 +72,43 @@ class S1SwitchMonitor:
             time.sleep(0.001)
 
         start_time = time.time()
-        toggle_key = None
+        detect_status = False
+        if skip_delay > 0:
+            print("睡眠")
+            time.sleep(skip_delay / 1000.0)
+
         while True:
-            select_name, score = self.dynamic_size_image_comparator.compare_with_path(path=self.licking_state_path,
-                                                                                      images=None,
-                                                                                      lock_score=1,
-                                                                                      discard_score=0.6)
-            if select_name in self.s1_switch_hold_map:
-                toggle_key = self.s1_switch_hold_map[select_name]
+            if not skip_detect or (skip_detect and self.click_state):
+                select_name, score = self.dynamic_size_image_comparator.compare_with_path(path=self.licking_state_path,
+                                                                                          images=None,
+                                                                                          lock_score=1,
+                                                                                          discard_score=0.6)
+                if score > 0.0:
+                    detect_status = True
+            else:
+                select_name, score = "default", 1
 
             if not self.click_state:
                 if score > 0.0:
                     self.click_state = True
-                    self.mouser_mover.key_down(Tools.convert_to_decimal(toggle_key))
-                    self.logger.print_log(f"按下舔包键:{toggle_key}")
+                    self.mouser_mover.key_down(Tools.convert_to_decimal(self.toggle_key))
+                    self.logger.print_log(f"按下舔包键:{self.toggle_key}")
                 else:
                     retry += 1
                     self.logger.print_log(f"未识别到，重试:{retry}")
-                    if int((time.time() - start_time) * 1000) > detect_time:
+                    if self.time_out(start_time, detect_time):
                         break
             elif self.click_state and score <= 0.0:
-                self.click_state = False
-                self.mouser_mover.key_up(Tools.convert_to_decimal(toggle_key))
-                self.logger.print_log(f"松开舔包键:{toggle_key}")
-                break
+                if not skip_detect or (skip_detect and (detect_status or self.time_out(start_time, detect_time))):
+                    self.click_state = False
+                    self.mouser_mover.key_up(Tools.convert_to_decimal(self.toggle_key))
+                    self.logger.print_log(f"松开舔包键:{self.toggle_key}")
+                    break
+                else:
+                    retry += 1
+                    self.logger.print_log(f"未识别到，重试:{retry}")
 
         self.threading_state = False
+
+    def time_out(self, start_time, detect_time):
+        return int((time.time() - start_time) * 1000) > detect_time

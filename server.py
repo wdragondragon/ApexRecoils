@@ -6,13 +6,7 @@ from PyQt5.QtWidgets import QApplication
 from core.Config import Config
 from core.GameWindowsStatus import GameWindowsStatus
 from core.ReaSnowSelectGun import ReaSnowSelectGun
-from core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from core.image_comparator.LocalImageComparator import LocalImageComparator
-from core.joy_listener.JoyListener import JoyListener
-from core.joy_listener.JoyToKey import JoyToKey
-from core.joy_listener.RockerMonitor import RockerMonitor
-from core.joy_listener.S1SwitchMonitor import S1SwitchMonitor
-from core.screentaker.LocalMssScreenTaker import LocalMssScreenTaker
 from core.screentaker.LocalScreenTaker import LocalScreenTaker
 from log.Logger import Logger
 from mouse_mover import MoverFactory

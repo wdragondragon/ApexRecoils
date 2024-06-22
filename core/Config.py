@@ -207,7 +207,11 @@ class Config:
         })
         self.screen_taker = self.get_config(self.config_data, "screen_taker", "local")
         self.rea_snow_gun_config_name = self.get_config(self.config_data, "rea_snow_gun_config_name", "ReaSnowGun")
-        self.s1_switch_hold_map = self.get_config(self.config_data, "s1_switch_hold_map", {})
+        self.s1_switch_hold_map = self.get_config(self.config_data, "s1_switch_hold_map",
+                                                  {
+                                                      "key": {},
+                                                      "toggle_key": ""
+                                                  })
 
     def get_config(self, read_config, pattern=None, default=None):
         """
