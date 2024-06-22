@@ -74,7 +74,6 @@ class S1SwitchMonitor:
         start_time = time.time()
         detect_status = False
         if skip_delay > 0:
-            print("睡眠")
             time.sleep(skip_delay / 1000.0)
 
         while True:
