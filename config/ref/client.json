@@ -49,7 +49,7 @@
     "专注",
     "哈沃克"
   ],
-  "comparator_mode": "distributed",
+  "comparator_mode": "net",
   "read_image_mode": "net",
   "key_trigger_mode": "distributed",
   "delayed_activation_key_list": {
@@ -93,13 +93,25 @@
     }
   },
   "s1_switch_hold_map": {
-    "key": [
-      "JOYBUTTONUP_2",
-      "JOYBUTTONUP_6",
-      "JOYBUTTONDOWN_7"
-    ],
+    "key": {
+      "2": {
+        "delay": 550,
+        "detect_time": 250
+      },
+      "6": {
+        "delay": 0,
+        "detect_time": 250
+      },
+      "7": {
+        "delay": 0,
+        "detect_time": 250
+      }
+    },
     "bag": "29",
     "bag2": "29",
+    "bag3": "29",
+    "box": "29",
+    "exchange": "29",
     "yx": "29",
     "lb": "29"
   },
