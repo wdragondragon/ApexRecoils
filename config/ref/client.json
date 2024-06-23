@@ -93,25 +93,37 @@
     }
   },
   "s1_switch_hold_map": {
-    "key": {
-      "2": {
-        "delay": 550,
-        "detect_time": 250,
-        "skip_detect": false
+    "box": {
+      "key": {
+        "2": {
+          "delay": 550,
+          "detect_time": 250,
+          "skip_detect": false
+        }
       },
-      "6": {
-        "delay": 0,
-        "detect_time": 250,
-        "skip_detect": false
-      },
-      "7": {
-        "delay": 0,
-        "detect_time": 250,
-        "skip_detect": true,
-        "skip_delay": 100
-      }
+      "toggle_key": "29"
     },
-    "toggle_key": "29"
+    "bag": {
+      "key": {
+        "7": {
+          "delay": 0,
+          "detect_time": 250,
+          "skip_detect": true,
+          "skip_delay": 100
+        }
+      },
+      "toggle_key": "29"
+    },
+    "change_legend": {
+      "key": {
+        "6": {
+          "delay": 0,
+          "detect_time": 250,
+          "skip_detect": false
+        }
+      },
+      "toggle_key": "29"
+    }
   },
   "rea_snow_gun_config_name": "ReaSnowGun_s21_v2",
   "screen_taker": "local"
