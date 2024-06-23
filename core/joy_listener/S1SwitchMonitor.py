@@ -33,13 +33,14 @@ class S1SwitchMonitor:
         # self.hold_key = self.s1_switch_hold_map
         # self.toggle_key = self.s1_switch_hold_map["toggle_key"]
         self.hole_key_status_map = {}
+        self.down_key_time = {}
         # todo 添加监听手柄按键类型
         joy_listener.connect_joystick(pygame.JOYBUTTONUP, self.monitor)
         joy_listener.connect_joystick(pygame.JOYBUTTONDOWN, self.monitor)
 
     def monitor(self, joystick, event):
         if event.type in self.dict:
-            if event.type == pygame.JOYBUTTONDOWN and event.button not in self.hole_key_status_map:
+            if event.type == pygame.JOYBUTTONDOWN:
                 self.hole_key_status_map[event.button] = time.time()
             elif event.type == pygame.JOYBUTTONUP and event.button in self.hole_key_status_map:
                 self.hole_key_status_map.pop(event.button)
@@ -61,6 +62,7 @@ class S1SwitchMonitor:
         toggle_key = key_map["toggle_key"]
         hold_key = key_map["key"]
         click_state = False
+        down_key_time = time.time()
         while True:
             for key in hold_key:
                 if key != "toggle_key" and int(key) in self.hole_key_status_map.keys():
@@ -98,22 +100,26 @@ class S1SwitchMonitor:
             if not click_state:
                 if score > 0.0:
                     click_state = True
+                    down_key_time = time.time()
+                    self.down_key_time[toggle_key] = down_key_time
                     self.mouser_mover.key_down(Tools.convert_to_decimal(toggle_key))
-                    self.logger.print_log(f"按下舔包键:{toggle_key}")
+                    self.logger.print_log(f"{scene}按下舔包键:{toggle_key}")
                 else:
                     retry += 1
-                    self.logger.print_log(f"未识别到，重试:{retry}")
+                    self.logger.print_log(f"{scene}未识别到，重试:{retry}")
                     if self.time_out(start_time, detect_time):
                         break
             elif click_state and score <= 0.0:
                 if not skip_detect or (skip_detect and (detect_status or self.time_out(start_time, detect_time))):
-                    click_state = False
-                    self.mouser_mover.key_up(Tools.convert_to_decimal(toggle_key))
-                    self.logger.print_log(f"松开舔包键:{toggle_key}")
+                    if down_key_time == self.down_key_time[toggle_key]:
+                        self.mouser_mover.key_up(Tools.convert_to_decimal(toggle_key))
+                        self.logger.print_log(f"{scene}松开舔包键:{toggle_key}")
+                    else:
+                        self.logger.print_log(f"{scene}跳过松开舔包键:{toggle_key}")
                     break
                 else:
                     retry += 1
-                    self.logger.print_log(f"未识别到，重试:{retry}")
+                    self.logger.print_log(f"{scene}未识别到，重试:{retry}")
 
         self.threading_state_scene_map.pop(scene)
         self.logger.print_log(f"切换层结束场景{scene}的识别")

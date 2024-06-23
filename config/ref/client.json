@@ -107,7 +107,7 @@
       "key": {
         "7": {
           "delay": 0,
-          "detect_time": 250,
+          "detect_time": 350,
           "skip_detect": true,
           "skip_delay": 100
         }
