@@ -1,13 +1,13 @@
 from ctypes import CDLL
 
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 
 
 class GHubMover(MouseMover):
-    def __init__(self, logger: Logger, mouse_mover_param):
+    def __init__(self, mouse_mover_param):
         super().__init__(mouse_mover_param)
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         try:
             self.gm = CDLL(r'./ghub_device.dll')
             self.gmok = self.gm.device_open() == 1

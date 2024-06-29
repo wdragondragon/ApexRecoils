@@ -1,7 +1,7 @@
 import threading
 import time
 
-from log.Logger import Logger
+from log import LogFactory
 from tools.Tools import Tools
 
 
@@ -10,9 +10,9 @@ class GameWindowsStatus:
         游戏窗口状态检测
     """
 
-    def __init__(self, logger: Logger):
+    def __init__(self):
         self.status = False
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.timing_get_status_thread()
 
     def timing_get_status_thread(self):

@@ -17,7 +17,7 @@ from core.joy_listener.JoyToKey import JoyToKey
 from core.joy_listener.RockerMonitor import RockerMonitor
 from core.joy_listener.S1SwitchMonitor import S1SwitchMonitor
 from core.screentaker import ScreenTakerFactory
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
 from mouse_mover.MouseMover import MouseMover
@@ -26,24 +26,21 @@ from windows.SystemTrayApp import SystemTrayApp
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    LogFactory.init_logger("client")
     Check.check("apex_recoils")
-    logger = Logger()
-    config = Config(logger=logger, default_ref_config_name="client")
-    # logger.set_config(config)
+    config = Config(default_ref_config_name="client")
 
-    apex_mouse_listener = MouseListener(logger=logger)
-    apex_key_listener = KeyListener(logger=logger)
+    apex_mouse_listener = MouseListener()
+    apex_key_listener = KeyListener()
 
-    game_windows_status = GameWindowsStatus(logger=logger)
+    game_windows_status = GameWindowsStatus()
 
-    image_comparator = ImageComparatorFactory.get_image_comparator(logger=logger,
-                                                                   comparator_mode=config.comparator_mode,
+    image_comparator = ImageComparatorFactory.get_image_comparator(comparator_mode=config.comparator_mode,
                                                                    config=config)
 
-    screen_taker = ScreenTakerFactory.get_screen_taker(logger, config.screen_taker, config.distributed_param)
+    screen_taker = ScreenTakerFactory.get_screen_taker(config.screen_taker, config.distributed_param)
 
-    select_gun = SelectGun(logger=logger,
-                           bbox=config.select_gun_bbox,
+    select_gun = SelectGun(bbox=config.select_gun_bbox,
                            image_path=config.image_path,
                            scope_bbox=config.select_scope_bbox,
                            scope_path=config.scope_path,
@@ -64,11 +61,10 @@ if __name__ == '__main__':
     mouse_listener_thread.start()
     keyboard_listener_thread.start()
 
-    mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
-                                                     mouse_listener=apex_mouse_listener,
+    mouse_mover: MouseMover = MoverFactory.get_mover(mouse_listener=apex_mouse_listener,
                                                      game_windows_status=game_windows_status,
                                                      config=config)
-    intent_manager = IntentManager(logger=logger, mouse_mover=mouse_mover)
+    intent_manager = IntentManager(mouse_mover=mouse_mover)
     intent_manager_thread = threading.Thread(target=intent_manager.start)
     intent_manager_thread.start()
 
@@ -81,42 +77,39 @@ if __name__ == '__main__':
         if config.rea_snow_mouse_mover == config.mouse_mover:
             rea_snow_mouse_mover = mouse_mover
         else:
-            rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
-                                                                      mouse_listener=apex_mouse_listener,
+            rea_snow_mouse_mover: MouseMover = MoverFactory.get_mover(mouse_listener=apex_mouse_listener,
                                                                       config=config,
                                                                       mouse_model=config.rea_snow_mouse_mover,
                                                                       c1_mover=mouse_mover,
                                                                       game_windows_status=game_windows_status)
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=rea_snow_mouse_mover,
+        rea_snow_select_gun = ReaSnowSelectGun(mouse_mover=rea_snow_mouse_mover,
                                                config_name=config.rea_snow_gun_config_name)
         select_gun.connect(rea_snow_select_gun.trigger_button)
 
         if config.key_trigger_mode == 'local':
             c1_mover: MouseMover = mouse_mover
         else:
-            c1_mover: MouseMover = MoverFactory.get_mover(logger=logger, config=config, mouse_model="distributed_c1")
+            c1_mover: MouseMover = MoverFactory.get_mover(config=config, mouse_model="distributed_c1")
 
-        joy_listener = JoyListener(logger=logger)
-        dynamic_size_image_comparator = DynamicSizeImageComparator(logger=logger,
-                                                                   base_path=config.image_base_path,
+        joy_listener = JoyListener()
+        dynamic_size_image_comparator = DynamicSizeImageComparator(base_path=config.image_base_path,
                                                                    screen_taker=screen_taker)
-        s1_switch_monitor = S1SwitchMonitor(logger=logger, joy_listener=joy_listener,
+        s1_switch_monitor = S1SwitchMonitor(joy_listener=joy_listener,
                                             licking_state_path=config.licking_state_path,
                                             licking_state_bbox=config.licking_state_bbox,
                                             mouser_mover=rea_snow_mouse_mover,
                                             dynamic_size_image_comparator=dynamic_size_image_comparator,
                                             s1_switch_hold_map=config.s1_switch_hold_map)
         # jtk启动
-        jtk = JoyToKey(logger=logger, joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mover,
+        jtk = JoyToKey(joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mover,
                        game_windows_status=game_windows_status)
         joy_listener.connect_axis(jtk.axis_to_key)
-        rocker_monitor = RockerMonitor(logger=logger, joy_listener=joy_listener, select_gun=select_gun)
+        rocker_monitor = RockerMonitor(joy_listener=joy_listener, select_gun=select_gun)
         joy_listener.start(None)
     else:
         # 压枪
-        recoils_config = RecoilsConfig(logger=logger)
-        recoils_listener = RecoilsListener(logger=logger,
-                                           recoils_config=recoils_config,
+        recoils_config = RecoilsConfig()
+        recoils_listener = RecoilsListener(recoils_config=recoils_config,
                                            mouse_listener=apex_mouse_listener,
                                            select_gun=select_gun,
                                            intent_manager=intent_manager,
@@ -124,7 +117,7 @@ if __name__ == '__main__':
         recoils_listener_thread = threading.Thread(target=recoils_listener.start)
         recoils_listener_thread.start()
 
-    system_tray_app = SystemTrayApp(logger, "client")
+    system_tray_app = SystemTrayApp("client")
     # 自动识别启动
     threading.Thread(target=select_gun.test).start()
     sys.exit(app.exec_())

@@ -1,5 +1,5 @@
+from log import LogFactory
 from tools.Tools import Tools
-from log.Logger import Logger
 
 
 class KeyListener:
@@ -7,9 +7,9 @@ class KeyListener:
         键盘监听器
     """
 
-    def __init__(self, logger: Logger):
+    def __init__(self):
         super().__init__()
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.press_key = dict()
         self.toggle_key_map = []
 
@@ -71,9 +71,9 @@ class MouseListener:
         鼠标监听器
     """
 
-    def __init__(self, logger: Logger):
+    def __init__(self):
         super().__init__()
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.on_mouse_key_map = dict()
         self.toggle_mouse_key_map = []
 

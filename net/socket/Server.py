@@ -5,7 +5,7 @@ import traceback
 
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.screentaker.ScreenTaker import ScreenTaker
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 from net.socket import SocketUtil
 
@@ -15,9 +15,9 @@ class Server:
         识别服务端
     """
 
-    def __init__(self, logger: Logger, server_address, image_comparator, select_gun: ReaSnowSelectGun,
+    def __init__(self, server_address, image_comparator, select_gun: ReaSnowSelectGun,
                  mouse_mover: MouseMover, c1_mouse_mover: MouseMover, screen_taker: ScreenTaker):
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.server_address = server_address
         self.image_comparator = image_comparator
         self.mouse_mover = mouse_mover

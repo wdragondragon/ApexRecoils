@@ -1,10 +1,11 @@
 import time
 
+import pygame
+
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.SelectGun import SelectGun
 from core.joy_listener.JoyListener import JoyListener
-from log.Logger import Logger
-import pygame
+from log import LogFactory
 
 
 class RockerMonitor:
@@ -12,8 +13,8 @@ class RockerMonitor:
         监听摇杆
     """
 
-    def __init__(self, logger: Logger, joy_listener: JoyListener, select_gun: SelectGun | ReaSnowSelectGun = None):
-        self.logger = logger
+    def __init__(self, joy_listener: JoyListener, select_gun: SelectGun | ReaSnowSelectGun = None):
+        self.logger = LogFactory.getLogger(self.__class__)
         self.rocker_cache = []
         self.exist_rocket_time = []
         self.select_gun = select_gun

@@ -1,7 +1,7 @@
 import json
 import os.path as op
 
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 from tools.Tools import Tools
 
@@ -11,8 +11,8 @@ class ReaSnowSelectGun:
         转换器自动识别按键宏触发
     """
 
-    def __init__(self, logger: Logger, mouse_mover: MouseMover, config_name='ReaSnowGun'):
-        self.logger = logger
+    def __init__(self, mouse_mover: MouseMover, config_name='ReaSnowGun'):
+        self.logger = LogFactory.getLogger(self.__class__)
         self.config_path = f".\\config\\{config_name}.json"
         self.mouse_mover = mouse_mover
         self.current_gun = None

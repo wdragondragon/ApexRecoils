@@ -1,11 +1,12 @@
+import json
 import os
 import os.path as op
-import json
 import shutil
+
 import jsonpath as jsonpath
 
+from log import LogFactory
 from tools.Tools import Tools
-from log.Logger import Logger
 
 screenshot_resolution = {
     (1920, 1080): (1542, 959, 1695, 996),
@@ -48,8 +49,7 @@ class Config:
         全局配置
     """
 
-    def __init__(self, logger: Logger,
-                 base_path='config\\',
+    def __init__(self, base_path='config\\',
                  ref_dir='ref\\',
                  use_ref_name='ref.txt',
                  default_ref_config_name='global_config'):
@@ -104,7 +104,7 @@ class Config:
 
         self.delay_refresh_buttons = None
 
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
 
     def update(self,

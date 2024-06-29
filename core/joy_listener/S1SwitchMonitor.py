@@ -5,18 +5,22 @@ import pygame
 
 from core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from core.joy_listener.JoyListener import JoyListener
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 from tools.Tools import Tools
 
 
 class S1SwitchMonitor:
-    def __init__(self, logger: Logger, joy_listener: JoyListener,
+    """
+        监听s1切层
+    """
+
+    def __init__(self, joy_listener: JoyListener,
                  licking_state_path,
                  licking_state_bbox,
                  dynamic_size_image_comparator: DynamicSizeImageComparator,
                  mouser_mover: MouseMover, s1_switch_hold_map, retry=5):
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.dynamic_size_image_comparator = dynamic_size_image_comparator
         self.licking_state_path = licking_state_path
         self.licking_state_bbox = licking_state_bbox
@@ -41,10 +45,8 @@ class S1SwitchMonitor:
     def monitor(self, joystick, event):
         if event.type in self.dict:
             if event.type == pygame.JOYBUTTONDOWN:
-                self.logger.print_log(f"检测到按下手柄按键:{event.button}")
                 self.hole_key_status_map[event.button] = time.time()
             elif event.type == pygame.JOYBUTTONUP and event.button in self.hole_key_status_map:
-                self.logger.print_log(f"检测到松开手柄按键:{event.button}")
                 self.hole_key_status_map.pop(event.button)
 
             for (scene, key_map) in self.s1_switch_hold_map.items():
@@ -131,8 +133,14 @@ class S1SwitchMonitor:
         self.finish_scence(scene)
 
     def time_out(self, start_time, detect_time):
+        """
+            超时
+        """
         return int((time.time() - start_time) * 1000) > detect_time
 
     def finish_scence(self, scene):
+        """
+            结束场景
+        """
         self.threading_state_scene_map.pop(scene)
         self.logger.print_log(f"切换层结束场景{scene}的识别")

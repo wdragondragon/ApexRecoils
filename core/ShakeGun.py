@@ -5,7 +5,7 @@ import time
 from core.Config import Config
 from core.KeyAndMouseListener import KMCallBack, MouseListener
 from core.SelectGun import SelectGun
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 
 
@@ -14,12 +14,11 @@ class ShakeGun:
         抖枪
     """
 
-    def __init__(self, logger: Logger,
-                 config: Config,
+    def __init__(self, config: Config,
                  mouse_listener: MouseListener,
                  mouse_mover: MouseMover,
                  select_gun: SelectGun):
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.mouse_listener = mouse_listener
         self.mouse_mover = mouse_mover
         self.select_gun = select_gun

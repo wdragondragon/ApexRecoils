@@ -4,6 +4,7 @@ import traceback
 import pygame
 from PyQt5.QtWidgets import QMessageBox
 
+from log import LogFactory
 from log.Logger import Logger
 
 rocker_cache = []
@@ -17,9 +18,9 @@ class JoyListener:
         手柄监听器
     """
 
-    def __init__(self, logger: Logger):
+    def __init__(self):
         self.axis = dict()
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.run_sign = False
         self.axis_list = []
         self.call_back_list = []
@@ -65,11 +66,14 @@ class JoyListener:
                         except:
                             traceback.print_exc()
                 elif event.type == pygame.JOYBUTTONDOWN:
+                    self.logger.print_log(f"检测到按下手柄按键:{event.button}")
                     for func in self.call_back_list:
                         try:
                             func('b' + str(event.button))
                         except:
                             traceback.print_exc()
+                elif event.type == pygame.JOYBUTTONUP:
+                    self.logger.print_log(f"检测到松开手柄按键:{event.button}")
                 if event.type in self.call_back_joystick:
                     for func in self.call_back_joystick[event.type]:
                         try:

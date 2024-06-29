@@ -1,4 +1,4 @@
-from log.Logger import Logger
+from log import LogFactory
 
 
 class JoyToKey:
@@ -6,8 +6,8 @@ class JoyToKey:
         jtk
     """
 
-    def __init__(self, logger: Logger, joy_to_key_map, c1_mouse_mover, game_windows_status):
-        self.logger = logger
+    def __init__(self, joy_to_key_map, c1_mouse_mover, game_windows_status):
+        self.logger = LogFactory.getLogger(self.__class__)
         self.c1_mouse_mover = c1_mouse_mover
         self.joy_to_key_map = joy_to_key_map
         self.joy_to_key_last_status_map = {}

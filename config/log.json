@@ -1,0 +1,12 @@
+{
+  "core.image_comparator": "图片对比",
+  "net.socket.NetImageComparator": "图片对比",
+  "core.joy_listener": "手柄监听",
+  "core.screentaker": "截图",
+  "core.RecoildsCore": "键鼠压枪",
+  "core.ReaSnowSelectGun": "枪械识别",
+  "core.SelectGun": "枪械识别",
+  "core.joy_listener.S1SwitchMonitor": "按住切层",
+  "mouse_mover": "键鼠触发器",
+  "net.socket.Server": "连接监听"
+}

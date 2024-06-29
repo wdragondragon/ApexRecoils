@@ -8,7 +8,7 @@ from core.GameWindowsStatus import GameWindowsStatus
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.image_comparator.LocalImageComparator import LocalImageComparator
 from core.screentaker.LocalScreenTaker import LocalScreenTaker
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover import MoverFactory
 from mouse_mover.MouseMover import MouseMover
 from net.socket.NetImageComparator import NetImageComparator
@@ -20,37 +20,34 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Tools.hide_process()
-
+    LogFactory.init_logger("server")
     Check.check("apex_recoils")
-    logger = Logger()
-    config = Config(logger=logger, default_ref_config_name="server")
-    game_windows_status = GameWindowsStatus(logger=logger)
+    config = Config(default_ref_config_name="server")
+    game_windows_status = GameWindowsStatus()
 
     if config.read_image_mode == "local":
-        image_comparator = LocalImageComparator(logger, config.image_base_path)
+        image_comparator = LocalImageComparator(config.image_base_path)
     else:
-        image_comparator = NetImageComparator(logger, config.image_base_path)
+        image_comparator = NetImageComparator(config.image_base_path)
 
-    mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
-                                                     config=config,
+    mouse_mover: MouseMover = MoverFactory.get_mover(config=config,
                                                      mouse_model=config.server_mouse_mover,
                                                      game_windows_status=game_windows_status)
     rea_snow_select_gun = None
     if config.rea_snow_gun_config_name != '':
-        rea_snow_select_gun = ReaSnowSelectGun(logger=logger, mouse_mover=mouse_mover,
+        rea_snow_select_gun = ReaSnowSelectGun(mouse_mover=mouse_mover,
                                                config_name=config.rea_snow_gun_config_name)
 
-    c1_mouse_mover: MouseMover = MoverFactory.get_mover(logger=logger,
-                                                        config=config,
+    c1_mouse_mover: MouseMover = MoverFactory.get_mover(config=config,
                                                         mouse_model=config.mouse_mover,
                                                         game_windows_status=game_windows_status)
 
-    system_tray_app = SystemTrayApp(logger, "server")
-    server = Server(logger=logger, server_address=(config.distributed_param["ip"], config.distributed_param["port"]),
+    system_tray_app = SystemTrayApp("server")
+    server = Server(server_address=(config.distributed_param["ip"], config.distributed_param["port"]),
                     image_comparator=image_comparator,
                     select_gun=rea_snow_select_gun,
                     mouse_mover=mouse_mover,
                     c1_mouse_mover=c1_mouse_mover,
-                    screen_taker=LocalScreenTaker(logger))
+                    screen_taker=LocalScreenTaker())
     threading.Thread(target=server.wait_client).start()
     sys.exit(app.exec_())

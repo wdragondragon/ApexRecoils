@@ -1,7 +1,7 @@
 import mss
 
 from core.screentaker.ScreenTaker import ScreenTaker
-from log.Logger import Logger
+from log import LogFactory
 
 
 class LocalMssScreenTaker(ScreenTaker):
@@ -9,8 +9,8 @@ class LocalMssScreenTaker(ScreenTaker):
         本地截图
     """
 
-    def __init__(self, logger: Logger):
-        self.logger = logger
+    def __init__(self):
+        self.logger = LogFactory.getLogger(self.__class__)
 
     def get_images_from_bbox(self, bbox_list):
         """

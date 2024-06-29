@@ -3,14 +3,14 @@ import random
 import sys
 import time
 
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 
 
 class PanNiMover(MouseMover):
-    def __init__(self, logger: Logger, mouse_mover_param):
+    def __init__(self, mouse_mover_param):
         super().__init__(mouse_mover_param)
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.dev = None
         self.version = 0
         self.model = 0

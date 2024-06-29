@@ -1,8 +1,4 @@
-import cv2
-import numpy as np
-from skimage.metrics import structural_similarity
-
-from log.Logger import Logger
+from log import LogFactory
 from net.socket.NetImageComparator import NetImageComparator
 
 
@@ -11,10 +7,10 @@ class DynamicSizeImageComparator(NetImageComparator):
         可动态模糊匹配的网络图片对比
     """
 
-    def __init__(self, logger: Logger, base_path, screen_taker):
-        super().__init__(logger, base_path)
+    def __init__(self, base_path, screen_taker):
+        super().__init__(base_path)
         self.image_cache = {}
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.base_path = base_path
         self.screen_taker = screen_taker
 

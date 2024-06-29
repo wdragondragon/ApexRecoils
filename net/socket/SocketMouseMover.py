@@ -1,14 +1,12 @@
-import threading
-
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 from net.socket.Client import Client
 
 
 class SocketMouseMover(MouseMover):
-    def __init__(self, logger: Logger, mouse_mover_param, mode="mouse_mover"):
+    def __init__(self, mouse_mover_param, mode="mouse_mover"):
         super().__init__(mouse_mover_param)
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.mode = mode
         self.client = Client((mouse_mover_param["ip"], mouse_mover_param["port"]), mode)
         self.listener = None

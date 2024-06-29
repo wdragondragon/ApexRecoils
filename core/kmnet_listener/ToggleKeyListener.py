@@ -1,7 +1,7 @@
 import time
 
 from core.kmnet_listener.KmBoxNetListener import KmBoxNetListener
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.MouseMover import MouseMover
 from tools.Tools import Tools
 
@@ -11,11 +11,11 @@ class ToggleKeyListener:
         监听kmnet 关于辅助开关键的实现
     """
 
-    def __init__(self, logger: Logger, km_box_net_listener: KmBoxNetListener, delayed_activation_key_list,
-                 mouse_mover: MouseMover, c1_mouse_mover: MouseMover, toggle_hold_key,game_windows_status):
+    def __init__(self, km_box_net_listener: KmBoxNetListener, delayed_activation_key_list,
+                 mouse_mover: MouseMover, c1_mouse_mover: MouseMover, toggle_hold_key, game_windows_status):
         import kmNet
         self.kmNet = kmNet
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.mouse_mover = mouse_mover
         self.c1_mouse_mover = c1_mouse_mover
         self.km_box_net_listener = km_box_net_listener

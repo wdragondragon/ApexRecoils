@@ -1,13 +1,14 @@
 from core.image_comparator.ImageComparator import ImageComparator
-from log.Logger import Logger
+from log import LogFactory
 from net.socket.Client import Client
 
 
 class SocketImageComparator(ImageComparator):
-    def __init__(self, logger: Logger, socket_address=("127.0.0.1", 12345)):
+    def __init__(self, base_path, socket_address=("127.0.0.1", 12345)):
         # 用于缓存已下载图像的字典
+        super().__init__(base_path)
         self.image_cache = {}
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.client = Client(socket_address, "compare_with_path")
 
     def compare_with_path(self, path, images, lock_score, discard_score):

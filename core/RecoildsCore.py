@@ -1,14 +1,13 @@
-import os.path as op
 import json
+import os.path as op
 import time
 
 import requests
 from pynput.mouse import Button
 
-from MergeData import merge_x_y
 from core.KeyAndMouseListener import MouseListener
 from core.SelectGun import SelectGun
-from log.Logger import Logger
+from log import LogFactory
 from mouse_mover.IntentManager import IntentManager
 
 
@@ -17,8 +16,8 @@ class RecoilsConfig:
         枪械配置后座力配置
     """
 
-    def __init__(self, logger: Logger):
-        self.logger = logger
+    def __init__(self):
+        self.logger = LogFactory.getLogger(self.__class__)
         self.specs_data = []
         self.local_specs_data = []
         self.load()
@@ -82,12 +81,11 @@ class RecoilsListener:
     """
 
     def __init__(self,
-                 logger: Logger,
                  recoils_config: RecoilsConfig,
                  mouse_listener: MouseListener,
                  select_gun: SelectGun,
                  intent_manager: IntentManager, game_windows_status):
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.recoils_config = recoils_config
         self.mouse_listener = mouse_listener
         self.select_gun = select_gun

@@ -1,4 +1,3 @@
-import concurrent.futures
 import re
 import traceback
 from io import BytesIO
@@ -9,7 +8,7 @@ import requests
 from skimage.metrics import structural_similarity
 
 from core.image_comparator.ImageComparator import ImageComparator
-from log.Logger import Logger
+from log import LogFactory
 
 headers_list = [
     {
@@ -93,11 +92,11 @@ net_file_cache = {}
 
 
 class NetImageComparator(ImageComparator):
-    def __init__(self, logger: Logger, base_path):
-        super().__init__(logger, base_path)
+    def __init__(self, base_path):
+        super().__init__(base_path)
         # 用于缓存已下载图像的字典
         self.image_cache = {}
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.base_path = base_path
 
     def read_file_from_url(self, url):

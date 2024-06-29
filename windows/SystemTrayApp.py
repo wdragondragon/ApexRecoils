@@ -2,15 +2,18 @@ import os
 import sys
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QAction, QMainWindow
+from PyQt5.QtWidgets import QSystemTrayIcon, QMenu, QAction, QMainWindow
 
-from log.Logger import Logger
+from log import LogFactory
 
 
 class SystemTrayApp(QMainWindow):
-    def __init__(self, logger: Logger, icon_path):
+    """
+        系统托盘
+    """
+    def __init__(self, icon_path):
         super().__init__()
-        self.logger = logger
+        self.logger = LogFactory.getLogger(self.__class__)
         self.tray_menu = None
         self.tray_icon = None
 
