@@ -4,6 +4,7 @@ import threading
 import pynput
 from PyQt5.QtWidgets import QApplication
 
+from auth.check_run import open_check
 from core.Config import Config
 from core.GameWindowsStatus import GameWindowsStatus
 from core.KeyAndMouseListener import MouseListener, KeyListener
@@ -21,13 +22,16 @@ from log import LogFactory
 from mouse_mover import MoverFactory
 from mouse_mover.IntentManager import IntentManager
 from mouse_mover.MouseMover import MouseMover
-from verification import Check
 from windows.SystemTrayApp import SystemTrayApp
 
-if __name__ == '__main__':
+
+@open_check("apex_recoils")
+def main():
+    """
+        main
+    """
     app = QApplication(sys.argv)
     LogFactory.init_logger("client")
-    Check.check("apex_recoils")
     config = Config(default_ref_config_name="client")
 
     apex_mouse_listener = MouseListener()
@@ -121,3 +125,7 @@ if __name__ == '__main__':
     # 自动识别启动
     threading.Thread(target=select_gun.test).start()
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    main()

@@ -3,6 +3,7 @@ import socket
 import threading
 import traceback
 
+from auth.check_run import auth
 from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.screentaker.ScreenTaker import ScreenTaker
 from log import LogFactory
@@ -15,6 +16,7 @@ class Server:
         识别服务端
     """
 
+    @auth
     def __init__(self, server_address, image_comparator, select_gun: ReaSnowSelectGun,
                  mouse_mover: MouseMover, c1_mouse_mover: MouseMover, screen_taker: ScreenTaker):
         self.logger = LogFactory.getLogger(self.__class__)

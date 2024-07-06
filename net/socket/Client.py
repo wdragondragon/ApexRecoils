@@ -2,6 +2,7 @@ import pickle  # 用于序列化/反序列化数据
 import socket
 import threading
 
+from auth.check_run import auth
 from net.socket import SocketUtil
 
 client_cache = {}
@@ -12,6 +13,7 @@ class Client:
         识别客户端
     """
 
+    @auth
     def __init__(self, socket_address, client_type):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect(socket_address)
