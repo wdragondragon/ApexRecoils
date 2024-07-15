@@ -7,7 +7,7 @@
   ],
   "mouse_mover": "win32api",
   "rea_snow_mouse_mover": "distributed",
-  "server_mouse_mover": "km_box_net",
+  "server_mouse_mover": "fei_yi_lai",
   "mouse_mover_params": {
     "win32api": {},
     "km_box": {
@@ -53,32 +53,6 @@
   "read_image_mode": "net",
   "key_trigger_mode": "distributed",
   "delayed_activation_key_list": {
-    "0x09": {
-      "down_deactivation": true,
-      "up_deactivation": false,
-      "click_keys": [
-        {
-          "delay": 650,
-          "click_key": "29"
-        },
-        {
-          "delay": 1500,
-          "click_key": "29"
-        }
-      ]
-    },
-    "0x2B": {
-      "delay": 0,
-      "down_deactivation": false,
-      "up_deactivation": true,
-      "click_key": "29"
-    },
-    "0x29": {
-      "delay": 0,
-      "down_deactivation": false,
-      "up_deactivation": true,
-      "click_key": "29"
-    }
   },
   "joy_to_key_map": {
     "axis": {

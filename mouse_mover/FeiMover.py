@@ -53,7 +53,7 @@ class FeiMover(MouseMover):
         M_KeyDown.argtypes = [ctypes.c_void_p, ctypes.c_int]
         M_KeyDown.restype = ctypes.c_int
 
-        M_KeyUp = objdll.M_KeyDown
+        M_KeyUp = objdll.M_KeyUp
         M_KeyUp.argtypes = [ctypes.c_void_p, ctypes.c_int]
         M_KeyUp.restype = ctypes.c_int
 
