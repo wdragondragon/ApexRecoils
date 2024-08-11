@@ -18,6 +18,7 @@ class ReaSnowSelectGun:
         self.current_gun = None
         self.current_scope = None
         self.current_hot_pop = None
+        self.last_scope_data = None
         if op.exists(self.config_path):
             with open(self.config_path, encoding='utf-8') as global_file:
                 self.key_dict = json.load(global_file)
@@ -86,3 +87,18 @@ class ReaSnowSelectGun:
         self.current_gun = select_gun
         self.current_scope = select_scope
         self.current_hot_pop = hot_pop
+        self.last_scope_data = scope_data
+
+    def close_key(self):
+        """
+            关宏
+        """
+        if self.no_macro_key is not None:
+            self.mouse_mover.click_key(self.no_macro_key)
+
+    def click_current(self):
+        """
+            开最后一个识别的宏
+        """
+        if self.last_scope_data is not None:
+            self.mouse_mover.click_key(Tools.convert_to_decimal(self.last_scope_data))

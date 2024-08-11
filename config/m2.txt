@@ -92,4 +92,25 @@ car F11 F12
 复仇  L   ;   '   ,
 lstar   =   Up  Down
 转换者 ScrLk
-专注空投·
+专注空投
+
+
+
+s22
+R301    F1
+平行  F2
+哈沃克涡轮   F3
+lstar   F4
+专注涡轮    F5
+喷火  F6
+复仇  F9
+r99 5
+电冲  6
+car 7
+转换者 8
+汗洛  Left
+哈沃克无涡轮  Right
+专注无涡轮   L
+p2020   [
+猎兽  ]
+re45    .

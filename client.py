@@ -103,10 +103,12 @@ def main():
                                             licking_state_bbox=config.licking_state_bbox,
                                             mouser_mover=rea_snow_mouse_mover,
                                             dynamic_size_image_comparator=dynamic_size_image_comparator,
-                                            s1_switch_hold_map=config.s1_switch_hold_map)
+                                            s1_switch_hold_map=config.s1_switch_hold_map,
+                                            rea_snow_select_gun=rea_snow_select_gun)
         # jtk启动
         jtk = JoyToKey(joy_to_key_map=config.joy_to_key_map, c1_mouse_mover=c1_mover,
                        game_windows_status=game_windows_status)
+        jtk.reg_toggle_func(lambda: len(s1_switch_monitor.down_key_time) == 0)
         joy_listener.connect_axis(jtk.axis_to_key)
         rocker_monitor = RockerMonitor(joy_listener=joy_listener, select_gun=select_gun)
         joy_listener.start(None)

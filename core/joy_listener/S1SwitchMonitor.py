@@ -3,6 +3,7 @@ import time
 
 import pygame
 
+from core.ReaSnowSelectGun import ReaSnowSelectGun
 from core.image_comparator.DynamicSizeImageComparator import DynamicSizeImageComparator
 from core.joy_listener.JoyListener import JoyListener
 from log import LogFactory
@@ -19,11 +20,12 @@ class S1SwitchMonitor:
                  licking_state_path,
                  licking_state_bbox,
                  dynamic_size_image_comparator: DynamicSizeImageComparator,
-                 mouser_mover: MouseMover, s1_switch_hold_map, retry=5):
+                 mouser_mover: MouseMover, rea_snow_select_gun: ReaSnowSelectGun, s1_switch_hold_map, retry=5):
         self.logger = LogFactory.getLogger(self.__class__)
         self.dynamic_size_image_comparator = dynamic_size_image_comparator
         self.licking_state_path = licking_state_path
         self.licking_state_bbox = licking_state_bbox
+        self.rea_snow_select_gun = rea_snow_select_gun
         self.mouser_mover = mouser_mover
         # self.click_state = False
         # self.threading_state = False
@@ -112,6 +114,7 @@ class S1SwitchMonitor:
                     self.down_key_time[toggle_key] = {"down_key_time": down_key_time, "scene": scene}
                     self.mouser_mover.key_down(Tools.convert_to_decimal(toggle_key))
                     self.logger.print_log(f"{scene}按下舔包键:{toggle_key}")
+                    self.rea_snow_select_gun.close_key()
                 else:
                     retry += 1
                     self.logger.print_log(f"{scene}未识别到，重试:{retry}")
@@ -123,6 +126,7 @@ class S1SwitchMonitor:
                         self.mouser_mover.key_up(Tools.convert_to_decimal(toggle_key))
                         self.down_key_time.pop(toggle_key)
                         self.logger.print_log(f"{scene}松开舔包键:{toggle_key}")
+                        self.rea_snow_select_gun.click_current()
                     else:
                         self.logger.print_log(f"{scene}跳过松开舔包键:{toggle_key}")
                     break
