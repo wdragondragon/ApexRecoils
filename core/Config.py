@@ -103,6 +103,7 @@ class Config:
         self.s1_switch_hold_map = None
 
         self.delay_refresh_buttons = None
+        self.cap_param = {}
 
         self.logger = LogFactory.getLogger(self.__class__)
         self.update(base_path, ref_dir, use_ref_name, default_ref_config_name)
@@ -212,6 +213,12 @@ class Config:
                                                       "key": {},
                                                       "toggle_key": ""
                                                   })
+        self.cap_param = self.get_config(self.config_data, "cap_param", {
+            "width": self.game_width,
+            "height": self.game_height,
+            "frame_rate": 144,
+            "format": "MJPG"
+        })
 
     def get_config(self, read_config, pattern=None, default=None):
         """

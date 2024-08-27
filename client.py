@@ -42,7 +42,7 @@ def main():
     image_comparator = ImageComparatorFactory.get_image_comparator(comparator_mode=config.comparator_mode,
                                                                    config=config)
 
-    screen_taker = ScreenTakerFactory.get_screen_taker(config.screen_taker, config.distributed_param)
+    screen_taker = ScreenTakerFactory.get_screen_taker(config)
 
     select_gun = SelectGun(bbox=config.select_gun_bbox,
                            image_path=config.image_path,
