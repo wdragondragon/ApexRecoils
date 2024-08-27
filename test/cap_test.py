@@ -1,13 +1,20 @@
 import cv2
 
 from core.screentaker.CapScreenTaker import CapScreenTaker
+from log import LogFactory
 from net.socket.NetImageComparator import NetImageComparator
 
 if __name__ == '__main__':
+    LogFactory.init_logger()
     base_path = "http://1.15.138.227:9000/apex/images/"
-    screen_taker = CapScreenTaker()
+    screen_taker = CapScreenTaker({
+        "width": 2560,
+        "height": 1440,
+        "frame_rate": 144,
+        "format": "MJPG"
+    })
     image_comparator = NetImageComparator(base_path)
-    image_path, x, y, w, h = "bag_cap.png", 780, 37, 1784, 78
+    image_path, x, y, w, h = "bag_cap.png", 779, 37, 897, 75
     box = (int(x), int(y), int(w), int(h))
     image_path = base_path + "licking/2560x1440/bag/" + image_path
     # 显示两张图片

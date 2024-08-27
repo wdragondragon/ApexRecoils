@@ -5,6 +5,7 @@ import configparser
 from pynput.keyboard import Controller, Listener
 
 from core.screentaker.CapScreenTaker import CapScreenTaker
+from log import LogFactory
 
 config = configparser.ConfigParser()  # 创建对象
 config.read("image_tool.conf", encoding="utf-8")
@@ -14,7 +15,14 @@ print_screen_key = config.get("conf", "print_screen_key")
 keyboard = Controller()
 i = 1
 
-screen_taker = CapScreenTaker()
+LogFactory.init_logger()
+
+screen_taker = CapScreenTaker({
+    "width": 2560,
+    "height": 1440,
+    "frame_rate": 144,
+    "format": "MJPG"
+})
 
 
 def on_press(key):
