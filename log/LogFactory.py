@@ -7,12 +7,15 @@ from log.Logger import Logger
 current_logger: Logger = None
 
 
-def init_logger(windows_name="Apex gun"):
+def init_logger(log_mode="console", windows_name="AG"):
     """
         初始化全局日志打印
     """
     global current_logger
-    current_logger = LogWindow(windows_name)
+    if "console" == log_mode:
+        current_logger = Logger()
+    else:
+        current_logger = LogWindow(windows_name)
 
 
 def logger():
@@ -57,7 +60,7 @@ class MultipleLogger(Logger):
 
     def print_log(self, text, log_type="default"):
         if current_logger is None:
-            init_logger()
+            init_logger(log_map["log_mode"])
 
         length, search_log_type = prefix_search(self.full_path)
         if length != 0:

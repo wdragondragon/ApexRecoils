@@ -1,4 +1,5 @@
 {
+  "log_mode": "console",
   "core.image_comparator": "图片对比",
   "net.socket.NetImageComparator": "图片对比",
   "core.joy_listener": "手柄监听",

@@ -25,7 +25,6 @@ def main():
     app = QApplication(sys.argv)
 
     # Tools.hide_process()
-    LogFactory.init_logger("server")
     config = Config(default_ref_config_name="server")
     game_windows_status = GameWindowsStatus()
 

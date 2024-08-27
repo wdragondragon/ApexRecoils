@@ -31,9 +31,7 @@ def main():
         main
     """
     app = QApplication(sys.argv)
-    LogFactory.init_logger("client")
     config = Config(default_ref_config_name="client")
-
     apex_mouse_listener = MouseListener()
     apex_key_listener = KeyListener()
 
