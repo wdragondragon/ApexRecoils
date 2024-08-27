@@ -18,12 +18,12 @@ class Logger:
         """
         global max_length
         # 获取被调用函数所在模块文件名
-        file_path = inspect.stack()[1][1]
+        file_path = inspect.stack()[2][1]
 
         (filepath, file_name) = os.path.split(file_path)
         (file_name, extension) = os.path.splitext(file_name)
-        func_name = inspect.stack()[1][3]
-        line_num = inspect.stack()[1][2]
+        func_name = inspect.stack()[2][3]
+        line_num = inspect.stack()[2][2]
         text_split = text.split("\n")
         log_text = f'[{file_name}:{func_name}][{line_num}]'
         max_length = max(max_length, len(log_text))
