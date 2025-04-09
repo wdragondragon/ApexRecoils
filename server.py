@@ -17,7 +17,7 @@ from net.socket.Server import Server
 from windows.SystemTrayApp import SystemTrayApp
 
 
-@open_check("apex_recoils_server")
+# @open_check("apex_recoils_server")
 def main():
     """
         main

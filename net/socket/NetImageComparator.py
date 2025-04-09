@@ -1,11 +1,6 @@
 import re
-import traceback
-from io import BytesIO
 
-import cv2
-import numpy as np
 import requests
-from skimage.metrics import structural_similarity
 
 from core.image_comparator.ImageComparator import ImageComparator
 from log import LogFactory
@@ -147,36 +142,3 @@ class NetImageComparator(ImageComparator):
         else:
             # 如果请求失败，打印错误信息
             self.logger.print_log(f"Failed to download image: {url}. Status code: {response.status_code}")
-
-    def get_image_from_cache(self, url):
-        """
-            缓存获取图片
-        """
-        # 如果图像已经在缓存中，直接返回缓存的图像
-        url = url.strip()
-        if url not in self.image_cache:
-            self.cache_image("", url)
-        return BytesIO(self.image_cache[url])
-
-    def compare_image(self, img, path_image):
-        # 下载图片到内存
-        try:
-            downloaded_image = self.get_image_from_cache(path_image)
-
-            if downloaded_image:
-                downloaded_image.seek(0)
-                image_a = cv2.imdecode(np.frombuffer(downloaded_image.getvalue(), dtype=np.uint8), cv2.IMREAD_COLOR)
-                downloaded_image.close()
-                image_b = np.array(img)
-                gray_a = cv2.cvtColor(image_a, cv2.COLOR_BGR2GRAY)
-                gray_b = cv2.cvtColor(image_b, cv2.COLOR_BGR2GRAY)
-                (score, diff) = structural_similarity(gray_a, gray_b, full=True)
-                return score
-            else:
-                # 图片下载失败时的处理
-                return 0
-        except Exception as e:
-            print(e)
-            traceback.print_exc()
-            self.logger.print_log(f"对比图片错误：{path_image}")
-            return 0

@@ -27,6 +27,6 @@
     }
   },
   "log_model": "window",
-  "read_image_mode": "net",
+  "read_image_mode": "local",
   "rea_snow_gun_config_name": "ReaSnowGun_s22"
 }

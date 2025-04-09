@@ -16,7 +16,7 @@ class Server:
         识别服务端
     """
 
-    @auth
+    # @auth
     def __init__(self, server_address, image_comparator, select_gun: ReaSnowSelectGun,
                  mouse_mover: MouseMover, c1_mouse_mover: MouseMover, screen_taker: ScreenTaker):
         self.logger = LogFactory.getLogger(self.__class__)

@@ -13,7 +13,7 @@ class Client:
         识别客户端
     """
 
-    @auth
+    # @auth
     def __init__(self, socket_address, client_type):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect(socket_address)

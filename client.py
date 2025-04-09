@@ -25,7 +25,7 @@ from mouse_mover.MouseMover import MouseMover
 from windows.SystemTrayApp import SystemTrayApp
 
 
-@open_check("apex_recoils")
+# @open_check("apex_recoils")
 def main():
     """
         main
@@ -95,7 +95,8 @@ def main():
 
         joy_listener = JoyListener()
         dynamic_size_image_comparator = DynamicSizeImageComparator(base_path=config.image_base_path,
-                                                                   screen_taker=screen_taker)
+                                                                   screen_taker=screen_taker,
+                                                                   base_image_comparator=image_comparator)
         s1_switch_monitor = S1SwitchMonitor(joy_listener=joy_listener,
                                             licking_state_path=config.licking_state_path,
                                             licking_state_bbox=config.licking_state_bbox,

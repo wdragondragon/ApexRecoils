@@ -5,6 +5,7 @@ import configparser
 from pynput.keyboard import Controller, Listener
 
 from core.screentaker.CapScreenTaker import CapScreenTaker
+from core.screentaker.LocalMssScreenTaker import LocalMssScreenTaker
 from log import LogFactory
 
 config = configparser.ConfigParser()  # 创建对象
@@ -17,13 +18,14 @@ i = 1
 
 LogFactory.init_logger()
 
-screen_taker = CapScreenTaker({
-    "width": 2560,
-    "height": 1440,
-    "frame_rate": 144,
-    "format": "MJPG"
-})
+# screen_taker = CapScreenTaker({
+#     "width": 2560,
+#     "height": 1440,
+#     "frame_rate": 144,
+#     "format": "MJPG"
+# })
 
+screen_taker = LocalMssScreenTaker()
 
 def on_press(key):
     # print('{0} 被按下'.format(key))
